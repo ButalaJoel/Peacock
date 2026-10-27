@@ -2,15 +2,15 @@ import { useState, useRef } from "react";
 import { B } from "../data/theme.js";
 import { PRODUCTS } from "../data/products.js";
 import { trendingColours, COLOUR_CATEGORIES } from "../data/colours.js";
-import { CartIcon, Arr, ArrL, TruckIcon, PaletteIcon, MinusIcon, PlusIcon, CheckIcon, StarIcon } from "../components/icons/Icons.jsx";
+import { CartIcon, Arr, ArrL, PaletteIcon, MinusIcon, PlusIcon, CheckIcon, StarIcon } from "../components/icons/Icons.jsx";
 
 const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
   const [selectedSize, setSelectedSize] = useState(0);
   const [qty, setQty] = useState(1);
   const [addedAnim, setAddedAnim] = useState(false);
   const sz = product.sizes[selectedSize];
-  const total = sz.price * qty;
-  const fmtPrice = (p) => `UGX ${p.toLocaleString()}`;
+  
+  
   const colourSectionRef = useRef(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedColourName, setSelectedColourName] = useState(null);
@@ -22,7 +22,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
   const hexRgba = (hex, a) => { const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16); return `rgba(${r},${g},${b},${a})`; };
 
   const handleAdd = () => {
-    const item = { product, size: sz.size, price: sz.price, qty };
+    const item = { product, size: sz.size, qty };
     if (selectedColourName) item.colour = selectedColourName;
     onAddToCart(item);
     setAddedAnim(true);
@@ -84,7 +84,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                   }}>
                     {selectedSize === i && <div style={{ position: "absolute", top: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: B.coral, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}><CheckIcon /></div>}
                     <div style={{ fontSize: 20, fontWeight: 700, color: selectedSize === i ? B.coral : "#333", marginBottom: 4 }}>{s.size}</div>
-                    <div style={{ fontSize: 16, fontWeight: 600, color: "#333" }}>{fmtPrice(s.price)}</div>
+                    
                     <div style={{ fontSize: 12, color: "#999", marginTop: 4 }}>Coverage: {s.coverage}</div>
                   </button>
                 ))}
@@ -100,17 +100,17 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                   <div style={{ width: 64, height: 48, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 600, borderLeft: "1px solid #e0e0e0", borderRight: "1px solid #e0e0e0" }}>{qty}</div>
                   <button onClick={() => setQty(Math.min(50, qty + 1))} style={{ width: 48, height: 48, border: "none", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><PlusIcon /></button>
                 </div>
-                <div style={{ fontSize: 13, color: "#999" }}>{qty} × {sz.size} = {fmtPrice(total)}</div>
+                <div style={{ fontSize: 13, color: "#999" }}>{qty} × {sz.size}</div>
               </div>
             </div>
 
             {/* Total & Add to Cart */}
             <div style={{ background: B.off, borderRadius: 12, padding: "20px 24px", marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <div style={{ fontSize: 13, color: "#999", marginBottom: 2 }}>Total</div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: B.black }}>{fmtPrice(total)}</div>
+                <div style={{ fontSize: 13, color: "#999", marginBottom: 2 }}>Your selection</div>
+                <div style={{ fontSize: 22, fontWeight: 700, color: B.black }}>{qty} × {sz.size}</div>
               </div>
-              {total >= 200000 && <div style={{ display: "flex", alignItems: "center", gap: 6, color: B.teal, fontSize: 13, fontWeight: 600 }}><TruckIcon /> Free delivery</div>}
+              
             </div>
 
             {/* Selected colour indicator */}
@@ -206,13 +206,13 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
             const colours = cat.colors.map(n => trendingColours.find(c => c.name === n)).filter(Boolean);
             const isColourSelected = (name) => selectedColourName === name;
             const colourSz = product.sizes[colourSizeIdx];
-            const colourTotal = colourSz.price * colourQty;
+            
             const handleColourSelect = (name) => {
               if (selectedColourName === name) { setSelectedColourName(null); }
               else { setSelectedColourName(name); setColourSizeIdx(0); setColourQty(1); setColourAddedAnim(false); }
             };
             const handleColourAdd = () => {
-              onAddToCart({ product, size: colourSz.size, price: colourSz.price, qty: colourQty, colour: selectedColourName });
+              onAddToCart({ product, size: colourSz.size, qty: colourQty, colour: selectedColourName });
               setColourAddedAnim(true);
               setTimeout(() => setColourAddedAnim(false), 2000);
             };
@@ -234,7 +234,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
 
                       {!active ? (
                         <>
-                          <div style={{ fontSize: 14, marginBottom: 3 }}>From <strong>{fmtPrice(product.sizes[0].price)}</strong></div>
+                          
                           <div style={{ fontSize: 12, color: "#bbb", marginBottom: 12 }}>{product.sizes.map(s => s.size).join(" · ")}</div>
                           <button onClick={() => handleColourSelect(col.name)} style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #ddd", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", background: "#fff", color: "#333", fontFamily: "'Outfit', sans-serif" }}>
                             Select sizes&nbsp;<Arr />
@@ -255,7 +255,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                               </button>
                             ))}
                           </div>
-                          <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>{fmtPrice(colourSz.price)} <span style={{ fontWeight: 400, fontSize: 12, color: "#999" }}>/ {colourSz.coverage}</span></div>
+                          <div style={{ fontSize: 13, color: "#777", marginBottom: 12 }}>Coverage: {colourSz.coverage}</div>
 
                           {/* Quantity */}
                           <label style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#999", display: "block", marginBottom: 8 }}>Qty</label>
@@ -266,7 +266,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                           </div>
 
                           {/* Total + Add to Cart */}
-                          <div style={{ fontSize: 13, color: "#777", marginBottom: 10 }}>{colourQty} × {colourSz.size} = <strong style={{ color: B.coral }}>{fmtPrice(colourTotal)}</strong></div>
+                          <div style={{ fontSize: 13, color: "#777", marginBottom: 10 }}>{colourQty} × {colourSz.size}</div>
                           <button onClick={handleColourAdd} style={{
                             width: "100%", padding: "12px", borderRadius: 8, border: "none",
                             background: colourAddedAnim ? B.teal : B.coral, color: "#fff",
@@ -306,7 +306,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                   <div style={{ padding: 16 }}>
                     <h4 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{r.name}</h4>
                     <p style={{ fontSize: 13, color: "#777", marginBottom: 8 }}>{r.desc}</p>
-                    <span style={{ fontSize: 15, fontWeight: 700, color: B.coral }}>From {fmtPrice(r.sizes[0].price)}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: B.coral }}>View details</span>
                   </div>
                 </div>
               ))}

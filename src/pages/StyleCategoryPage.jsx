@@ -83,7 +83,7 @@ const StyleCategoryPage = ({ styleName, styleData, allColours, onBack, onNavStyl
       <section style={{ background: "linear-gradient(135deg, #1a1a1a, #2a2a2a)", padding: "56px 0", color: "#fff", textAlign: "center" }}>
         <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 12 }}>Try before you buy</h2>
-          <p style={{ fontSize: 15, opacity: .7, marginBottom: 28, lineHeight: 1.6 }}>Get 5 colour samples delivered to your door for just UGX 15,000</p>
+          <p style={{ fontSize: 15, opacity: .7, marginBottom: 28, lineHeight: 1.6 }}>Order colour samples to see your shade at home before you commit.</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <button className="btn bp" onClick={onAddSampleBundle}>Order Samples</button>
             <button className="btn bo" onClick={onViewAllColours}>View All Colours</button>

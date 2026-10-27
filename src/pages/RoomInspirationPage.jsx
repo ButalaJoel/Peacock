@@ -140,7 +140,7 @@ const RoomInspirationPage = ({ roomName, inspirations, onBack, nav, onAddSample,
       {/* Stats */}
       <section style={{ background: "#1a1a1a", color: "#fff", padding: "28px 0" }}>
         <div style={{ maxWidth: 800, margin: "0 auto", padding: "0 24px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, textAlign: "center" }}>
-          {[{ n: String(inspirations.length), l: "Curated Looks" }, { n: "80+", l: "Colours Available" }, { n: "Free", l: "Colour Samples" }].map((s, i) => (
+          {[{ n: String(inspirations.length), l: "Curated Looks" }, { n: "80+", l: "Colours Available" }, { n: "Samples", l: "On Request" }].map((s, i) => (
             <div key={i}><div style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, color: B.coral }}>{s.n}</div><div style={{ fontSize: 12, opacity: .7, textTransform: "uppercase", letterSpacing: 1 }}>{s.l}</div></div>
           ))}
         </div>

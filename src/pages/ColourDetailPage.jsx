@@ -21,7 +21,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
   const handleAddToCart = () => {
     if (!selectedProd || !selectedSz) return;
     const sz = selectedProd.sizes.find(s => s.size === selectedSz);
-    if (onAddToCart) onAddToCart({ product: selectedProd, size: sz.size, price: sz.price, qty: buyQty, colour: colour.name });
+    if (onAddToCart) onAddToCart({ product: selectedProd, size: sz.size, qty: buyQty, colour: colour.name });
     setBuyAdded(true);
     setTimeout(() => { setBuyOpen(false); setBuyAdded(false); setSelectedProd(null); setSelectedSz(null); setBuyQty(1); }, 1800);
   };
@@ -149,7 +149,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
                         <img src={prod.img} alt={prod.name} style={{ width: 46, height: 46, objectFit: "contain", borderRadius: 6, flexShrink: 0 }} />
                         <div style={{ flex: 1 }}>
                           <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a", marginBottom: 2 }}>{prod.name}</div>
-                          <div style={{ fontSize: 11.5, color: "#999" }}>{prod.finish} &bull; {prod.category === "interior" ? "Interior" : "Exterior"}</div>
+                          <div style={{ fontSize: 11.5, color: "#999" }}>{prod.finish} &bull; {prod.category.charAt(0).toUpperCase() + prod.category.slice(1)}</div>
                         </div>
                         {isSel && <div style={{ width: 22, height: 22, borderRadius: "50%", background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><CheckIcon /></div>}
                       </div>
@@ -168,7 +168,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
                       return (
                         <div key={sz.size} onClick={() => setSelectedSz(sz.size)} style={{ flex: 1, padding: "15px 10px", borderRadius: 10, border: `2px solid ${isSel ? "#1a1a1a" : "#e8e4de"}`, cursor: "pointer", textAlign: "center", background: isSel ? "#faf8f5" : "#fff", transition: "all 0.15s" }}>
                           <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", marginBottom: 4 }}>{sz.size}</div>
-                          <div style={{ fontSize: 13, color: B.coral, fontWeight: 700, marginBottom: 2 }}>Ksh {sz.price.toLocaleString()}</div>
+                          
                           <div style={{ fontSize: 10.5, color: "#aaa" }}>Covers {sz.coverage}</div>
                         </div>
                       );
@@ -196,8 +196,8 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
                     const sz = selectedProd.sizes.find(s => s.size === selectedSz);
                     return sz ? (
                       <div style={{ marginTop: 10, fontSize: 13, color: "#888" }}>
-                        Total: <strong style={{ color: "#1a1a1a", fontSize: 15 }}>Ksh {(sz.price * buyQty).toLocaleString()}</strong>
-                        <span style={{ marginLeft: 10, color: "#bbb" }}>({buyQty} × Ksh {sz.price.toLocaleString()})</span>
+                        Selected: <strong style={{ color: "#1a1a1a", fontSize: 15 }}>{buyQty} × {sz.size}</strong>
+                        
                       </div>
                     ) : null;
                   })()}

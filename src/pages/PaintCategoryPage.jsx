@@ -4,7 +4,7 @@ import { ArrL } from "../components/icons/Icons.jsx";
 
 const PaintCategoryPage = ({ category, title, subtitle, onOpenProduct, productHrefFn, homeHref, nav }) => {
   const products = PRODUCTS.filter(p => p.category === category);
-  const fmtP = p => `UGX ${p.toLocaleString()}`;
+  
   const gradient = category === "interior"
     ? `linear-gradient(135deg, ${B.coral}ee, ${B.coralDk})`
     : `linear-gradient(135deg, ${B.teal}ee, ${B.tealDk})`;
@@ -35,7 +35,7 @@ const PaintCategoryPage = ({ category, title, subtitle, onOpenProduct, productHr
                 <h4 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{p.name}</h4>
                 <p style={{ fontSize: 12, color: "#777", lineHeight: 1.4, marginBottom: 10, minHeight: 34 }}>{p.desc}</p>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: 15, fontWeight: 700, color: B.coral }}>From {fmtP(p.sizes[0].price)}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: B.coral }}>View details</span>
                   <span style={{ fontSize: 12, color: "#999" }}>{p.sizes.map(s => s.size).join(" • ")}</span>
                 </div>
               </div>

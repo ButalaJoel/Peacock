@@ -96,17 +96,17 @@ export default function PeacockPaintsWebsite() {
     });
   };
   const addSamplePot = (colourName) => {
-    addToCart({ product: SAMPLE_POT, size: "100ml", price: 3000, qty: 1, colour: colourName });
+    addToCart({ product: SAMPLE_POT, size: "100ml", qty: 1, colour: colourName });
     setCartOpen(true);
   };
   const addSampleBundle = () => {
-    addToCart({ product: SAMPLE_BUNDLE, size: "5 pots", price: 15000, qty: 1, colour: null });
+    addToCart({ product: SAMPLE_BUNDLE, size: "5 pots", qty: 1, colour: null });
     setCartOpen(true);
   };
   const removeFromCart = (idx) => setCart(prev => prev.filter((_, i) => i !== idx));
-  const cartTotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
+  
   const cartCount = cart.reduce((sum, c) => sum + c.qty, 0);
-  const fmtP = p => `UGX ${p.toLocaleString()}`;
+  
   const weathershield = PRODUCTS.find(p => p.id === "weathershield");
   const iconFor = s => ({ globe: <GlobeIcon/>, heart: <HeartIcon/>, palette: <PaletteIcon/>, users: <UsersIcon/>, leaf: <LeafIcon/>, truck: <TruckIcon/> }[s] || <PaletteIcon/>);
 
@@ -243,7 +243,7 @@ export default function PeacockPaintsWebsite() {
       {/* Top Bar */}
       <div style={{ background: B.black, color: "#fff", fontSize: 13, padding: "8px 0" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-          <div style={{ display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}><span style={{ display: "flex", alignItems: "center", gap: 6 }}><TruckIcon /> Free delivery over UGX 200,000</span><button onClick={addSampleBundle} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "inherit", font: "inherit", cursor: "pointer" }}><PaletteIcon /> 5 colour samples for UGX 15,000</button></div>
+          <div style={{ display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}><span style={{ display: "flex", alignItems: "center", gap: 6 }}>Request a quote for any product</span><button onClick={addSampleBundle} style={{ display: "flex", alignItems: "center", gap: 6, background: "none", border: "none", color: "inherit", font: "inherit", cursor: "pointer" }}><PaletteIcon /> Order colour samples</button></div>
           <div className="dsk" style={{ display: "flex", gap: 20, fontSize: 12 }}><span style={{ cursor: "pointer" }}>Stockists</span><span style={{ cursor: "pointer" }}>Contact Us</span><span style={{ cursor: "pointer" }}>Professionals</span></div>
         </div>
       </div>
@@ -357,7 +357,7 @@ export default function PeacockPaintsWebsite() {
                       </div>
                     )}
                     <p style={{ fontSize: 12, color: "#999" }}>{item.size} × {item.qty}</p>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: B.coral, marginTop: 4 }}>{fmtP(item.price * item.qty)}</p>
+                    
                   </div>
                   <button onClick={() => removeFromCart(i)} style={{ background: "none", border: "none", cursor: "pointer", color: "#ccc", fontSize: 18, alignSelf: "flex-start" }}>×</button>
                 </div>
@@ -365,11 +365,11 @@ export default function PeacockPaintsWebsite() {
             </div>
             <div style={{ padding: "20px 24px", borderTop: "2px solid #eee" }}>
               <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
-                <span style={{ fontSize: 16, fontWeight: 600 }}>Total</span>
-                <span style={{ fontSize: 20, fontWeight: 700, color: B.coral }}>{fmtP(cartTotal)}</span>
+                <span style={{ fontSize: 16, fontWeight: 600 }}>Items in your list</span>
+                <span style={{ fontSize: 20, fontWeight: 700, color: B.coral }}>{cartCount}</span>
               </div>
-              {cartTotal >= 200000 && <p style={{ fontSize: 13, color: B.teal, fontWeight: 600, marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}><TruckIcon /> Free delivery included!</p>}
-              <button className="btn bp" style={{ width: "100%", justifyContent: "center", padding: "14px", fontSize: 15 }}>Proceed to Checkout</button>
+              <p style={{ fontSize: 13, color: "#777", marginBottom: 12, lineHeight: 1.5 }}>Submit your list and our sales team will send you a quotation.</p>
+              <button className="btn bp" style={{ width: "100%", justifyContent: "center", padding: "14px", fontSize: 15 }}>Request a Quote</button>
             </div>
           </>)}
         </div>
@@ -559,7 +559,7 @@ export default function PeacockPaintsWebsite() {
                 <img src={IMG_WEATHER} alt="" />
                 <span>
                   <strong>Weathershield</strong>
-                  <span>Grade 1 exterior matt. From {fmtP(weathershield.sizes[0].price)}</span>
+                  <span>Grade 1 premium exterior matt for tropical weather.</span>
                 </span>
               </button>
             </div>
@@ -661,7 +661,7 @@ export default function PeacockPaintsWebsite() {
                   <h4 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{p.name}</h4>
                   <p style={{ fontSize: 12, color: "#777", lineHeight: 1.4, marginBottom: 10, minHeight: 34 }}>{p.desc}</p>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: 15, fontWeight: 700, color: B.coral }}>From {fmtP(p.sizes[0].price)}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: B.coral }}>View details</span>
                     <span style={{ fontSize: 12, color: "#999" }}>{p.sizes.map(s => s.size).join(" • ")}</span>
                   </div>
                 </div>
