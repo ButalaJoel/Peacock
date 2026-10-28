@@ -2,7 +2,7 @@ import { B } from "../../data/theme.js";
 import { trendingColours } from "../../data/colours.js";
 import { Arr, ArrL } from "../icons/Icons.jsx";
 import PaintBlob from "../common/PaintBlob.jsx";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function TrendingColours() {
   const { colourCarouselIdx, setColourCarouselIdx, CARDS_VISIBLE, handleColourClick, nav, colourHref, aReset, addSamplePot } = useApp();

@@ -9,7 +9,7 @@ import RoomInspirationPage from "./RoomInspirationPage.jsx";
 import ColourCategoryPage from "./ColourCategoryPage.jsx";
 import StyleCategoryPage from "./StyleCategoryPage.jsx";
 import ColourDetailPage from "./ColourDetailPage.jsx";
-import { useApp } from "../context/AppContext.jsx";
+import { useApp } from "../context/useApp.js";
 import HomePage from "./HomePage.jsx";
 import StoryPage from "./StoryPage.jsx";
 

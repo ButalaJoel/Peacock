@@ -1,6 +1,6 @@
 import { B } from "../data/theme.js";
 import { storyPages } from "../data/storyPages.js";
-import { useApp } from "../context/AppContext.jsx";
+import { useApp } from "../context/useApp.js";
 
 export default function StoryPage({ pageKey }) {
   const { nav, makeHref, aReset, iconFor } = useApp();

@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { INSPO_SCANDI_SAGE, INSPO_LR_PALE_BEIGE, INSPO_KT_CREAM } from "../../data/images.js";
 import { trendingColours } from "../../data/colours.js";
 import { Arr, ArrL } from "../icons/Icons.jsx";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function Hero() {
-  const { setActiveMenu, setMobMenu, setMobSub, setPg, setProdTab, setFinishFilter, setSelectedProduct, handleColourClick, prodSectionRef, nav } = useApp();
+  const { handleColourClick, nav, openHeroProductGrid } = useApp();
   const [heroSlide, setHeroSlide] = useState(0);
 
   const [heroPaused, setHeroPaused] = useState(false);
@@ -68,17 +68,6 @@ export default function Hero() {
   ];
 
   const currentHero = heroSlides[heroSlide] || heroSlides[0];
-
-  const openHeroProductGrid = (tab = "all") => {
-    setPg("home");
-    setSelectedProduct(null);
-    setProdTab(tab);
-    setFinishFilter(null);
-    setActiveMenu(null);
-    setMobMenu(false);
-    setMobSub(null);
-    setTimeout(() => prodSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
-  };
 
   const shopHeroProducts = () => openHeroProductGrid("all");
 

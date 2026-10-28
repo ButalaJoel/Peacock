@@ -1,6 +1,6 @@
 import { B } from "../../data/theme.js";
 import { PaletteIcon } from "../icons/Icons.jsx";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function AnnouncementBar() {
   const { addSampleBundle } = useApp();

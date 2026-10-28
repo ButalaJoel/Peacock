@@ -1,7 +1,7 @@
 import { LOGO_FOOTER } from "../../data/images.js";
 import { B } from "../../data/theme.js";
 import { PhoneIcon, MailIcon } from "../icons/Icons.jsx";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function Footer() {
   const { nav, makeHref, aReset } = useApp();

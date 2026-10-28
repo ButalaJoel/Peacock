@@ -1,6 +1,6 @@
 import { B } from "../../data/theme.js";
 import { PRODUCTS } from "../../data/products.js";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function ProductCatalogue() {
   const { prodTab, setProdTab, finishFilter, setFinishFilter, prodSectionRef, openProduct, productHref, aReset, filteredProducts } = useApp();

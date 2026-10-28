@@ -1,5 +1,5 @@
 import { CloseIcon } from "../icons/Icons.jsx";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function SearchModal() {
   const { searchOpen, setSearchOpen } = useApp();

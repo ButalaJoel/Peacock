@@ -1,6 +1,6 @@
 import { IMG_WEATHER, INSPO_SCANDI_SAGE } from "../../data/images.js";
 import { Arr } from "../icons/Icons.jsx";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function DoorsSection() {
   const { nav, openProduct, weathershield } = useApp();

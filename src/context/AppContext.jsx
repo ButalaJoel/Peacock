@@ -1,15 +1,8 @@
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { AppContext } from "./useApp.js";
 import { PRODUCTS, SAMPLE_POT, SAMPLE_BUNDLE } from "../data/products.js";
 import { trendingColours, COLOUR_CATEGORIES, STYLE_CATEGORIES } from "../data/colours.js";
 import { TruckIcon, PaletteIcon, HeartIcon, GlobeIcon, UsersIcon, LeafIcon } from "../components/icons/Icons.jsx";
-
-const AppContext = createContext(null);
-
-export const useApp = () => {
-  const value = useContext(AppContext);
-  if (!value) throw new Error("useApp must be used inside <AppProvider>");
-  return value;
-};
 
 export function AppProvider({ children }) {
   const [activeMenu, setActiveMenu] = useState(null);
@@ -129,6 +122,17 @@ export function AppProvider({ children }) {
 
   const iconFor = s => ({ globe: <GlobeIcon/>, heart: <HeartIcon/>, palette: <PaletteIcon/>, users: <UsersIcon/>, leaf: <LeafIcon/>, truck: <TruckIcon/> }[s] || <PaletteIcon/>);
 
+  const openHeroProductGrid = (tab = "all") => {
+    setPg("home");
+    setSelectedProduct(null);
+    setProdTab(tab);
+    setFinishFilter(null);
+    setActiveMenu(null);
+    setMobMenu(false);
+    setMobSub(null);
+    setTimeout(() => prodSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+  };
+
   const handleMegaFooter = (label) => {
     if (label === "Shop all colours") nav("all-colours");
     if (label === "All interior paints") nav("interior-paint");
@@ -148,6 +152,7 @@ export function AppProvider({ children }) {
   const currentStyleName = Object.keys(STYLE_CATEGORIES).find(k => STYLE_CATEGORIES[k].slug === pg) || null;
 
   const value = {
+    openHeroProductGrid,
     activeMenu,
     setActiveMenu,
     mobMenu,

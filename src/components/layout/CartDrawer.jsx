@@ -1,7 +1,7 @@
 import { B } from "../../data/theme.js";
 import { trendingColours } from "../../data/colours.js";
 import { CloseIcon } from "../icons/Icons.jsx";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function CartDrawer() {
   const { cart, cartOpen, setCartOpen, removeFromCart, cartCount } = useApp();

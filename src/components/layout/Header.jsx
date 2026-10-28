@@ -4,7 +4,7 @@ import { PRODUCTS } from "../../data/products.js";
 import { navData } from "../../data/navData.js";
 import { CAT_SWATCH_COLORS, COLOUR_CATEGORIES } from "../../data/colours.js";
 import { CartIcon, SearchIcon, UserIcon, ChevDown, MenuIcon, Arr } from "../icons/Icons.jsx";
-import { useApp } from "../../context/AppContext.jsx";
+import { useApp } from "../../context/useApp.js";
 
 export default function Header() {
   const { activeMenu, setActiveMenu, setMobMenu, setMobSub, setSearchOpen, scrolled, setPg, setProdTab, setFinishFilter, setSelectedProduct, setCartOpen, mRef, scrollToProdPending, mE, mL, nav, openProduct, makeHref, productHref, aReset, cartCount, handleMegaFooter } = useApp();
