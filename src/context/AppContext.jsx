@@ -39,7 +39,7 @@ export function AppProvider({ children }) {
 
   const findColourCat = (name) => { for (const [k, v] of Object.entries(COLOUR_CATEGORIES)) { if (v.colors.includes(name)) return k; } return null; };
 
-  const handleColourClick = (c) => { const cat = findColourCat(c.name); setSelectedColour(c); setSelectedColourCategory(cat); setPg("colour-detail"); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.history.replaceState(null, "", `#/colour/${encodeURIComponent(c.name)}`); };
+  const handleColourClick = (c) => { const cat = findColourCat(c.name); setSelectedColour(c); setSelectedColourCategory(cat); setPg("colour-detail"); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.location.hash = `/colour/${encodeURIComponent(c.name)}`; };
 
   const mRef = useRef(null);
 
@@ -83,9 +83,9 @@ export function AppProvider({ children }) {
 
   const mL = () => { mRef.current = setTimeout(() => setActiveMenu(null), 200); };
 
-  const nav = p => { setPg(p); setSelectedProduct(null); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.history.replaceState(null, "", `#/${p}`); };
+  const nav = p => { setPg(p); setSelectedProduct(null); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.location.hash = `/${p}`; };
 
-  const openProduct = (p) => { setSelectedProduct(p); setPg("product"); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.history.replaceState(null, "", `#/product/${p.id}`); };
+  const openProduct = (p) => { setSelectedProduct(p); setPg("product"); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.location.hash = `/product/${p.id}`; };
 
   // ─── Hash URL helpers ───
   const makeHref = (slug) => `#/${slug}`;
