@@ -50,7 +50,7 @@ export default function Hero() {
       cta2Page: "colours",
     },
     {
-      eyebrow: "Specialist finishes",
+      eyebrow: "Industrial coatings",
       title: "From polished walls to tough workshop floors.",
       copy: "Browse coatings for wood, vehicles, decorative walls, and industrial surfaces with the same colour-first energy.",
       accent: "#b8a4ed",
@@ -62,8 +62,8 @@ export default function Hero() {
         { name: "Signal Blue", color: "#2848A0" },
       ],
       note: "Specialist systems",
-      cta2: "Specialist finishes",
-      cta2Page: "specialist",
+      cta2: "Industrial coatings",
+      cta2Page: "industrial",
     },
   ];
 
@@ -73,7 +73,7 @@ export default function Hero() {
 
   const exploreHero = () => {
     if (currentHero.cta2Page === "colours") { nav("all-colours"); return; }
-    if (currentHero.cta2Page === "specialist") { openHeroProductGrid("specialist"); return; }
+    if (currentHero.cta2Page === "industrial") { nav("industrial-coatings"); return; }
     nav(currentHero.cta2Page);
   };
 

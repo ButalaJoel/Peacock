@@ -1,8 +1,9 @@
+import { CATEGORIES } from "../data/products.js";
 import { useState, useRef } from "react";
 import { B } from "../data/theme.js";
 import { PRODUCTS } from "../data/products.js";
 import { trendingColours, COLOUR_CATEGORIES } from "../data/colours.js";
-import { CartIcon, Arr, ArrL, PaletteIcon, MinusIcon, PlusIcon, CheckIcon, StarIcon } from "../components/icons/Icons.jsx";
+import { CartIcon, Arr, ArrL, PaletteIcon, MinusIcon, PlusIcon, CheckIcon } from "../components/icons/Icons.jsx";
 
 const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
   const [selectedSize, setSelectedSize] = useState(0);
@@ -42,7 +43,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
         <div style={{ display: "flex", gap: 8, fontSize: 13, color: "#999" }}>
           <span onClick={onBack} style={{ color: B.coral, cursor: "pointer" }}>Home</span>
           <span>/</span><span>Paints</span><span>/</span>
-          <span style={{ textTransform: "capitalize" }}>{product.category}</span><span>/</span>
+          <span>{CATEGORIES[product.category]?.label || product.category}</span><span>/</span>
           <span style={{ color: "#333" }}>{product.name}</span>
         </div>
       </div>
@@ -53,7 +54,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
           {/* Left: Image */}
           <div>
             <div style={{ background: B.off, borderRadius: 16, padding: "40px", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 480, position: "relative" }}>
-              {product.img && <img src={product.img} alt={product.name} style={{ maxHeight: 400, maxWidth: "85%", objectFit: "contain", filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.15))" }} />}
+              {(product.imgBySize?.[sz.size] || product.img) && <img src={product.imgBySize?.[sz.size] || product.img} alt={product.name} style={{ maxHeight: 400, maxWidth: "85%", objectFit: "contain", filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.15))" }} />}
               {product.tag && <span style={{ position: "absolute", top: 20, left: 20, background: product.tag === "Best Seller" ? B.coral : product.tag === "New" ? B.teal : product.tag === "Specialist" ? B.gold : "#5C2D6D", color: "#fff", fontSize: 12, fontWeight: 700, padding: "6px 16px", borderRadius: 24 }}>{product.tag}</span>}
               {product.grade && <span style={{ position: "absolute", top: 20, right: 20, background: "#fff", border: `2px solid ${B.coral}`, color: B.coral, fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 24 }}>Grade {product.grade}</span>}
             </div>
@@ -61,15 +62,9 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
 
           {/* Right: Details */}
           <div>
-            <p style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: 2, color: B.coral, fontWeight: 600, marginBottom: 8 }}>{product.category} paint</p>
+            <p style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: 2, color: B.coral, fontWeight: 600, marginBottom: 8 }}>{CATEGORIES[product.category]?.label || product.category}</p>
             <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginBottom: 12, lineHeight: 1.2 }}>{product.name}</h1>
             
-            {/* Rating */}
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
-              <div style={{ display: "flex", gap: 2 }}>{[1,2,3,4,5].map(s => <StarIcon key={s} filled={s <= Math.floor(product.rating)} />)}</div>
-              <span style={{ fontSize: 14, fontWeight: 600 }}>{product.rating}</span>
-              <span style={{ fontSize: 13, color: "#999" }}>({product.reviews} reviews)</span>
-            </div>
 
             <p style={{ fontSize: 15, lineHeight: 1.7, color: "#555", marginBottom: 28 }}>{product.desc}</p>
 
@@ -85,7 +80,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                     {selectedSize === i && <div style={{ position: "absolute", top: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: B.coral, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}><CheckIcon /></div>}
                     <div style={{ fontSize: 20, fontWeight: 700, color: selectedSize === i ? B.coral : "#333", marginBottom: 4 }}>{s.size}</div>
                     
-                    <div style={{ fontSize: 12, color: "#999", marginTop: 4 }}>Coverage: {s.coverage}</div>
+                    
                   </button>
                 ))}
               </div>
@@ -138,6 +133,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
               {addedAnim ? <><CheckIcon /> Added to Cart!</> : <><CartIcon /> Add to Cart</>}
             </button>
 
+            {product.colourSystems.length > 0 && (
             <button
               onClick={() => colourSectionRef.current?.scrollIntoView({ behavior: "smooth" })}
               style={{ marginTop: 12, width: "100%", padding: "14px 24px", borderRadius: 10, border: `2px solid ${B.coral}`, background: "transparent", color: B.coral, fontSize: 15, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, letterSpacing: 0.5, textTransform: "uppercase", fontFamily: "'Outfit', sans-serif", transition: "all 0.2s" }}
@@ -146,17 +142,18 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
             >
               <PaletteIcon /> {selectedColourName ? "Change Colour" : "Select Colour"}
             </button>
+            )}
 
             {/* Specs */}
             <div style={{ marginTop: 32, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {[
-                { label: "Finish", value: product.finish },
-                { label: "Dry Time", value: product.dryTime },
-                { label: "Coats", value: product.coats },
-                { label: "Surface", value: product.surface },
-                { label: "Colours", value: product.colours },
-                { label: "Coverage", value: sz.coverage },
-              ].map((spec, i) => (
+                { label: (product.mixing && product.mixing.label) || "Mix", value: product.mixing && product.mixing.value },
+                { label: "Application", value: product.application },
+                { label: "Coverage", value: product.coverage },
+                { label: "Drying time", value: product.dryTime },
+                { label: "Pack sizes", value: product.packSizes.join(", ") },
+                { label: "Colour systems", value: product.colourSystems.join(", ") },
+              ].filter(spec => spec.value).map((spec, i) => (
                 <div key={i} style={{ padding: "12px 16px", background: B.off, borderRadius: 8 }}>
                   <div style={{ fontSize: 11, color: "#999", textTransform: "uppercase", letterSpacing: 1, marginBottom: 2 }}>{spec.label}</div>
                   <div style={{ fontSize: 14, fontWeight: 600 }}>{spec.value}</div>
@@ -168,6 +165,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
         </div>
 
         {/* Colour & Size Selection — immediately visible */}
+        {product.colourSystems.length > 0 && (
         <div ref={colourSectionRef} style={{ marginTop: 48, paddingTop: 36, borderTop: "1px solid #e8e4de" }}>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 8 }}>Select Colour & Size</h2>
           <p style={{ fontSize: 15, color: "#777", marginBottom: 32 }}>Choose from our full range of colours available for this paint.</p>
@@ -285,11 +283,19 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
           })()}
         </div>
 
+        )}
+
         {/* Full Description */}
         <div style={{ marginTop: 60, paddingTop: 40, borderTop: "1px solid #e8e4de" }}>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 24 }}>Product Description</h2>
           {product.longDesc.split("\n\n").map((p, i) => (<p key={i} style={{ fontSize: 15, lineHeight: 1.85, color: "#555", marginBottom: 16, maxWidth: 800 }}>{p}</p>))}
         </div>
+
+        {product.sheet && (
+          <div style={{ marginTop: 40 }}>
+            <a href={product.sheet} download style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 24px", border: "2px solid " + B.coral, borderRadius: 10, color: B.coral, fontWeight: 600, fontSize: 14, textDecoration: "none", textTransform: "uppercase", letterSpacing: 0.5 }}>Download product sheet (PDF)</a>
+          </div>
+        )}
 
         {/* Related Products */}
         {related.length > 0 && (

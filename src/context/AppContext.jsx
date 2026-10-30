@@ -118,7 +118,7 @@ export function AppProvider({ children }) {
 
   const cartCount = cart.reduce((sum, c) => sum + c.qty, 0);
 
-  const weathershield = PRODUCTS.find(p => p.id === "weathershield");
+  const weathershield = PRODUCTS.find(p => p.id === "weathershield-plus");
 
   const iconFor = s => ({ globe: <GlobeIcon/>, heart: <HeartIcon/>, palette: <PaletteIcon/>, users: <UsersIcon/>, leaf: <LeafIcon/>, truck: <TruckIcon/> }[s] || <PaletteIcon/>);
 
@@ -135,15 +135,15 @@ export function AppProvider({ children }) {
 
   const handleMegaFooter = (label) => {
     if (label === "Shop all colours") nav("all-colours");
-    if (label === "All interior paints") nav("interior-paint");
-    if (label === "All exterior paints") nav("exterior-paint");
-    if (label === "All specialist paints") openHeroProductGrid("specialist");
+    if (label === "All decorative paints") nav("decorative-paints");
+    if (label === "All industrial coatings") nav("industrial-coatings");
+    
     if (label === "Get inspired") nav("bedroom-inspiration");
   };
 
   const filteredProducts = PRODUCTS.filter(p => {
     const catOk = prodTab === "all" || p.category === prodTab;
-    const finishOk = !finishFilter || p.finish.toLowerCase().includes(finishFilter.toLowerCase());
+    const finishOk = true; // finish filter retired: the catalogue has no finish data
     return catOk && finishOk;
   });
 

@@ -1,8 +1,11 @@
+import { useState } from "react";
+import { CATEGORIES } from "../../data/products.js";
 import { B } from "../../data/theme.js";
 import { PRODUCTS } from "../../data/products.js";
 import { useApp } from "../../context/useApp.js";
 
 export default function ProductCatalogue() {
+  const [visible, setVisible] = useState(12);
   const { prodTab, setProdTab, finishFilter, setFinishFilter, prodSectionRef, openProduct, productHref, aReset, filteredProducts } = useApp();
   return (
     <>
@@ -13,7 +16,7 @@ export default function ProductCatalogue() {
             <p style={{ fontSize: 15, color: "#666" }}>Click any product for full details, size options, and ordering</p>
           </div>
           <div style={{ display: "flex", gap: 10, marginBottom: finishFilter ? 16 : 32, flexWrap: "wrap" }}>
-            {[{ k: "all", l: `All (${PRODUCTS.length})` },{ k: "interior", l: `Interior (${PRODUCTS.filter(p=>p.category==="interior").length})` },{ k: "exterior", l: `Exterior (${PRODUCTS.filter(p=>p.category==="exterior").length})` },{ k: "specialist", l: `Specialist (${PRODUCTS.filter(p=>p.category==="specialist").length})` }].map(t => (
+            {[{ k: "all", l: `All (${PRODUCTS.length})` }, ...Object.entries(CATEGORIES).map(([k, c]) => ({ k, l: `${c.label} (${PRODUCTS.filter(p => p.category === k).length})` }))].map(t => (
               <button key={t.k} className={`tab ${prodTab === t.k ? "ta" : "ti"}`} onClick={() => { setProdTab(t.k); setFinishFilter(null); }}>{t.l}</button>
             ))}
           </div>
@@ -28,7 +31,7 @@ export default function ProductCatalogue() {
             </div>
           )}
           <div className="g4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 }}>
-            {filteredProducts.map(p => (
+            {filteredProducts.slice(0, visible).map(p => (
               <a key={p.id} href={productHref(p)} onClick={e => { e.preventDefault(); openProduct(p); }} style={{ ...aReset, display: "block", background: "#fff", borderRadius: 12, border: "1px solid #eee", overflow: "hidden", cursor: "pointer", transition: "transform .3s, box-shadow .3s" }}
                 onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,.1)"; }} onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
                 <div style={{ background: B.off, padding: "20px 16px", display: "flex", alignItems: "center", justifyContent: "center", height: 200, position: "relative" }}>
@@ -47,6 +50,11 @@ export default function ProductCatalogue() {
               </a>
             ))}
           </div>
+        {filteredProducts.length > visible && (
+            <div style={{ textAlign: "center", marginTop: 32 }}>
+              <button className="btn bd" onClick={() => setVisible(v => v + 12)}>Show more</button>
+            </div>
+          )}
         </section>
     </>
   );

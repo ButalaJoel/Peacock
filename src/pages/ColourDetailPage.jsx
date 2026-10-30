@@ -1,10 +1,11 @@
+import { CATEGORIES } from "../data/products.js";
 import { useState } from "react";
 import { B } from "../data/theme.js";
 import { PRODUCTS } from "../data/products.js";
 import { COLOUR_DETAILS } from "../data/colours.js";
 import { CloseIcon, Arr, ArrL, MinusIcon, PlusIcon, CheckIcon } from "../components/icons/Icons.jsx";
 
-const PAINT_RECOMMENDATIONS = PRODUCTS;
+const PAINT_RECOMMENDATIONS = PRODUCTS.filter(p => p.colourSystems.length > 0);
 
 const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCart, onAddSample, homeHref, backHref }) => {
   const [imgIdx, setImgIdx] = useState(0);
@@ -146,10 +147,10 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
                     const isSel = selectedProd?.id === prod.id;
                     return (
                       <div key={prod.id} onClick={() => { setSelectedProd(prod); setSelectedSz(null); }} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", borderRadius: 10, border: `2px solid ${isSel ? "#1a1a1a" : "#e8e4de"}`, cursor: "pointer", background: isSel ? "#faf8f5" : "#fff", transition: "all 0.15s" }}>
-                        <img src={prod.img} alt={prod.name} style={{ width: 46, height: 46, objectFit: "contain", borderRadius: 6, flexShrink: 0 }} />
+                        {prod.img ? <img src={prod.img} alt={prod.name} style={{ width: 46, height: 46, objectFit: "contain", borderRadius: 6, flexShrink: 0 }} /> : <div style={{ width: 46, height: 46, borderRadius: 6, background: "#f3f1ee", flexShrink: 0 }} />}
                         <div style={{ flex: 1 }}>
                           <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a", marginBottom: 2 }}>{prod.name}</div>
-                          <div style={{ fontSize: 11.5, color: "#999" }}>{prod.finish} &bull; {prod.category.charAt(0).toUpperCase() + prod.category.slice(1)}</div>
+                          <div style={{ fontSize: 11.5, color: "#999" }}>{CATEGORIES[prod.category]?.label}</div>
                         </div>
                         {isSel && <div style={{ width: 22, height: 22, borderRadius: "50%", background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><CheckIcon /></div>}
                       </div>
@@ -169,7 +170,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
                         <div key={sz.size} onClick={() => setSelectedSz(sz.size)} style={{ flex: 1, padding: "15px 10px", borderRadius: 10, border: `2px solid ${isSel ? "#1a1a1a" : "#e8e4de"}`, cursor: "pointer", textAlign: "center", background: isSel ? "#faf8f5" : "#fff", transition: "all 0.15s" }}>
                           <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", marginBottom: 4 }}>{sz.size}</div>
                           
-                          <div style={{ fontSize: 10.5, color: "#aaa" }}>Covers {sz.coverage}</div>
+                          <div style={{ fontSize: 10.5, color: "#aaa" }}>{sz.coverage || ""}</div>
                         </div>
                       );
                     })}

@@ -8,11 +8,10 @@ export const navData = [
     { type: "promo", items: [{ title: "INSPIRATION GALLERY", desc: "Amazing room makeover ideas", cta: "Get inspired", bg: "#e8d5c4" },{ title: "ADVICE AND TIPS", desc: "Preparation & colour advice", cta: "Get Advice", bg: "#d4e0c8" }]}
   ]},
   { label: "Paints", columns: [
-    { title: "Interior", links: ["Premium Matt Emulsion","Vinyl Silk Makula","Gloss Emulsion","Undercoat Emulsion","Standard Emulsion","Supermatt Emulsion"], footer: [{ label: "All interior paints" }] },
-    { title: "Exterior", links: ["Weathershield","Road Marking Paint","Acrylic Elastometric Coating","Standard Hi Gloss","Mastic Paint"], footer: [{ label: "All exterior paints" }] },
-    { title: "Specialist", links: ["Plaster Primer","Epoxy 2K Enamel","Cellulose Enamel","2K Acrylic Polyurethane","Acrylic Art Paint","Undercoat Putty","Venetian Stucco","NC Sanding Sealer","Pearl Coat","Sync Thinner"], footer: [{ label: "All specialist paints" }] },
-    { title: "By Finish", links: ["Matt","Silk","Gloss","Satin","Eggshell","Textured","Masonry"] },
-    { type: "promo", items: [{ title: "COLOUR COLLECTION", desc: "Over 2,000 shades", cta: "Discover", bg: "#c8d8e8" },{ title: "TOOLS & APPLICATION", desc: "Brushes, rollers & more", cta: "Shop", bg: "#e8dcc8" }]}
+    { title: "Decorative", links: ["Interior Paints","Exterior Paints","Primers"], footer: [{ label: "All decorative paints" }] },
+    { title: "Industrial", links: ["General Coatings","Waterproofing & Construction"], footer: [{ label: "All industrial coatings" }] },
+    { title: "Wood Care & Solvents", links: ["Wood Care Paints","Thinners & Solvents"] },
+    { type: "promo", items: [{ title: "COLOUR COLLECTION", desc: "Over 2,000 shades", cta: "Discover", bg: "#c8d8e8" }]}
   ]},
   { label: "Inspiration", columns: [
     { title: "By Colours", links: ["Whites","Creams","Neutrals","Pinks","Greens","Blues","Greys"], footer: [{ label: "Get inspired" }] },
@@ -31,7 +30,7 @@ export const navData = [
   ]},
   { label: "Professionals", columns: [
     { title: "Resources", links: ["Architects & Designers","Contractors & Decorators"] },
-    { title: "Products", links: ["Interior Paint","Exterior Paint","Specialist","Epoxy & Industrial"] },
+    { title: "Products", links: ["Decorative Paints","Industrial Coatings","Wood Care Paints","Thinners & Solvents"] },
     { title: "Colour", links: ["Find a Colour","Samples","Fandeck","Colour Services"] },
     { title: "Sectors", links: ["Office","Healthcare","Education","Housing","Hospitality","Infrastructure"] }
   ]},

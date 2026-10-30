@@ -1,3 +1,4 @@
+import { CATEGORY_PAGES } from "../data/products.js";
 import { B } from "../data/theme.js";
 import { storyPages } from "../data/storyPages.js";
 import { trendingColours, COLOUR_CATEGORIES, STYLE_CATEGORIES } from "../data/colours.js";
@@ -17,10 +18,8 @@ export default function PageSwitch() {
   const { pg, selectedProduct, selectedColour, setSelectedColour, selectedColourCategory, setSelectedColourCategory, selectedColourStyle, setSelectedColourStyle, handleColourClick, nav, openProduct, makeHref, productHref, colourHref, aReset, addToCart, addSamplePot, addSampleBundle, currentColourCatName, currentStyleName } = useApp();
   return (
     <>
-      {pg === "interior-paint" ? (
-        <PaintCategoryPage category="interior" title="Interior Paints" subtitle="Premium interior paints for every room — from smooth matts to washable silks and high-gloss finishes." onOpenProduct={openProduct} productHrefFn={productHref} homeHref={makeHref("home")} nav={nav} />
-      ) : pg === "exterior-paint" ? (
-        <PaintCategoryPage category="exterior" title="Exterior Paints" subtitle="Durable exterior coatings engineered for East Africa's climate — protecting and beautifying your building for years." onOpenProduct={openProduct} productHrefFn={productHref} homeHref={makeHref("home")} nav={nav} />
+      {CATEGORY_PAGES[pg] ? (
+        <PaintCategoryPage key={pg} slug={pg} onOpenProduct={openProduct} productHrefFn={productHref} homeHref={makeHref("home")} nav={nav} />
       ) : pg === "product" && selectedProduct ? (
         <ProductDetailPage product={selectedProduct} onBack={() => nav("home")} onAddToCart={addToCart} onOpenProduct={openProduct} />
       ) : pg === "bedroom-inspiration" ? (

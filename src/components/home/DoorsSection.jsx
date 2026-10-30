@@ -17,17 +17,17 @@ export default function DoorsSection() {
               </span>
             </button>
             <div className="doors-side">
-              <button className="doors-trade" onClick={() => nav("exterior-paint")}>
+              <button className="doors-trade" onClick={() => nav("industrial-coatings")}>
                 <span>
                   <strong>For site teams.</strong>
                   <span className="doors-trade-copy">Specify exterior, industrial, and trade finishes built for the job.</span>
                 </span>
-                <span className="doors-trade-go">Exterior paints <Arr /></span>
+                <span className="doors-trade-go">Industrial coatings <Arr /></span>
               </button>
               <button className="doors-tin" onClick={() => openProduct(weathershield)}>
-                <img src={IMG_WEATHER} alt="" />
+                <img src={weathershield.img || IMG_WEATHER} alt="" />
                 <span>
-                  <strong>Weathershield</strong>
+                  <strong>Weathershield Plus</strong>
                   <span>Grade 1 premium exterior matt for tropical weather.</span>
                 </span>
               </button>

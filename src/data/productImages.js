@@ -67,6 +67,11 @@ export const PRODUCT_IMAGES = {
     "bySize": {},
     "gallery": []
   },
+  "episive": {
+    "main": "/products/episive.jpeg",
+    "bySize": {},
+    "gallery": []
+  },
   "epoxy-2k-enamel": {
     "main": "/products/epoxy-2k-enamel.png",
     "bySize": {},

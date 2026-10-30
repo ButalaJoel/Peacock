@@ -19,7 +19,7 @@ export default function MobileMenu() {
             {navData[mobSub].columns.filter(c => c.type !== "promo").map((col, ci) => (<div key={ci} style={{ padding: "16px 20px", borderBottom: "1px solid #f0f0f0" }}>
               <h4 style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: B.coral, marginBottom: 12 }}>{col.title}</h4>
               {col.links && col.links.map((l, li) => {
-                const pageMap = {"Bedroom": "bedroom-inspiration", "Whites": "whites-colour", "Creams": "creams-colour", "Neutrals": "neutrals-colour", "Pinks": "pinks-colour", "Yellows": "yellows-colour", "Greens": "greens-colour", "Blues": "blues-colour", "Greys": "greys-colour", "Metallics": "metallics-colour"};
+                const pageMap = {"Bedroom": "bedroom-inspiration", "Whites": "whites-colour", "Creams": "creams-colour", "Neutrals": "neutrals-colour", "Pinks": "pinks-colour", "Yellows": "yellows-colour", "Greens": "greens-colour", "Blues": "blues-colour", "Greys": "greys-colour", "Metallics": "metallics-colour", "Interior Paints": "decorative-paints-interior", "Exterior Paints": "decorative-paints-exterior", "Primers": "decorative-paints-primers", "General Coatings": "industrial-coatings-general", "Waterproofing & Construction": "industrial-coatings-waterproofing", "Decorative Paints": "decorative-paints", "Industrial Coatings": "industrial-coatings", "Wood Care Paints": "wood-care-paints", "Thinners & Solvents": "thinners-solvents"};
                 const isFinishLink = col.title === "By Finish";
                 const isPageLink = !!pageMap[l];
                 const linkedProduct = PRODUCTS.find(p => p.name === l);
