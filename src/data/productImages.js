@@ -43,12 +43,8 @@ export const PRODUCT_IMAGES = {
   },
   "bituminous-emulsion": {
     "main": "/products/bituminous-emulsion.png",
-    "bySize": {
-      "12L": "/products/bituminous-emulsion.png"
-    },
-    "gallery": [
-      "/products/bituminous-emulsion--g1.png"
-    ]
+    "bySize": {},
+    "gallery": []
   },
   "bond-aid": {
     "main": "/products/bond-aid.png",

@@ -76,7 +76,8 @@ const RULES = [
   [k => k.startsWith("thermoplastic") || k.startsWith("rdenamel"), "rd-enamel", null, "img"],
   [k => k.startsWith("peacockundercoatoil"), "undercoat-oil", k => (/20l/.test(k) ? "20L" : null), "img"],
   [k => k.startsWith("concretesealer"), "concrete-sealer", null, "img"],
-  [k => k.startsWith("tarmul") || k.startsWith("bituminous"), "bituminous-emulsion", k => (/12l/.test(k) ? "12L" : /4l/.test(k) ? "4L" : null), "img"],
+  [k => k.startsWith("tarmul"), null, null, S],                 // Tarmul is not used: the Bituminous 4L bucket mockup is the one for now
+  [k => k.startsWith("bituminous"), "bituminous-emulsion", null, "img"],
   [k => k.startsWith("metalprimer"), "metal-primer", null, "img"],
   [k => k.startsWith("skimmex") || k.startsWith("skimex"), "skimmex", null, "img"],
   [k => k.startsWith("waterproofplaster") || k.startsWith("waterproofmockup"), "waterproof-plaster", null, "img"],
