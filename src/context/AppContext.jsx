@@ -26,6 +26,7 @@ export function AppProvider({ children }) {
   const [cart, setCart] = useState([]);
 
   const [cartOpen, setCartOpen] = useState(false);
+  const [quoteOpen, setQuoteOpen] = useState(false);
 
   const [selectedColour, setSelectedColour] = useState(null);
 
@@ -175,6 +176,8 @@ export function AppProvider({ children }) {
     setCart,
     cartOpen,
     setCartOpen,
+    quoteOpen,
+    setQuoteOpen,
     selectedColour,
     setSelectedColour,
     selectedColourCategory,

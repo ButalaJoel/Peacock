@@ -1,3 +1,4 @@
+import QuoteModal from "./QuoteModal.jsx";
 import AnnouncementBar from "./AnnouncementBar.jsx";
 import Header from "./Header.jsx";
 import SearchModal from "./SearchModal.jsx";
@@ -13,6 +14,7 @@ export default function AppShell() {
       <Header />
       <SearchModal />
       <CartDrawer />
+      <QuoteModal />
       <MobileMenu />
       <PageSwitch />
       <Footer />

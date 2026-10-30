@@ -4,7 +4,7 @@ import { CloseIcon } from "../icons/Icons.jsx";
 import { useApp } from "../../context/useApp.js";
 
 export default function CartDrawer() {
-  const { cart, cartOpen, setCartOpen, removeFromCart, cartCount } = useApp();
+  const { cart, cartOpen, setCartOpen, removeFromCart, cartCount, setQuoteOpen } = useApp();
   return (
     <>
       {cartOpen && (<>
@@ -51,7 +51,7 @@ export default function CartDrawer() {
                 <span style={{ fontSize: 20, fontWeight: 700, color: B.coral }}>{cartCount}</span>
               </div>
               <p style={{ fontSize: 13, color: "#777", marginBottom: 12, lineHeight: 1.5 }}>Submit your list and our sales team will send you a quotation.</p>
-              <button className="btn bp" style={{ width: "100%", justifyContent: "center", padding: "14px", fontSize: 15 }}>Request a Quote</button>
+              <button className="btn bp" onClick={() => { setCartOpen(false); setQuoteOpen(true); }} style={{ width: "100%", justifyContent: "center", padding: "14px", fontSize: 15 }}>Request a Quote</button>
             </div>
           </>)}
         </div>
