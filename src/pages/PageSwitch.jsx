@@ -1,3 +1,4 @@
+import EstimatorPage from "./EstimatorPage.jsx";
 import { CATEGORY_PAGES } from "../data/products.js";
 import { B } from "../data/theme.js";
 import { storyPages } from "../data/storyPages.js";
@@ -18,7 +19,9 @@ export default function PageSwitch() {
   const { pg, selectedProduct, selectedColour, setSelectedColour, selectedColourCategory, setSelectedColourCategory, selectedColourStyle, setSelectedColourStyle, handleColourClick, nav, openProduct, makeHref, productHref, colourHref, aReset, addToCart, addSamplePot, addSampleBundle, currentColourCatName, currentStyleName } = useApp();
   return (
     <>
-      {CATEGORY_PAGES[pg] ? (
+      {pg === "estimator" ? (
+        <EstimatorPage />
+      ) : CATEGORY_PAGES[pg] ? (
         <PaintCategoryPage key={pg} slug={pg} onOpenProduct={openProduct} productHrefFn={productHref} homeHref={makeHref("home")} nav={nav} />
       ) : pg === "product" && selectedProduct ? (
         <ProductDetailPage product={selectedProduct} onBack={() => nav("home")} onAddToCart={addToCart} onOpenProduct={openProduct} />

@@ -20,7 +20,7 @@ export const navData = [
     { type: "promo", items: [{ title: "GREEN HUES", desc: "Versatile greens", cta: "Browse", bg: "#c4d8c0" },{ title: "KITCHENS", desc: "Kitchen makeover ideas", cta: "Inspo", bg: "#2d4a3e", dark: true }]}
   ]},
   { label: "Advice", columns: [
-    { title: "Decorating Advice", links: ["How To Tips","Supplies & Primers","Colour Chart"] },
+    { title: "Decorating Advice", links: ["Paint Estimator","How To Tips","Supplies & Primers","Colour Chart"] },
     { title: "Product Data", links: ["Safety Data Sheets","Technical Data Sheets"] },
     { type: "promo", items: [{ title: "FAQs", desc: "Common questions answered", cta: "View", bg: "#e0d4c8" },{ title: "ASK AN EXPERT", desc: "Talk to our team", cta: "Help", bg: "#c8d0d8" }]}
   ]},
