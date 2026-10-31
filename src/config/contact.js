@@ -3,6 +3,6 @@
 // Leave it empty until the company WhatsApp Business number is confirmed: the WhatsApp button stays disabled until then.
 export const CONTACT = {
   companyName: "Peacock Paints Limited",
-  whatsappNumber: "",
+  whatsappNumber: "256700159368",
   salesEmail: "sales@peacock.co.ug",
 };
