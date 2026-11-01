@@ -1,13 +1,18 @@
-import { CATEGORIES } from "../data/products.js";
 import { useState, useRef } from "react";
-import { B } from "../data/theme.js";
-import { PRODUCTS } from "../data/products.js";
-import { trendingColours, COLOUR_CATEGORIES } from "../data/colours.js";
 import { CartIcon, Arr, ArrL, PaletteIcon, MinusIcon, PlusIcon, CheckIcon } from "../components/icons/Icons.jsx";
+import { B } from "../data/theme.js";
+import { PRODUCTS, CATEGORIES } from "../data/products.js";
+import { trendingColours, COLOUR_CATEGORIES } from "../data/colours.js";
+import { checklistFor } from "../data/checklists.js";
+
 
 const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
   const [selectedSize, setSelectedSize] = useState(0);
   const [qty, setQty] = useState(1);
+  const checklist = checklistFor(product);
+  const [tab, setTab] = useState(product.category === "industrial" && checklist ? "checklist" : "description");
+  const [checked, setChecked] = useState({});
+  const [activeImg, setActiveImg] = useState(null);
   const [addedAnim, setAddedAnim] = useState(false);
   const sz = product.sizes[selectedSize];
   
@@ -36,131 +41,191 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
     while (related.length < 3 && others.length) related.push(others.shift());
   }
 
+  const mainImg = activeImg || (product.imgBySize && product.imgBySize[sz.size]) || product.img;
+  const thumbs = Array.from(new Set([product.img].concat(Object.values(product.imgBySize || {}), product.gallery || []).filter(Boolean)));
+  const cat = CATEGORIES[product.category];
+  const subLabel = cat && product.subcategories.length ? (cat.subcategories.find(s => s.id === product.subcategories[0]) || {}).label : null;
+  const facts = [
+    { label: (product.mixing && product.mixing.label) || "Mix", value: product.mixing && product.mixing.value },
+    { label: "Application", value: product.application },
+    { label: "Coverage", value: product.coverage },
+    { label: "Drying time", value: product.dryTime },
+    { label: "Pack sizes", value: product.packSizes.join(", ") },
+    { label: "Colour systems", value: product.colourSystems.join(", ") },
+  ].filter(f => f.value);
+  const tabs = [{ id: "description", label: "Description" }]
+    .concat(checklist ? [{ id: "checklist", label: "Before you start" }] : [])
+    .concat([{ id: "sheet", label: "Product sheet" }]);
+  const ticked = checklist ? checklist.tickItems.filter(it => checked[it.label]).length : 0;
+  const colourChip = selectedColourName ? trendingColours.find(c => c.name === selectedColourName) : null;
+  const pillStyle = active => ({
+    padding: "7px 18px", borderRadius: 20, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+    border: "1.5px solid " + (active ? B.coral : "#ddd"), background: active ? B.coral + "12" : "#fff", color: active ? B.coral : "#333",
+  });
+
   return (
     <div>
       {/* Breadcrumb */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "16px 24px" }}>
-        <div style={{ display: "flex", gap: 8, fontSize: 13, color: "#999" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "14px 24px 6px" }}>
+        <div style={{ display: "flex", gap: 8, fontSize: 13, color: "#999", flexWrap: "wrap" }}>
           <span onClick={onBack} style={{ color: B.coral, cursor: "pointer" }}>Home</span>
-          <span>/</span><span>Paints</span><span>/</span>
-          <span>{CATEGORIES[product.category]?.label || product.category}</span><span>/</span>
+          <span>/</span><span>Products</span><span>/</span>
+          <span>{cat ? cat.label : product.category}</span><span>/</span>
           <span style={{ color: "#333" }}>{product.name}</span>
         </div>
       </div>
 
-      {/* Main Product Area */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "16px 24px 60px" }}>
-        <div className="g2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start" }}>
-          {/* Left: Image */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "10px 24px 60px" }}>
+        <div className="g2" style={{ display: "grid", gridTemplateColumns: "5fr 6fr", gap: 40, alignItems: "start" }}>
+
+          {/* Left: mockup and thumbnails */}
           <div>
-            <div style={{ background: B.off, borderRadius: 16, padding: "40px", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 480, position: "relative" }}>
-              {(product.imgBySize?.[sz.size] || product.img) && <img src={product.imgBySize?.[sz.size] || product.img} alt={product.name} style={{ maxHeight: 400, maxWidth: "85%", objectFit: "contain", filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.15))" }} />}
-              {product.tag && <span style={{ position: "absolute", top: 20, left: 20, background: product.tag === "Best Seller" ? B.coral : product.tag === "New" ? B.teal : product.tag === "Specialist" ? B.gold : "#5C2D6D", color: "#fff", fontSize: 12, fontWeight: 700, padding: "6px 16px", borderRadius: 24 }}>{product.tag}</span>}
-              {product.grade && <span style={{ position: "absolute", top: 20, right: 20, background: "#fff", border: `2px solid ${B.coral}`, color: B.coral, fontSize: 12, fontWeight: 700, padding: "5px 14px", borderRadius: 24 }}>Grade {product.grade}</span>}
+            <div style={{ background: "#fff", border: "1px solid #eee", borderRadius: 14, height: 380, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+              {mainImg
+                ? <img src={mainImg} alt={product.name} style={{ maxHeight: 340, maxWidth: "88%", objectFit: "contain" }} />
+                : <span style={{ fontSize: 13, color: "#bbb" }}>Image coming soon</span>}
+              {product.tag && <span style={{ position: "absolute", top: 14, left: 14, background: B.coral, color: "#fff", fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>{product.tag}</span>}
             </div>
-          </div>
-
-          {/* Right: Details */}
-          <div>
-            <p style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: 2, color: B.coral, fontWeight: 600, marginBottom: 8 }}>{CATEGORIES[product.category]?.label || product.category}</p>
-            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, marginBottom: 12, lineHeight: 1.2 }}>{product.name}</h1>
-            
-
-            <p style={{ fontSize: 15, lineHeight: 1.7, color: "#555", marginBottom: 28 }}>{product.desc}</p>
-
-            {/* Size Selection */}
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, color: "#333", display: "block", marginBottom: 12 }}>Select Size</label>
-              <div style={{ display: "flex", gap: 12 }}>
-                {product.sizes.map((s, i) => (
-                  <button key={i} onClick={() => { setSelectedSize(i); setQty(1); }} style={{
-                    flex: 1, padding: "16px 20px", borderRadius: 10, border: `2px solid ${selectedSize === i ? B.coral : "#e0e0e0"}`,
-                    background: selectedSize === i ? `${B.coral}08` : "#fff", cursor: "pointer", transition: "all 0.2s", textAlign: "left", position: "relative", fontFamily: "'Outfit', sans-serif"
-                  }}>
-                    {selectedSize === i && <div style={{ position: "absolute", top: 8, right: 8, width: 22, height: 22, borderRadius: "50%", background: B.coral, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}><CheckIcon /></div>}
-                    <div style={{ fontSize: 20, fontWeight: 700, color: selectedSize === i ? B.coral : "#333", marginBottom: 4 }}>{s.size}</div>
-                    
-                    
+            {thumbs.length > 1 && (
+              <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+                {thumbs.map(src => (
+                  <button key={src} onClick={() => setActiveImg(src)} aria-label="Show this picture"
+                    style={{ width: 64, height: 64, padding: 4, borderRadius: 10, background: "#fff", cursor: "pointer", border: "1.5px solid " + (mainImg === src ? B.coral : "#e5e5e5") }}>
+                    <img src={src} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                   </button>
                 ))}
               </div>
-            </div>
-
-            {/* Quantity */}
-            <div style={{ marginBottom: 28 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, color: "#333", display: "block", marginBottom: 12 }}>Quantity</label>
-              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                <div style={{ display: "flex", alignItems: "center", border: "2px solid #e0e0e0", borderRadius: 10, overflow: "hidden" }}>
-                  <button onClick={() => setQty(Math.max(1, qty - 1))} style={{ width: 48, height: 48, border: "none", background: qty <= 1 ? "#f5f5f5" : "#fff", cursor: qty <= 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: qty <= 1 ? "#ccc" : "#333" }}><MinusIcon /></button>
-                  <div style={{ width: 64, height: 48, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 600, borderLeft: "1px solid #e0e0e0", borderRight: "1px solid #e0e0e0" }}>{qty}</div>
-                  <button onClick={() => setQty(Math.min(50, qty + 1))} style={{ width: 48, height: 48, border: "none", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><PlusIcon /></button>
-                </div>
-                <div style={{ fontSize: 13, color: "#999" }}>{qty} × {sz.size}</div>
-              </div>
-            </div>
-
-            {/* Total & Add to Cart */}
-            <div style={{ background: B.off, borderRadius: 12, padding: "20px 24px", marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div>
-                <div style={{ fontSize: 13, color: "#999", marginBottom: 2 }}>Your selection</div>
-                <div style={{ fontSize: 22, fontWeight: 700, color: B.black }}>{qty} × {sz.size}</div>
-              </div>
-              
-            </div>
-
-            {/* Selected colour indicator */}
-            {selectedColourName && (() => {
-              const colData = trendingColours.find(c => c.name === selectedColourName);
-              return (
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", background: colData ? hexRgba(colData.color, 0.08) : B.off, borderRadius: 10, border: `1.5px solid ${colData ? hexRgba(colData.color, 0.3) : "#e0e0e0"}`, marginBottom: 12 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    {colData && <div style={{ width: 28, height: 28, borderRadius: "50%", background: colData.color, border: "2px solid #fff", boxShadow: "0 1px 4px rgba(0,0,0,0.15)", flexShrink: 0 }} />}
-                    <div>
-                      <div style={{ fontSize: 11, color: "#999", textTransform: "uppercase", letterSpacing: 1, marginBottom: 1 }}>Colour</div>
-                      <div style={{ fontSize: 14, fontWeight: 600 }}>{selectedColourName}</div>
-                    </div>
-                  </div>
-                  <button onClick={() => setSelectedColourName(null)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, color: "#999", padding: 4 }} title="Remove colour">×</button>
-                </div>
-              );
-            })()}
-
-            <button onClick={handleAdd} style={{
-              width: "100%", padding: "16px 32px", borderRadius: 10, border: "none", background: addedAnim ? B.teal : B.coral, color: "#fff",
-              fontSize: 16, fontWeight: 600, cursor: "pointer", transition: "all 0.3s", fontFamily: "'Outfit', sans-serif",
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 10, letterSpacing: 0.5, textTransform: "uppercase"
-            }}>
-              {addedAnim ? <><CheckIcon /> Added to Cart!</> : <><CartIcon /> Add to Cart</>}
-            </button>
-
-            {product.colourSystems.length > 0 && (
-            <button
-              onClick={() => colourSectionRef.current?.scrollIntoView({ behavior: "smooth" })}
-              style={{ marginTop: 12, width: "100%", padding: "14px 24px", borderRadius: 10, border: `2px solid ${B.coral}`, background: "transparent", color: B.coral, fontSize: 15, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, letterSpacing: 0.5, textTransform: "uppercase", fontFamily: "'Outfit', sans-serif", transition: "all 0.2s" }}
-              onMouseEnter={e => { e.currentTarget.style.background = B.coral; e.currentTarget.style.color = "#fff"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = B.coral; }}
-            >
-              <PaletteIcon /> {selectedColourName ? "Change Colour" : "Select Colour"}
-            </button>
             )}
+          </div>
 
-            {/* Specs */}
-            <div style={{ marginTop: 32, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-              {[
-                { label: (product.mixing && product.mixing.label) || "Mix", value: product.mixing && product.mixing.value },
-                { label: "Application", value: product.application },
-                { label: "Coverage", value: product.coverage },
-                { label: "Drying time", value: product.dryTime },
-                { label: "Pack sizes", value: product.packSizes.join(", ") },
-                { label: "Colour systems", value: product.colourSystems.join(", ") },
-              ].filter(spec => spec.value).map((spec, i) => (
-                <div key={i} style={{ padding: "12px 16px", background: B.off, borderRadius: 8 }}>
-                  <div style={{ fontSize: 11, color: "#999", textTransform: "uppercase", letterSpacing: 1, marginBottom: 2 }}>{spec.label}</div>
-                  <div style={{ fontSize: 14, fontWeight: 600 }}>{spec.value}</div>
-                </div>
+          {/* Right: details and buy box */}
+          <div>
+            <p style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: 2, color: B.coral, fontWeight: 600, marginBottom: 6 }}>
+              {cat ? cat.label : product.category}{subLabel ? " · " + subLabel : ""}
+            </p>
+            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, lineHeight: 1.2, marginBottom: 6 }}>{product.name}</h1>
+            {product.subtitle && <p style={{ fontSize: 13, color: "#888", marginBottom: 8 }}>{product.subtitle}</p>}
+            <p style={{ fontSize: 14.5, lineHeight: 1.6, color: "#555", marginBottom: 18 }}>{product.desc}</p>
+
+            <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "#333", marginBottom: 8 }}>Size</p>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+              {product.sizes.map((s, i) => (
+                <button key={s.size} className="pp-pill" style={pillStyle(selectedSize === i)} onClick={() => { setSelectedSize(i); setQty(1); setActiveImg(null); }}>{s.size}</button>
               ))}
             </div>
 
+            <div className="pp-actions" style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", marginBottom: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", border: "1.5px solid #ddd", borderRadius: 22, height: 42, flexShrink: 0 }}>
+                <button onClick={() => setQty(Math.max(1, qty - 1))} aria-label="Fewer" style={{ width: 36, height: 40, border: "none", background: "none", cursor: qty <= 1 ? "default" : "pointer", color: qty <= 1 ? "#ccc" : "#333", display: "flex", alignItems: "center", justifyContent: "center" }}><MinusIcon /></button>
+                <span style={{ minWidth: 26, textAlign: "center", fontSize: 15, fontWeight: 600 }}>{qty}</span>
+                <button onClick={() => setQty(Math.min(50, qty + 1))} aria-label="More" style={{ width: 36, height: 40, border: "none", background: "none", cursor: "pointer", color: "#333", display: "flex", alignItems: "center", justifyContent: "center" }}><PlusIcon /></button>
+              </div>
+              <button onClick={handleAdd} style={{ flex: "1 1 150px", height: 42, borderRadius: 22, border: "none", background: addedAnim ? B.teal : B.coral, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "background .3s" }}>
+                {addedAnim ? <><CheckIcon /> Added</> : <><CartIcon /> Add to cart</>}
+              </button>
+              {product.colourSystems.length > 0 && (
+                <button onClick={() => colourSectionRef.current && colourSectionRef.current.scrollIntoView({ behavior: "smooth" })} className="pp-pill"
+                  style={{ height: 42, borderRadius: 22, border: "1.5px solid " + B.coral, background: "#fff", color: B.coral, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 18px", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" }}>
+                  <PaletteIcon /> {selectedColourName ? "Change colour" : "Select colour"}
+                </button>
+              )}
+            </div>
+
+            {colourChip && (
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 12px 5px 6px", border: "1px solid #e5e5e5", borderRadius: 20, fontSize: 13, marginBottom: 14 }}>
+                <span style={{ width: 20, height: 20, borderRadius: "50%", background: colourChip.color, border: "1px solid rgba(0,0,0,.12)" }} />
+                {selectedColourName}
+                <button onClick={() => setSelectedColourName(null)} aria-label="Remove colour" style={{ background: "none", border: "none", cursor: "pointer", color: "#999", fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
+              </div>
+            )}
+
+            {facts.length > 0 && (
+              <div className="pp-facts" style={{ marginTop: 8 }}>
+                {facts.map(f => (
+                  <div key={f.label} style={{ background: "#faf8f5", borderRadius: 10, padding: "10px 12px" }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#222", marginBottom: 3 }}>{f.label}</div>
+                    <div style={{ fontSize: 13, color: "#555", lineHeight: 1.45 }}>{f.value}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div style={{ marginTop: 28, background: "#fff", border: "1px solid #eee", borderRadius: 14 }}>
+          <div style={{ display: "flex", gap: 22, padding: "0 22px", borderBottom: "1px solid #eee", overflowX: "auto" }}>
+            {tabs.map(t => (
+              <button key={t.id} onClick={() => setTab(t.id)}
+                style={{ background: "none", border: "none", borderBottom: "3px solid " + (tab === t.id ? B.coral : "transparent"), padding: "14px 0 11px", fontSize: 14, fontWeight: tab === t.id ? 700 : 500, color: tab === t.id ? "#111" : "#777", cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap" }}>
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ padding: "20px 22px 24px" }}>
+            {tab === "description" && (
+              <div>{product.longDesc.split("\n\n").map((p, i) => (<p key={i} style={{ fontSize: 14.5, lineHeight: 1.8, color: "#555", marginBottom: 12, maxWidth: 820 }}>{p}</p>))}</div>
+            )}
+
+            {tab === "checklist" && checklist && (
+              <div>
+                <p style={{ fontSize: 14, color: "#555", marginBottom: 14, lineHeight: 1.6 }}>{checklist.intro}</p>
+                {checklist.damp && (
+                  <p style={{ fontSize: 13.5, color: "#7a4a10", background: "#fff6e5", borderRadius: 8, padding: "10px 14px", marginBottom: 16, lineHeight: 1.6 }}>
+                    Coatings such as epoxy are sensitive to dampness and to the condition of the surface. Check both before you start.
+                  </p>
+                )}
+                {checklist.steps && (
+                  <ol style={{ margin: "0 0 18px 18px", fontSize: 14, color: "#555", lineHeight: 1.7 }}>
+                    {checklist.steps.map(s => <li key={s.label}><strong>{s.label}</strong> - {s.text}</li>)}
+                  </ol>
+                )}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px 32px" }}>
+                  {checklist.tickItems.map(it => (
+                    <label key={it.label} style={{ display: "flex", gap: 10, alignItems: "flex-start", cursor: "pointer", fontSize: 14, lineHeight: 1.55, color: "#444" }}>
+                      <input type="checkbox" checked={!!checked[it.label]} onChange={() => setChecked(c => ({ ...c, [it.label]: !c[it.label] }))} style={{ marginTop: 4, accentColor: B.coral }} />
+                      <span><strong>{it.label}</strong>{it.text ? " - " + it.text : ""}</span>
+                    </label>
+                  ))}
+                </div>
+                <p style={{ fontSize: 13, color: ticked === checklist.tickItems.length ? B.tealDk : "#888", marginTop: 14, fontWeight: 600 }}>
+                  {ticked} of {checklist.tickItems.length} done
+                </p>
+
+                {checklist.tips && (
+                  <div style={{ marginTop: 18 }}>
+                    {checklist.tips.map(t => <p key={t.label} style={{ fontSize: 14, color: "#555", lineHeight: 1.7 }}><strong>{t.label}:</strong> {t.text}</p>)}
+                  </div>
+                )}
+
+                {checklist.primers && (
+                  <div style={{ marginTop: 22 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "#333", marginBottom: 10 }}>Choose the right primer</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "8px 32px" }}>
+                      {checklist.primers.map(p => (
+                        <div key={p.surface} style={{ fontSize: 13.5, color: "#555", lineHeight: 1.55 }}><strong style={{ color: "#222" }}>{p.surface}:</strong> {p.primer}</div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <p style={{ fontSize: 12, color: "#999", marginTop: 20, lineHeight: 1.6 }}>Source: {checklist.source}. If your surface is not covered here, ask our team before you buy.</p>
+              </div>
+            )}
+
+            {tab === "sheet" && (
+              <div>
+                {product.sheet ? (
+                  <>
+                    <p style={{ fontSize: 14, color: "#555", marginBottom: 16, lineHeight: 1.7 }}>The product sheet is the page for this product from the Peacock Paints catalogue.</p>
+                    <a href={product.sheet} download style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 24px", border: "2px solid " + B.coral, borderRadius: 24, color: B.coral, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>Download product sheet (PDF)</a>
+                  </>
+                ) : (
+                  <p style={{ fontSize: 14, color: "#555", lineHeight: 1.7 }}>There is no product sheet for this product yet. Ask our sales team and we will send it to you.</p>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -283,18 +348,6 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
           })()}
         </div>
 
-        )}
-
-        {/* Full Description */}
-        <div style={{ marginTop: 60, paddingTop: 40, borderTop: "1px solid #e8e4de" }}>
-          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 24 }}>Product Description</h2>
-          {product.longDesc.split("\n\n").map((p, i) => (<p key={i} style={{ fontSize: 15, lineHeight: 1.85, color: "#555", marginBottom: 16, maxWidth: 800 }}>{p}</p>))}
-        </div>
-
-        {product.sheet && (
-          <div style={{ marginTop: 40 }}>
-            <a href={product.sheet} download style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 24px", border: "2px solid " + B.coral, borderRadius: 10, color: B.coral, fontWeight: 600, fontSize: 14, textDecoration: "none", textTransform: "uppercase", letterSpacing: 0.5 }}>Download product sheet (PDF)</a>
-          </div>
         )}
 
         {/* Related Products */}

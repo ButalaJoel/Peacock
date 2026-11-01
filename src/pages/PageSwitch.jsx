@@ -24,7 +24,7 @@ export default function PageSwitch() {
       ) : CATEGORY_PAGES[pg] ? (
         <PaintCategoryPage key={pg} slug={pg} onOpenProduct={openProduct} productHrefFn={productHref} homeHref={makeHref("home")} nav={nav} />
       ) : pg === "product" && selectedProduct ? (
-        <ProductDetailPage product={selectedProduct} onBack={() => nav("home")} onAddToCart={addToCart} onOpenProduct={openProduct} />
+        <ProductDetailPage key={selectedProduct.id} product={selectedProduct} onBack={() => nav("home")} onAddToCart={addToCart} onOpenProduct={openProduct} />
       ) : pg === "bedroom-inspiration" ? (
         <><div style={{ maxWidth: 1280, margin: "0 auto", padding: "16px 24px" }}><a href={makeHref("home")} onClick={e => { e.preventDefault(); nav("home"); }} style={{ ...aReset, fontSize: 13, color: B.coral, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontWeight: 500 }}><ArrL /> Home</a></div>
         <RoomInspirationPage roomName="Bedroom" inspirations={BEDROOM_INSPIRATIONS} onBack={() => nav("home")} nav={nav} onAddSample={addSamplePot} onAddSampleBundle={addSampleBundle} /></>
