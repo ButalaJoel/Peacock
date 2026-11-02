@@ -1,0 +1,25 @@
+HOW TO ADD A NEWS ITEM BY HAND (until the dashboard exists)
+
+1. Put your files in the project folder  public/news/
+     cover image  -> public/news/oct-award-cover.jpg     (JPG or PNG exported from Canva or Illustrator)
+     PDF          -> public/news/oct-newsletter.pdf      (compress big PDFs first)
+     gallery      -> public/news/oct-award-1.jpg, oct-award-2.jpg ...
+   Use lowercase names with no spaces.
+
+2. Open  src/data/updates.js  and add an item to the UPDATES list:
+   {
+     id: "oct-award", cat: "Company", date: "2026-10-30",
+     title: "Peacock Paints wins an award",
+     summary: "One or two lines for the card.",
+     body: ["Paragraph one.", "Paragraph two."],
+     image: "/news/oct-award-cover.jpg",
+     imageAlt: "Short description of the photo",
+     pdf: "/news/oct-newsletter.pdf",
+     gallery: [{ src: "/news/oct-award-1.jpg", alt: "Receiving the award" }, { src: "/news/oct-award-2.jpg", alt: "The team" }],
+     cta: "Contact us", page: "contact",     // optional link button
+     tone: "#5C2D6D",                        // colour of the label
+   },
+   image, pdf, gallery, cta and page are all optional. cat must be one of:
+   Product news, Colour tips, Company, Newsletter.
+
+3. Save, check in the browser, then commit and push. Remove the sample items you do not want.

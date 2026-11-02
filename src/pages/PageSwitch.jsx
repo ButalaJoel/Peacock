@@ -1,3 +1,7 @@
+import ProjectsPage from "./ProjectsPage.jsx";
+import AllColoursPage from "./AllColoursPage.jsx";
+import NewsPage from "./NewsPage.jsx";
+import ColourPickerPage from "./ColourPickerPage.jsx";
 import ContactPage from "./ContactPage.jsx";
 import DistributorPage from "./DistributorPage.jsx";
 import ProfessionalsPage from "./ProfessionalsPage.jsx";
@@ -31,6 +35,14 @@ export default function PageSwitch() {
         <DistributorPage />
       ) : pg === "professionals" ? (
         <ProfessionalsPage />
+      ) : pg === "projects" ? (
+        <ProjectsPage />
+      ) : pg === "news" ? (
+        <NewsPage />
+      ) : pg === "all-colours" ? (
+        <AllColoursPage />
+      ) : pg === "colour-picker" ? (
+        <ColourPickerPage />
       ) : pg === "colour-systems" ? (
         <ColourSystemsPage />
       ) : CATEGORY_PAGES[pg] ? (

@@ -1,0 +1,23 @@
+HOW TO ADD A PROJECT BY HAND (until the dashboard exists)
+
+Only add a project when the client has agreed to it being shown.
+
+1. Put photos in  public/projects/   (lowercase names, no spaces), for example
+     public/projects/kololo-villa-cover.jpg
+     public/projects/kololo-villa-1.jpg
+
+2. Open  src/data/projects.js  and add an item to the PROJECTS list (delete the two sample items when you have real ones):
+   {
+     id: "kololo-villa",
+     name: "Kololo Villa",
+     location: "Kololo, Kampala", type: "Residential", year: "2026",
+     summary: "Interior and exterior repaint of a family home.",
+     body: ["What was done.", "Which colours were chosen and why."],
+     image: "/projects/kololo-villa-cover.jpg", imageAlt: "Front of the villa",
+     gallery: [{ src: "/projects/kololo-villa-1.jpg", alt: "Living room" }],
+     products: ["vinyl-silk-makula", "weathershield-plus"],   // product ids from the catalogue (optional)
+     client: "Name (optional)",
+   },
+   type must be one of: Residential, Commercial, Industrial, Public & institutional.
+
+3. Save, check in the browser, then commit and push.

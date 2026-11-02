@@ -1,3 +1,4 @@
+import PaintAdvisor from "../advisor/PaintAdvisor.jsx";
 import QuoteModal from "./QuoteModal.jsx";
 import AnnouncementBar from "./AnnouncementBar.jsx";
 import Header from "./Header.jsx";
@@ -18,6 +19,7 @@ export default function AppShell() {
       <MobileMenu />
       <PageSwitch />
       <Footer />
+      <PaintAdvisor />
     </div>
   );
 }

@@ -46,11 +46,11 @@ export const NAV = [
     id: "colours", label: "Colours",
     groups: [
       { title: "By colour", type: "families", footer: { label: "Shop all colours", page: "all-colours" } },
-      { title: "Colour systems", links: [{ label: "Our colour systems", page: "colour-systems" }] },
+      { title: "Colour tools", links: [{ label: "Find a colour from a photo", page: "colour-picker" }, { label: "Our colour systems", page: "colour-systems" }] },
     ],
     cards: [
       { title: "ALL COLOURS", desc: "Browse the Peacock colour guide", cta: "Shop colours", page: "all-colours", bg: "#e8d5c4" },
-      { title: "COLOUR SYSTEMS", desc: "Peacock, NCS, BS 4800, NOVA and RAL", cta: "Learn more", page: "colour-systems", bg: "#d4e0c8" },
+      { title: "COLOUR PICKER", desc: "Upload a photo and find the closest colour", cta: "Try it", page: "colour-picker", bg: "#d4e0c8" },
     ],
   },
   {
@@ -64,6 +64,7 @@ export const NAV = [
         { label: "Bathroom", page: "bathroom-inspiration" },
       ] },
       { title: "By style", links: ["Contemporary", "Modern", "Boho", "Farmhouse", "Scandi", "Eclectic"].map(label => ({ label })) },
+      { title: "Real projects", links: [{ label: "Our Projects", page: "projects" }] },
     ],
     cards: [
       { title: "GREEN HUES", desc: "Versatile greens", cta: "Browse", page: "greens-colour", bg: "#c4d8c0" },
@@ -75,6 +76,7 @@ export const NAV = [
     groups: [
       { title: "Help and advice", links: [
         { label: "Paint Estimator", page: "estimator" },
+        { label: "News & Updates", page: "news" },
         { label: "Ask an expert", page: "contact" },
         { label: "Request a quote", action: "quote" },
       ] },
@@ -88,6 +90,7 @@ export const NAV = [
     groups: [
       { title: "For professionals", links: [
         { label: "Professionals overview", page: "professionals" },
+        { label: "Our Projects", page: "projects" },
         { label: "Become a Distributor", page: "distributor" },
         { label: "Colour systems", page: "colour-systems" },
         { label: "Request a quote", action: "quote" },
@@ -122,9 +125,9 @@ export function familyLinks() {
 export function menuForPage(pg) {
   if (["about", "vision", "why-peacock", "contact"].includes(pg)) return "story";
   if (pg === "product" || pg.startsWith("decorative-paints") || pg.startsWith("industrial-coatings") || pg === "wood-care-paints" || pg === "thinners-solvents") return "products";
-  if (pg === "all-colours" || pg === "colour-detail" || pg === "colour-systems" || pg.endsWith("-colour")) return "colours";
+  if (pg === "all-colours" || pg === "colour-detail" || pg === "colour-picker" || pg === "colour-systems" || pg.endsWith("-colour")) return "colours";
   if (pg.endsWith("-inspiration") || pg.endsWith("-style")) return "inspiration";
-  if (pg === "estimator") return "advice";
-  if (pg === "professionals" || pg === "distributor") return "professionals";
+  if (pg === "estimator" || pg === "news") return "advice";
+  if (pg === "professionals" || pg === "distributor" || pg === "projects") return "professionals";
   return null;
 }

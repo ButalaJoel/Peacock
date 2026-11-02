@@ -136,3 +136,8 @@
 .pill-card { display: block; border-radius: 16px; padding: 18px 20px; text-decoration: none; cursor: pointer; transition: transform .25s; }
 .pill-card:hover { transform: translateY(-2px); }
 @media (max-width: 768px) { .pill-header { top: 8px; margin-top: 8px; padding: 0 10px; } .pill-bar { height: 56px; padding: 0 8px 0 16px; } .pill-logo img { height: 38px; } }
+
+/* Colour grid: 4 columns on wide screens, 2 on smaller ones (the page is never more than 4 rows) */
+.colour-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 1024px) { .colour-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .colour-grid { gap: 12px; } }
