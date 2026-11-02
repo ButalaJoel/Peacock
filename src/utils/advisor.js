@@ -2,7 +2,6 @@
 // No AI model and no invented facts: it matches words in the question to catalogue text and quotes the catalogue.
 // It never gives prices, health or safety advice, or promises about delivery. Those go to the team.
 
-const has = (text, re) => re.test(text);
 const norm = s => String(s || "").toLowerCase().replace(/[^a-z0-9+ ]+/g, " ").replace(/\s+/g, " ").trim();
 const GENERIC = new Set(["paint", "paints", "coating", "coatings", "the", "and", "for", "with", "a", "of", "plus", "premium", "standard", "super", "emulsion", "enamel", "primer", "sealer", "varnish", "thinner", "gloss", "matt"]);
 

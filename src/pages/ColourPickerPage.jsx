@@ -66,7 +66,7 @@ export default function ColourPickerPage() {
       lc.strokeRect(LOUPE / 2 - ZOOM - 1, LOUPE / 2 - ZOOM - 1, ZOOM * 2 + 2, ZOOM * 2 + 2);
     }
     const box = boxRef.current.getBoundingClientRect();
-    return { rgb, left: e.clientX - box.left, top: e.clientY - box.top };
+    return { rgb, left: e.clientX - box.left, top: e.clientY - box.top, width: box.width };
   };
 
   const onMove = e => {
@@ -87,7 +87,7 @@ export default function ColourPickerPage() {
   const save = () => { if (hex && !saved.includes(hex)) setSaved(list => list.concat([hex]).slice(-6)); };
 
   const card = { background: "#fff", border: "1px solid #eee", borderRadius: 14, padding: 24 };
-  const loupeLeft = hover ? Math.min(Math.max(hover.left + 18, 0), (boxRef.current ? boxRef.current.clientWidth : 700) - LOUPE) : 0;
+  const loupeLeft = hover ? Math.min(Math.max(hover.left + 18, 0), hover.width - LOUPE) : 0;
   const loupeTop = hover ? Math.max(hover.top - LOUPE - 18, 0) : 0;
 
   return (
