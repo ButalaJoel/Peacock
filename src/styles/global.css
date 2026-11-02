@@ -105,3 +105,34 @@
 @media (max-width: 768px) {
   .pp-actions { position: sticky; bottom: 0; z-index: 30; background: #fff; padding: 12px 0; box-shadow: 0 -6px 18px rgba(0,0,0,.08); }
 }
+
+/* Floating pill navigation */
+.ann-link { color: inherit; text-decoration: none; opacity: .88; transition: opacity .2s; }
+.ann-link:hover { opacity: 1; text-decoration: underline; }
+.pill-header { position: sticky; top: 12px; z-index: 200; padding: 0 16px; margin-top: 12px; }
+.pill-bar { max-width: 1240px; margin: 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 12px 0 20px; border-radius: 40px; background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(16px) saturate(170%); backdrop-filter: blur(16px) saturate(170%); border: 1px solid rgba(255,255,255,.7); box-shadow: 0 8px 30px rgba(20,20,20,.10); transition: background .25s, box-shadow .25s; }
+.pill-bar.pill-scrolled { background: rgba(255,255,255,.88); box-shadow: 0 10px 34px rgba(20,20,20,.16); }
+.pill-logo img { height: 44px; display: block; }
+.pill-nav { display: flex; gap: 2px; align-items: center; }
+.pill-item { display: inline-flex; align-items: center; gap: 5px; padding: 9px 15px; border: none; background: transparent; border-radius: 24px; font: 500 13.5px 'Outfit', sans-serif; letter-spacing: .4px; text-transform: uppercase; color: #1a1a1a; cursor: pointer; transition: background .2s, color .2s; }
+.pill-item:hover, .pill-item.is-open { background: rgba(232,96,60,.13); color: #C84A2A; }
+.pill-item.is-current { background: #E8603C; color: #fff; }
+.pill-item.is-current.is-open { background: #C84A2A; color: #fff; }
+.pill-actions { display: flex; align-items: center; gap: 6px; }
+.pill-icon { position: relative; width: 40px; height: 40px; border-radius: 50%; border: none; background: transparent; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; color: #1a1a1a; transition: background .2s; }
+.pill-icon:hover { background: rgba(0,0,0,.06); }
+.pill-badge { position: absolute; top: 1px; right: -1px; min-width: 18px; height: 18px; padding: 0 4px; border-radius: 9px; background: #E8603C; color: #fff; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+.pill-cta { margin-left: 4px; padding: 11px 22px; border: none; border-radius: 24px; background: #1a1a1a; color: #fff; font: 600 13px 'Outfit', sans-serif; letter-spacing: .4px; text-transform: uppercase; cursor: pointer; transition: background .2s; }
+.pill-cta:hover { background: #E8603C; }
+.pill-mega { position: absolute; left: 16px; right: 16px; top: calc(100% + 8px); max-width: 1240px; margin: 0 auto; border-radius: 28px; background: rgba(255,255,255,.94); -webkit-backdrop-filter: blur(18px) saturate(170%); backdrop-filter: blur(18px) saturate(170%); border: 1px solid rgba(255,255,255,.8); box-shadow: 0 20px 50px rgba(20,20,20,.16); animation: msd .25s ease; }
+.pill-mega-inner { display: grid; gap: 32px; padding: 28px 32px; }
+.pill-group-title { font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #E8603C; margin-bottom: 12px; }
+.pill-link { display: flex; align-items: center; gap: 10px; padding: 7px 8px; margin: 0 -8px; border-radius: 10px; font-size: 14px; color: #444; cursor: pointer; text-decoration: none; transition: background .15s, color .15s; }
+.pill-link:hover { background: #f3f1ee; color: #E8603C; }
+.pill-footer-link { font-weight: 600; color: #E8603C; }
+.pill-fam { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; }
+.pill-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(0,0,0,.09); flex-shrink: 0; display: inline-block; }
+.pill-cards { display: flex; flex-direction: column; gap: 12px; }
+.pill-card { display: block; border-radius: 16px; padding: 18px 20px; text-decoration: none; cursor: pointer; transition: transform .25s; }
+.pill-card:hover { transform: translateY(-2px); }
+@media (max-width: 768px) { .pill-header { top: 8px; margin-top: 8px; padding: 0 10px; } .pill-bar { height: 56px; padding: 0 8px 0 16px; } .pill-logo img { height: 38px; } }

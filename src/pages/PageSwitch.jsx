@@ -1,3 +1,7 @@
+import ContactPage from "./ContactPage.jsx";
+import DistributorPage from "./DistributorPage.jsx";
+import ProfessionalsPage from "./ProfessionalsPage.jsx";
+import ColourSystemsPage from "./ColourSystemsPage.jsx";
 import EstimatorPage from "./EstimatorPage.jsx";
 import { CATEGORY_PAGES } from "../data/products.js";
 import { B } from "../data/theme.js";
@@ -21,6 +25,14 @@ export default function PageSwitch() {
     <>
       {pg === "estimator" ? (
         <EstimatorPage />
+      ) : pg === "contact" ? (
+        <ContactPage />
+      ) : pg === "distributor" ? (
+        <DistributorPage />
+      ) : pg === "professionals" ? (
+        <ProfessionalsPage />
+      ) : pg === "colour-systems" ? (
+        <ColourSystemsPage />
       ) : CATEGORY_PAGES[pg] ? (
         <PaintCategoryPage key={pg} slug={pg} onOpenProduct={openProduct} productHrefFn={productHref} homeHref={makeHref("home")} nav={nav} />
       ) : pg === "product" && selectedProduct ? (

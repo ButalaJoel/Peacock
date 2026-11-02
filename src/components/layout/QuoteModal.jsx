@@ -12,7 +12,7 @@ const makeReference = () => {
 };
 
 export default function QuoteModal() {
-  const { quoteOpen, setQuoteOpen, cart, setCart } = useApp();
+  const { quoteOpen, setQuoteOpen, cart, setCart, nav } = useApp();
   const [form, setForm] = useState({ name: "", phone: "", email: "", location: "", notes: "" });
   const [reference, setReference] = useState(makeReference);
   const [touched, setTouched] = useState(false);
@@ -72,7 +72,13 @@ export default function QuoteModal() {
         <p style={{ fontSize: 13, color: "#777", marginBottom: 18 }}>Reference <strong>{reference}</strong>. Our sales team will reply with a quotation.</p>
 
         {cart.length === 0 ? (
-          <p style={{ fontSize: 14, color: "#777", padding: "20px 0" }}>Your list is empty. Add products to your cart first, then request a quote.</p>
+          <div style={{ padding: "12px 0 8px" }}>
+            <p style={{ fontSize: 14, color: "#555", lineHeight: 1.6, marginBottom: 16 }}>Your list is empty. Choose your products first, or work out how much you need, then request your quote.</p>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              <button className="btn bp" onClick={() => { setQuoteOpen(false); nav("decorative-paints"); }}>Browse products</button>
+              <button className="btn bd" onClick={() => { setQuoteOpen(false); nav("estimator"); }}>Paint estimator</button>
+            </div>
+          </div>
         ) : (
           <>
             <div style={{ background: "#faf8f5", borderRadius: 8, padding: "12px 16px", marginBottom: 20, maxHeight: 150, overflowY: "auto" }}>

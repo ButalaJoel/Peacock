@@ -5,4 +5,7 @@ export const CONTACT = {
   companyName: "Peacock Paints Limited",
   whatsappNumber: "256700159368",
   salesEmail: "sales@peacock.co.ug",
+  website: "www.peacock.co.ug",
+  address: "Plot 56, Sixth Street, Industrial Area, P.O Box 9549, Kampala, Uganda",
+  phones: ["+256-414-231721", "+256-700-159368"],
 };

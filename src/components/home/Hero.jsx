@@ -105,7 +105,7 @@ export default function Hero() {
                 <button className="paint-hero-action secondary" onClick={exploreHero}>{currentHero.cta2} <Arr /></button>
               </div>
               <div className="paint-hero-proof" aria-label="Peacock Paints highlights">
-                <div><strong>1962</strong><span>The Painters' Paint</span></div>
+                <div><strong>1988</strong><span>Made in Uganda</span></div>
                 <div><strong>{trendingColours.length}</strong><span>colour shades</span></div>
                 <div><strong>5</strong><span>sample pots bundle</span></div>
               </div>

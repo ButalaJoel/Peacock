@@ -1,37 +1,130 @@
-import { B } from "./theme.js";
+// Navigation: every link points to a page that exists.
+// link = { label, page }          opens a page
+//        { label, action: "quote" }  opens the quote form
+// Colour family links ("Whites", "Blues"...) and style links ("Modern"...) find their page from the colour data.
+import { COLOUR_CATEGORIES, STYLE_CATEGORIES, CAT_SWATCH_COLORS } from "./colours.js";
 
-export const navData = [
-  { label: "Colours", columns: [
-    { title: "By Colours", links: ["Whites","Creams","Neutrals","Pinks","Yellows","Greens","Blues","Greys","Metallics"], footer: [{ label: "Shop all colours" }] },
-    { title: "By Room", links: ["Bedroom","Living Room","Dining Room","Kitchen","Bathroom","Outdoor"] },
-    { title: "By Style", links: ["Contemporary","Modern","Boho","Farmhouse","Scandi","Eclectic"] },
-    { type: "promo", items: [{ title: "INSPIRATION GALLERY", desc: "Amazing room makeover ideas", cta: "Get inspired", bg: "#e8d5c4" },{ title: "ADVICE AND TIPS", desc: "Preparation & colour advice", cta: "Get Advice", bg: "#d4e0c8" }]}
-  ]},
-  { label: "Paints", columns: [
-    { title: "Decorative", links: ["Interior Paints","Exterior Paints","Primers"], footer: [{ label: "All decorative paints" }] },
-    { title: "Industrial", links: ["General Coatings","Waterproofing & Construction"], footer: [{ label: "All industrial coatings" }] },
-    { title: "Wood Care & Solvents", links: ["Wood Care Paints","Thinners & Solvents"] },
-    { type: "promo", items: [{ title: "COLOUR COLLECTION", desc: "Over 2,000 shades", cta: "Discover", bg: "#c8d8e8" }]}
-  ]},
-  { label: "Inspiration", columns: [
-    { title: "By Colours", links: ["Whites","Creams","Neutrals","Pinks","Greens","Blues","Greys"], footer: [{ label: "Get inspired" }] },
-    { title: "By Room", links: ["Bedroom","Living Room","Dining Room","Kitchen","Bathroom"] },
-    { title: "By Style", links: ["Contemporary","Modern","Boho","Farmhouse","Scandi","Eclectic"] },
-    { type: "promo", items: [{ title: "GREEN HUES", desc: "Versatile greens", cta: "Browse", bg: "#c4d8c0" },{ title: "KITCHENS", desc: "Kitchen makeover ideas", cta: "Inspo", bg: "#2d4a3e", dark: true }]}
-  ]},
-  { label: "Advice", columns: [
-    { title: "Decorating Advice", links: ["Paint Estimator","How To Tips","Supplies & Primers","Colour Chart"] },
-    { title: "Product Data", links: ["Safety Data Sheets","Technical Data Sheets"] },
-    { type: "promo", items: [{ title: "FAQs", desc: "Common questions answered", cta: "View", bg: "#e0d4c8" },{ title: "ASK AN EXPERT", desc: "Talk to our team", cta: "Help", bg: "#c8d0d8" }]}
-  ]},
-  { label: "Our Story", columns: [
-    { type: "promo", items: [{ title: "ABOUT US", desc: "Since 1962", cta: "Learn more", bg: B.coral, dark: true, page: "about" },{ title: "SUSTAINABILITY", desc: "Net Zero 2050", cta: "Read more", bg: B.teal, dark: true, page: "sustainability" }]},
-    { type: "promo", items: [{ title: "COMMUNITY", desc: "Colour for all", cta: "Discover", bg: B.gold, page: "community" },{ title: "FOUNDATION", desc: "Brighter futures", cta: "Read", bg: "#5C2D6D", dark: true, page: "foundation" }]}
-  ]},
-  { label: "Professionals", columns: [
-    { title: "Resources", links: ["Architects & Designers","Contractors & Decorators"] },
-    { title: "Products", links: ["Decorative Paints","Industrial Coatings","Wood Care Paints","Thinners & Solvents"] },
-    { title: "Colour", links: ["Find a Colour","Samples","Fandeck","Colour Services"] },
-    { title: "Sectors", links: ["Office","Healthcare","Education","Housing","Hospitality","Infrastructure"] }
-  ]},
+export const NAV = [
+  {
+    id: "story", label: "Our Story",
+    groups: [
+      { title: "Company", links: [
+        { label: "About Us", page: "about" },
+        { label: "Vision, Mission and Values", page: "vision" },
+        { label: "Why Peacock Paints", page: "why-peacock" },
+        { label: "Contact Us", page: "contact" },
+      ] },
+    ],
+    cards: [
+      { title: "ABOUT US", desc: "Proudly made in Uganda since 1988", cta: "Learn more", page: "about", bg: "#E8603C", dark: true },
+      { title: "WHY PEACOCK PAINTS", desc: "Protect. Preserve. Prolong.", cta: "Read more", page: "why-peacock", bg: "#2BB5A0", dark: true },
+    ],
+  },
+  {
+    id: "products", label: "Products",
+    groups: [
+      { title: "Decorative", links: [
+        { label: "Interior Paints", page: "decorative-paints-interior" },
+        { label: "Exterior Paints", page: "decorative-paints-exterior" },
+        { label: "Primers", page: "decorative-paints-primers" },
+      ], footer: { label: "All decorative paints", page: "decorative-paints" } },
+      { title: "Industrial", links: [
+        { label: "General Coatings", page: "industrial-coatings-general" },
+        { label: "Waterproofing & Construction", page: "industrial-coatings-waterproofing" },
+      ], footer: { label: "All industrial coatings", page: "industrial-coatings" } },
+      { title: "Wood care and solvents", links: [
+        { label: "Wood Care Paints", page: "wood-care-paints" },
+        { label: "Thinners & Solvents", page: "thinners-solvents" },
+      ] },
+    ],
+    cards: [
+      { title: "PAINT ESTIMATOR", desc: "Work out how much you need", cta: "Try it", page: "estimator", bg: "#c8d8e8" },
+      { title: "REQUEST A QUOTE", desc: "Tell us what you need", cta: "Get a quote", action: "quote", bg: "#e8dcc8" },
+    ],
+  },
+  {
+    id: "colours", label: "Colours",
+    groups: [
+      { title: "By colour", type: "families", footer: { label: "Shop all colours", page: "all-colours" } },
+      { title: "Colour systems", links: [{ label: "Our colour systems", page: "colour-systems" }] },
+    ],
+    cards: [
+      { title: "ALL COLOURS", desc: "Browse the Peacock colour guide", cta: "Shop colours", page: "all-colours", bg: "#e8d5c4" },
+      { title: "COLOUR SYSTEMS", desc: "Peacock, NCS, BS 4800, NOVA and RAL", cta: "Learn more", page: "colour-systems", bg: "#d4e0c8" },
+    ],
+  },
+  {
+    id: "inspiration", label: "Inspiration",
+    groups: [
+      { title: "By room", links: [
+        { label: "Bedroom", page: "bedroom-inspiration" },
+        { label: "Living Room", page: "livingroom-inspiration" },
+        { label: "Dining Room", page: "diningroom-inspiration" },
+        { label: "Kitchen", page: "kitchen-inspiration" },
+        { label: "Bathroom", page: "bathroom-inspiration" },
+      ] },
+      { title: "By style", links: ["Contemporary", "Modern", "Boho", "Farmhouse", "Scandi", "Eclectic"].map(label => ({ label })) },
+    ],
+    cards: [
+      { title: "GREEN HUES", desc: "Versatile greens", cta: "Browse", page: "greens-colour", bg: "#c4d8c0" },
+      { title: "KITCHENS", desc: "Kitchen makeover ideas", cta: "Get inspired", page: "kitchen-inspiration", bg: "#2d4a3e", dark: true },
+    ],
+  },
+  {
+    id: "advice", label: "Advice",
+    groups: [
+      { title: "Help and advice", links: [
+        { label: "Paint Estimator", page: "estimator" },
+        { label: "Ask an expert", page: "contact" },
+        { label: "Request a quote", action: "quote" },
+      ] },
+    ],
+    cards: [
+      { title: "ASK AN EXPERT", desc: "Talk to our team", cta: "Contact us", page: "contact", bg: "#c8d0d8" },
+    ],
+  },
+  {
+    id: "professionals", label: "Professionals",
+    groups: [
+      { title: "For professionals", links: [
+        { label: "Professionals overview", page: "professionals" },
+        { label: "Become a Distributor", page: "distributor" },
+        { label: "Colour systems", page: "colour-systems" },
+        { label: "Request a quote", action: "quote" },
+      ] },
+    ],
+    cards: [
+      { title: "BECOME A DISTRIBUTOR", desc: "Grow with Peacock Paints", cta: "Apply", page: "distributor", bg: "#5C2D6D", dark: true },
+      { title: "TECHNICAL SUPPORT", desc: "From colour selection to site guidance", cta: "Contact us", page: "contact", bg: "#e0d4c8" },
+    ],
+  },
 ];
+
+// The page a link opens.
+export function resolvePage(link) {
+  if (link.page) return link.page;
+  if (COLOUR_CATEGORIES[link.label]) return COLOUR_CATEGORIES[link.label].slug;
+  if (STYLE_CATEGORIES[link.label]) return STYLE_CATEGORIES[link.label].slug;
+  return "home";
+}
+
+// The colour families shown with a coloured dot.
+export function familyLinks() {
+  return Object.keys(COLOUR_CATEGORIES).map(name => ({
+    label: name,
+    page: COLOUR_CATEGORIES[name].slug,
+    count: COLOUR_CATEGORIES[name].colors.length,
+    color: CAT_SWATCH_COLORS[name] || "#ddd",
+  }));
+}
+
+// Which top menu a page belongs to, so the right menu stays highlighted.
+export function menuForPage(pg) {
+  if (["about", "vision", "why-peacock", "contact"].includes(pg)) return "story";
+  if (pg === "product" || pg.startsWith("decorative-paints") || pg.startsWith("industrial-coatings") || pg === "wood-care-paints" || pg === "thinners-solvents") return "products";
+  if (pg === "all-colours" || pg === "colour-detail" || pg === "colour-systems" || pg.endsWith("-colour")) return "colours";
+  if (pg.endsWith("-inspiration") || pg.endsWith("-style")) return "inspiration";
+  if (pg === "estimator") return "advice";
+  if (pg === "professionals" || pg === "distributor") return "professionals";
+  return null;
+}

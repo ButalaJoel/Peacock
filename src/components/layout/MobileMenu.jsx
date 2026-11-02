@@ -1,43 +1,73 @@
-import { LOGO_HEADER } from "../../data/images.js";
-import { B } from "../../data/theme.js";
-import { PRODUCTS } from "../../data/products.js";
-import { navData } from "../../data/navData.js";
-import { ChevRight, CloseIcon } from "../icons/Icons.jsx";
 import { useApp } from "../../context/useApp.js";
+import { NAV, resolvePage, familyLinks } from "../../data/navData.js";
+import { LOGO_HEADER } from "../../data/images.js";
+import { CloseIcon, ChevRight } from "../icons/Icons.jsx";
 
 export default function MobileMenu() {
-  const { setActiveMenu, mobMenu, setMobMenu, mobSub, setMobSub, setPg, setProdTab, setFinishFilter, setSelectedProduct, scrollToProdPending, nav, openProduct, makeHref, productHref, aReset } = useApp();
+  const { mobMenu, setMobMenu, mobSub, setMobSub, nav, makeHref, setQuoteOpen } = useApp();
+  if (!mobMenu) return null;
+
+  const close = () => { setMobMenu(false); setMobSub(null); };
+  const go = (e, link) => {
+    e.preventDefault();
+    close();
+    if (link.action === "quote") { setQuoteOpen(true); return; }
+    nav(resolvePage(link));
+  };
+  const hrefFor = link => (link.action ? "#" : makeHref(resolvePage(link)));
+  const row = { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "13px 20px", borderBottom: "1px solid #f0f0f0", fontSize: 15, color: "#222", textDecoration: "none", cursor: "pointer", background: "none", borderLeft: "none", borderRight: "none", borderTop: "none", width: "100%", fontFamily: "inherit", textAlign: "left" };
+  const menu = mobSub !== null ? NAV[mobSub] : null;
+
   return (
     <>
-      {mobMenu && (<>
-        <div className="mo" onClick={() => { setMobMenu(false); setMobSub(null); }} />
-        <div className="md">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", borderBottom: "1px solid #eee" }}>
-            {mobSub !== null ? (<><span style={{ fontWeight: 600 }}>{navData[mobSub].label}</span><button onClick={() => setMobSub(null)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 14, color: B.coral, fontWeight: 600 }}>Back</button></>) : (<><img src={LOGO_HEADER} alt="" style={{ height: 36 }} /><button onClick={() => { setMobMenu(false); setMobSub(null); }} style={{ background: "none", border: "none", cursor: "pointer" }}><CloseIcon /></button></>)}
-          </div>
-          {mobSub === null ? (<div>{navData.map((item, i) => (<div key={i} onClick={() => setMobSub(i)} style={{ padding: "14px 20px", borderBottom: "1px solid #f0f0f0", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}><span style={{ fontWeight: 500 }}>{item.label}</span><ChevRight /></div>))}</div>) : (<div>
-            {navData[mobSub].columns.filter(c => c.type !== "promo").map((col, ci) => (<div key={ci} style={{ padding: "16px 20px", borderBottom: "1px solid #f0f0f0" }}>
-              <h4 style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: B.coral, marginBottom: 12 }}>{col.title}</h4>
-              {col.links && col.links.map((l, li) => {
-                const pageMap = {"Bedroom": "bedroom-inspiration", "Whites": "whites-colour", "Creams": "creams-colour", "Neutrals": "neutrals-colour", "Pinks": "pinks-colour", "Yellows": "yellows-colour", "Greens": "greens-colour", "Blues": "blues-colour", "Greys": "greys-colour", "Metallics": "metallics-colour", "Interior Paints": "decorative-paints-interior", "Exterior Paints": "decorative-paints-exterior", "Primers": "decorative-paints-primers", "General Coatings": "industrial-coatings-general", "Waterproofing & Construction": "industrial-coatings-waterproofing", "Decorative Paints": "decorative-paints", "Industrial Coatings": "industrial-coatings", "Wood Care Paints": "wood-care-paints", "Thinners & Solvents": "thinners-solvents", "Paint Estimator": "estimator"};
-                const isFinishLink = col.title === "By Finish";
-                const isPageLink = !!pageMap[l];
-                const linkedProduct = PRODUCTS.find(p => p.name === l);
-                const isClickable = isFinishLink || isPageLink || !!linkedProduct;
-                const mobLinkHref = isPageLink ? makeHref(pageMap[l]) : linkedProduct ? productHref(linkedProduct) : undefined;
-                return (<a key={li} href={mobLinkHref} onClick={e => {
-                  e.preventDefault();
-                  if (isFinishLink) { setFinishFilter(l); setProdTab("all"); setPg("home"); setSelectedProduct(null); setActiveMenu(null); setMobMenu(false); setMobSub(null); scrollToProdPending.current = true; }
-                  else if (isPageLink) { nav(pageMap[l]); }
-                  else if (linkedProduct) { openProduct(linkedProduct); }
-                }} style={{ ...aReset, padding: "8px 0", fontSize: 14, color: isClickable ? B.coral : "#444", cursor: isClickable ? "pointer" : "default", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  {l}{isClickable && !isFinishLink && <ChevRight />}
-                </a>);
-              })}
-            </div>))}
-          </div>)}
+      <div className="mo" onClick={close} />
+      <div className="md">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 20px", borderBottom: "1px solid #eee" }}>
+          {menu ? (
+            <>
+              <span style={{ fontWeight: 600 }}>{menu.label}</span>
+              <button onClick={() => setMobSub(null)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 14, color: "#E8603C", fontWeight: 600 }}>Back</button>
+            </>
+          ) : (
+            <>
+              <img src={LOGO_HEADER} alt="Peacock Paints" style={{ height: 36 }} />
+              <button onClick={close} aria-label="Close menu" style={{ background: "none", border: "none", cursor: "pointer" }}><CloseIcon /></button>
+            </>
+          )}
         </div>
-      </>)}
+
+        {!menu && (
+          <div>
+            {NAV.map((m, i) => (
+              <button key={m.id} onClick={() => setMobSub(i)} style={row}><span style={{ fontWeight: 500 }}>{m.label}</span><ChevRight /></button>
+            ))}
+            <div style={{ padding: 20 }}>
+              <button className="btn bp" style={{ width: "100%", justifyContent: "center" }} onClick={() => { close(); setQuoteOpen(true); }}>Get a quote</button>
+            </div>
+          </div>
+        )}
+
+        {menu && (
+          <div>
+            {menu.groups.map(group => (
+              <div key={group.title}>
+                <p style={{ padding: "14px 20px 4px", fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "#E8603C" }}>{group.title}</p>
+                {group.type === "families"
+                  ? familyLinks().map(f => (
+                      <a key={f.label} href={makeHref(f.page)} onClick={e => go(e, f)} style={row}>
+                        <span style={{ display: "flex", alignItems: "center", gap: 10 }}><span className="pill-dot" style={{ background: f.color }} />{f.label}</span>
+                        <span style={{ fontSize: 12, color: "#aaa" }}>{f.count}</span>
+                      </a>
+                    ))
+                  : group.links.map(link => (
+                      <a key={link.label} href={hrefFor(link)} onClick={e => go(e, link)} style={row}>{link.label}</a>
+                    ))}
+                {group.footer && <a href={makeHref(group.footer.page)} onClick={e => go(e, group.footer)} style={{ ...row, color: "#E8603C", fontWeight: 600 }}>{group.footer.label}</a>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 }
