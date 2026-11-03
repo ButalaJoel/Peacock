@@ -1,3 +1,4 @@
+import DashboardEntry from "../dashboard/DashboardEntry.jsx";
 import ProjectsPage from "./ProjectsPage.jsx";
 import AllColoursPage from "./AllColoursPage.jsx";
 import NewsPage from "./NewsPage.jsx";
@@ -35,6 +36,8 @@ export default function PageSwitch() {
         <DistributorPage />
       ) : pg === "professionals" ? (
         <ProfessionalsPage />
+      ) : pg === "dashboard" ? (
+        <DashboardEntry />
       ) : pg === "projects" ? (
         <ProjectsPage />
       ) : pg === "news" ? (

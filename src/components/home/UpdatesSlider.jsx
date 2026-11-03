@@ -1,14 +1,15 @@
 import { useRef } from "react";
 import { useApp } from "../../context/useApp.js";
 import { B } from "../../data/theme.js";
-import { UPDATES } from "../../data/updates.js";
+import { useUpdates } from "../../lib/useUpdates.js";
 import { formatMonth } from "../../utils/format.js";
 
 // Sliding row of the latest updates. Clicking a card opens the News & Updates page.
 export default function UpdatesSlider({ limit = 6 }) {
   const { nav, makeHref } = useApp();
   const rail = useRef(null);
-  const items = UPDATES.slice().sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, limit);
+  const { items: all } = useUpdates();
+  const items = all.slice().sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, limit);
   const scroll = dir => { if (rail.current) rail.current.scrollBy({ left: dir * 320, behavior: "smooth" }); };
   const arrow = { width: 40, height: 40, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", fontSize: 18, fontFamily: "inherit" };
   const badge = { fontSize: 11, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" };

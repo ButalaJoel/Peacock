@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useApp } from "../context/useApp.js";
 import { B } from "../data/theme.js";
-import { UPDATES, UPDATE_CATEGORIES } from "../data/updates.js";
+import { UPDATE_CATEGORIES } from "../data/updates.js";
+import { useUpdates } from "../lib/useUpdates.js";
 import { formatMonth } from "../utils/format.js";
 import PageHero from "../components/common/PageHero.jsx";
 import Lightbox from "../components/common/Lightbox.jsx";
@@ -13,6 +14,7 @@ export default function NewsPage() {
   const [open, setOpen] = useState(null);
   const [pdfOpen, setPdfOpen] = useState(null);
   const [box, setBox] = useState({ id: null, index: null });
+  const { items: UPDATES, sample } = useUpdates();
   const items = UPDATES.filter(u => cat === "All" || u.cat === cat).sort((a, b) => (a.date < b.date ? 1 : -1));
   const boxItem = UPDATES.find(u => u.id === box.id);
   const boxImages = boxItem ? (boxItem.gallery || []).map(g => ({ src: g.src || g, alt: g.alt || boxItem.title })) : [];
@@ -72,7 +74,7 @@ export default function NewsPage() {
             </article>
           );
         })}
-        <p style={{ fontSize: 12, color: "#aaa", marginTop: 4 }}>Sample items are shown until the Peacock team publishes its own.</p>
+        {sample && <p style={{ fontSize: 12, color: "#aaa", marginTop: 4 }}>Sample items are shown until the Peacock team publishes its own.</p>}
         <div style={{ background: "#faf8f5", border: "1px solid #eee", borderRadius: 16, padding: "30px", margin: "34px 0 60px", maxWidth: 620 }}>
           <NewsletterSignup />
         </div>

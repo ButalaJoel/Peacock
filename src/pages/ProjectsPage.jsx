@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useApp } from "../context/useApp.js";
 import { B } from "../data/theme.js";
 import { PRODUCTS } from "../data/products.js";
-import { PROJECTS, PROJECT_TYPES, TYPE_TONES } from "../data/projects.js";
+import { PROJECT_TYPES, TYPE_TONES } from "../data/projects.js";
+import { useProjects } from "../lib/useProjects.js";
 import PageHero from "../components/common/PageHero.jsx";
 import Lightbox from "../components/common/Lightbox.jsx";
 
@@ -11,6 +12,7 @@ export default function ProjectsPage() {
   const [type, setType] = useState("All");
   const [open, setOpen] = useState(null);
   const [box, setBox] = useState({ id: null, index: null });
+  const { items: PROJECTS, loading } = useProjects();
   const items = PROJECTS.filter(p => type === "All" || p.type === type);
   const boxItem = PROJECTS.find(p => p.id === box.id);
   const boxImages = boxItem ? (boxItem.gallery || []).map(g => ({ src: g.src || g, alt: g.alt || boxItem.name })) : [];
@@ -27,7 +29,8 @@ export default function ProjectsPage() {
           {["All"].concat(PROJECT_TYPES).map(t => <button key={t} onClick={() => setType(t)} style={chip(type === t)} aria-pressed={type === t}>{t}</button>)}
         </div>
 
-        {items.length === 0 && <p style={{ fontSize: 15, color: "#666", padding: "30px 0" }}>No projects in this group yet.</p>}
+        {loading && <p style={{ fontSize: 15, color: "#666", padding: "30px 0" }}>Loading projects...</p>}
+        {!loading && items.length === 0 && <p style={{ fontSize: 15, color: "#666", padding: "30px 0" }}>No projects in this group yet.</p>}
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 22, alignItems: "start" }}>
           {items.map(p => {

@@ -1,3 +1,4 @@
+import { saveQuote } from "../../lib/inbox.js";
 import { useState } from "react";
 import { useApp } from "../../context/useApp.js";
 import { CONTACT } from "../../config/contact.js";
@@ -43,6 +44,13 @@ export default function QuoteModal() {
     "Please send me a quotation.",
   ].filter(line => line !== null).join("\n");
 
+  const record = channel => saveQuote({
+    reference,
+    customer: { name: form.name.trim(), phone: form.phone.trim(), email: form.email.trim(), location: form.location.trim() },
+    items: cart.map(i => ({ id: i.product.id, name: i.product.name, size: i.size, qty: i.qty, colour: i.colour })),
+    note: form.notes.trim(),
+    channel,
+  });
   const guard = action => {
     setTouched(true);
     if (missing || cart.length === 0) return;
@@ -51,10 +59,12 @@ export default function QuoteModal() {
   const sendWhatsApp = () => guard(() => {
     window.open("https://wa.me/" + CONTACT.whatsappNumber + "?text=" + encodeURIComponent(message), "_blank", "noopener");
     setSentVia("WhatsApp");
+    record("whatsapp");
   });
   const sendEmail = () => guard(() => {
     window.location.href = "mailto:" + CONTACT.salesEmail + "?subject=" + encodeURIComponent("Quote request " + reference) + "&body=" + encodeURIComponent(message);
     setSentVia("your email app");
+    record("email");
   });
   const startNew = () => { setCart([]); setSentVia(null); setReference(makeReference()); setForm({ name: "", phone: "", email: "", location: "", notes: "" }); setTouched(false); setQuoteOpen(false); };
 
