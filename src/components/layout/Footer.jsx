@@ -19,9 +19,9 @@ export default function Footer() {
             </div>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,.55)", lineHeight: 1.6 }}>Protect. Preserve. Prolong.<br />Proudly made in Uganda.</p>
           </div>
-          <div className="fc"><h4>Products</h4>{page("decorative-paints", "Decorative Paints")}{page("industrial-coatings", "Industrial Coatings")}{page("wood-care-paints", "Wood Care Paints")}{page("thinners-solvents", "Thinners & Solvents")}</div>
+          <div className="fc"><h4>Products</h4>{page("decorative-paints", "Decorative Paints")}{page("industrial-coatings", "Industrial / Protective Coatings")}{page("wood-care-paints", "Wood Care Paints")}{page("thinners-solvents", "Thinners & Solvents")}</div>
           <div className="fc"><h4>Explore</h4>{page("all-colours", "Colours")}{page("colour-systems", "Colour systems")}{page("bedroom-inspiration", "Inspiration")}{page("estimator", "Paint estimator")}{page("news", "News & updates")}{page("projects", "Our projects")}</div>
-          <div className="fc"><h4>Company</h4>{page("about", "About Us")}{page("vision", "Vision and Mission")}{page("why-peacock", "Why Peacock Paints")}{page("professionals", "Professionals")}{page("distributor", "Become a Distributor")}</div>
+          <div className="fc"><h4>Company</h4>{page("about", "About Us")}{page("vision", "Vision and Mission")}{page("why-peacock", "Why Peacock Paints")}{page("professionals", "Professionals")}{page("distributor", "Become a Distributor")}{page("feedback", "Complaints & feedback")}{page("privacy", "Privacy notice")}</div>
           <div className="fc">
             <h4>Contact</h4>
             <p style={{ fontSize: 13, color: "rgba(255,255,255,.7)", lineHeight: 1.7, marginBottom: 12 }}>{CONTACT.address}</p>

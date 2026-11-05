@@ -24,7 +24,7 @@ export const CATEGORIES = {
     ]
   },
   "industrial": {
-    "label": "Industrial Coatings",
+    "label": "Industrial / Protective Coatings",
     "slug": "industrial-coatings",
     "tagline": "Engineered for durability and extreme performance",
     "subcategories": [
@@ -1127,9 +1127,9 @@ export const PRODUCTS = [
     "coverage": "1L/4 Sqm",
     "dryTime": "6 Hours Touch dry. 16-18 Hours Hard dry.",
     "packSizes": [
-      "4L"
+      "Base 2L + Hardener 1L"
     ],
-    "kit": false,
+    "kit": true,
     "colourSystems": [
       "Peacock Paints",
       "NCS",
@@ -1139,7 +1139,7 @@ export const PRODUCTS = [
     ],
     "sizes": [
       {
-        "size": "4L",
+        "size": "Base 2L + Hardener 1L",
         "coverage": "1L/4 Sqm"
       }
     ],
@@ -1615,17 +1615,17 @@ export const PRODUCTS = [
       "value": "6-8 kgs of water, then slowly empty the contents of the bag into the water and mix with a hand mixer for 5 mins."
     },
     "application": "Trowel",
-    "coverage": "1L/5 Sqm",
+    "coverage": "1kg/0.5 Sqm",
     "dryTime": "10-20 Minutes.",
     "packSizes": [
-      "25kg"
+      "20kg"
     ],
     "kit": false,
     "colourSystems": [],
     "sizes": [
       {
-        "size": "25kg",
-        "coverage": "1L/5 Sqm"
+        "size": "20kg",
+        "coverage": "1kg/0.5 Sqm"
       }
     ],
     "img": null,
@@ -1679,13 +1679,13 @@ export const PRODUCTS = [
     "coverage": "1 Kg/ Sqm",
     "dryTime": "90 Minutes.",
     "packSizes": [
-      "Grey powder 25kg + White liquid 10L"
+      "Part A 20kg sack + Part B 5L jerrycan"
     ],
     "kit": true,
     "colourSystems": [],
     "sizes": [
       {
-        "size": "Grey powder 25kg + White liquid 10L",
+        "size": "Part A 20kg sack + Part B 5L jerrycan",
         "coverage": "1 Kg/ Sqm"
       }
     ],

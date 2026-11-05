@@ -1,3 +1,4 @@
+import ProfessionalRequestForm from "../components/professionals/ProfessionalRequestForm.jsx";
 import { useApp } from "../context/useApp.js";
 import { B } from "../data/theme.js";
 import PageHero from "../components/common/PageHero.jsx";
@@ -27,6 +28,7 @@ export default function ProfessionalsPage() {
           ))}
         </div>
       </section>
+      <ProfessionalRequestForm />
     </div>
   );
 }

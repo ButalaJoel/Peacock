@@ -54,4 +54,12 @@ export const ESTIMATOR_PRODUCTS = {
   "premium-lacquer": { perLitre: [6, 10] },
   "clear-varnish": { perLitre: [7, 7.5], note: "Catalogue: 4L covers 28-30 Sqm." },
   "1k-polyurethane-varnish": { perLitre: [7, 7.5], note: "Catalogue: 4L covers 28-30 Sqm." },
+
+  // Weight-based products. perKg = [fewest, most] square metres covered by one kilogram, exactly from the catalogue.
+  // packs = the pack sizes sold, in kilograms, exactly as they are named in the catalogue.
+  "undercoat-putty": { perKg: [1, 1], packs: [{ size: "30kg", kg: 30 }, { size: "6kg", kg: 6 }, { size: "1kg", kg: 1 }] },
+  "mastic-textured-paint": { perKg: [2, 2], packs: [{ size: "30kg", kg: 30 }] },
+  "venetian-stucco": { perKg: [0.83, 1], packs: [{ size: "20kg", kg: 20 }, { size: "4kg", kg: 4 }, { size: "1kg", kg: 1 }], note: "Catalogue: 1 to 1.2 kg per Sqm." },
+  "skimmex": { perKg: [0.5, 0.5], packs: [{ size: "20kg", kg: 20 }], note: "Catalogue: 1 kg covers 0.5 Sqm." },
+  "aquaphob": { perKg: [1, 1], packs: [{ size: "Part A 20kg sack + Part B 5L jerrycan", kg: 20 }], note: "Sold as a 20 kg sack plus a 5 L jerrycan, mixed together." },
 };

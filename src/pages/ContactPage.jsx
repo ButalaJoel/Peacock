@@ -1,3 +1,4 @@
+import { saveEnquiry } from "../lib/enquiries.js";
 import { useState } from "react";
 import { CONTACT } from "../config/contact.js";
 import { B } from "../data/theme.js";
@@ -28,9 +29,14 @@ export default function ContactPage() {
     form.message.trim(),
   ].filter(l => l !== null).join("\n");
 
+  const record = channel => saveEnquiry({
+    reference, kind: "contact", name: form.name, email: form.email, phone: form.phone, message: form.message,
+    details: { topic: form.topic, channel },
+  });
   const send = kind => {
     setTouched(true);
     if (missing) return;
+    record(kind);
     if (kind === "whatsapp") { window.open(whatsappUrl(CONTACT.whatsappNumber, text), "_blank", "noopener"); setSentVia("WhatsApp"); }
     else { window.location.href = mailtoUrl(CONTACT.salesEmail, "Message " + reference, text); setSentVia("your email app"); }
   };
@@ -49,6 +55,7 @@ export default function ContactPage() {
           <div style={detail}><GlobeIcon /><span>{CONTACT.address}</span></div>
           <div style={detail}><PhoneIcon /><span>{CONTACT.phones.map((p, i) => (<span key={p}>{i > 0 ? " / " : ""}<a href={"tel:" + p.replace(/[^+\d]/g, "")} style={{ color: "inherit" }}>{p}</a></span>))}</span></div>
           <div style={detail}><MailIcon /><a href={"mailto:" + CONTACT.salesEmail} style={{ color: "inherit" }}>{CONTACT.salesEmail}</a></div>
+          <div style={{ ...detail, marginTop: 6 }}><a href="#/feedback" style={{ color: "inherit", fontWeight: 600 }}>Complaint or feedback? Tell us here</a></div>
           <div style={detail}><GlobeIcon /><span>{CONTACT.website}</span></div>
         </div>
 

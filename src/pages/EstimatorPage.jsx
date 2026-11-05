@@ -20,6 +20,29 @@ const pill = active => ({
 });
 const money = n => "UGX " + Math.round(n).toLocaleString();
 
+// Weight-based products: perKg = [fewest, most] square metres covered by one kilogram; packs = [{ size, kg }].
+function estimateKg(config, area, coats) {
+  if (!(area > 0)) return null;
+  const need = area * coats;
+  const round = n => Math.round(n * 10) / 10;
+  const kgFewest = round(need / config.perKg[1]);
+  const kgRecommended = round(need / config.perKg[0]);
+  const packs = config.packs.slice().sort((a, b) => b.kg - a.kg);
+  let left = Math.ceil(kgRecommended);
+  const items = [];
+  packs.forEach((p, i) => {
+    const qty = i === packs.length - 1 ? Math.ceil(left / p.kg) : Math.floor(left / p.kg);
+    if (qty > 0) items.push({ size: p.size, qty });
+    left -= qty * p.kg;
+  });
+  const per = config.perKg[0] === config.perKg[1] ? config.perKg[0] : config.perKg[0] + " to " + config.perKg[1];
+  return {
+    type: "kg", area, coats, kgFewest, kgRecommended, items, needsReview: false,
+    assumption: "1 kg covers " + per + " m² (catalogue figure), for " + coats + (coats === 1 ? " coat" : " coats") + ". Packs are rounded up to whole packs.",
+  };
+}
+
+
 function NumberField({ value, onChange, unit, placeholder }) {
   return (
     <div style={{ position: "relative" }}>
@@ -50,7 +73,7 @@ export default function EstimatorPage() {
   const area = mode === "area" ? Number(areaInput) || 0
     : mode === "rectangle" ? areaFromRectangle(length, width)
     : areaFromWalls(wallLength, height, openings);
-  const result = estimate(product, config, { area, coats, variantIndex });
+  const result = config.perKg ? estimateKg(config, area, coats) : estimate(product, config, { area, coats, variantIndex });
 
   const changeProduct = e => { setProductId(e.target.value); setVariantIndex(0); setAdded(false); };
   const addItems = () => { result.items.forEach(it => addToCart({ product, size: it.size, qty: it.qty })); setAdded(true); };
@@ -122,7 +145,7 @@ export default function EstimatorPage() {
             <div style={{ display: "flex", gap: 8 }}>
               {[1, 2, 3].map(n => <button key={n} style={pill(coats === n)} onClick={() => setCoats(n)}>{n}</button>)}
             </div>
-            <p style={{ fontSize: 12, color: "#888", marginTop: 8 }}>Check the product guidance for how many coats your surface needs.</p>
+            <p style={{ fontSize: 12, color: "#888", marginTop: 8 }}>Check the product guidance for how many coats your surface needs. Rough surfaces use 25 to 30% more.</p>
           </div>
         </div>
 
@@ -150,7 +173,7 @@ export default function EstimatorPage() {
             <div>
               <p style={label}>Estimate for {product.name}</p>
               <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 600, marginBottom: 4 }}>
-                {result.type === "kit"
+                {result.type === "kg" ? (result.kgFewest === result.kgRecommended ? result.kgRecommended : result.kgFewest + " to " + result.kgRecommended) + " kg" : result.type === "kit"
                   ? (result.kitsFewest === result.kitsRecommended ? result.kitsRecommended : result.kitsFewest + " to " + result.kitsRecommended) + (result.kitsRecommended === 1 ? " kit" : " kits")
                   : (result.litresFewest === result.litresRecommended ? result.litresRecommended : result.litresFewest + " to " + result.litresRecommended) + " litres"}
               </h2>
@@ -180,7 +203,7 @@ export default function EstimatorPage() {
 
               <p style={{ fontSize: 12, color: "#777", lineHeight: 1.7, marginBottom: 6 }}><strong>How we calculated this:</strong> {result.assumption}</p>
               <p style={{ fontSize: 12, color: "#777", lineHeight: 1.7, marginBottom: 20 }}>
-                This is an estimate, not a guarantee. Actual use depends on the surface condition, preparation, application method and conditions.
+                This is an estimate, not a guarantee. Actual use depends on the surface condition, preparation, application method and conditions. Rough surfaces, such as roughcast, bare block or unplastered concrete, can use 25 to 30% more than the figures shown.
               </p>
 
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -197,7 +220,7 @@ export default function EstimatorPage() {
       </div>
 
       <p style={{ fontSize: 13, color: "#888", marginTop: 28, lineHeight: 1.7, maxWidth: 760 }}>
-        Not every product can be calculated here yet. For anything not listed, such as putties, stuccos, powders and two-part waterproofing systems, request a quote and our sales team will work out the quantity with you.
+        Not every product can be calculated here yet. For anything not listed, request a quote and our sales team will work out the quantity with you.
       </p>
     </div>
   );

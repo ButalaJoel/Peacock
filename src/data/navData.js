@@ -27,11 +27,13 @@ export const NAV = [
         { label: "Interior Paints", page: "decorative-paints-interior" },
         { label: "Exterior Paints", page: "decorative-paints-exterior" },
         { label: "Primers", page: "decorative-paints-primers" },
+        { label: "Thinners & Solvents", page: "thinners-solvents" },
       ], footer: { label: "All decorative paints", page: "decorative-paints" } },
-      { title: "Industrial", links: [
+      { title: "Industrial / Protective", links: [
         { label: "General Coatings", page: "industrial-coatings-general" },
         { label: "Waterproofing & Construction", page: "industrial-coatings-waterproofing" },
-      ], footer: { label: "All industrial coatings", page: "industrial-coatings" } },
+        { label: "Thinners & Solvents", page: "thinners-solvents" },
+      ], footer: { label: "All industrial / protective coatings", page: "industrial-coatings" } },
       { title: "Wood care and solvents", links: [
         { label: "Wood Care Paints", page: "wood-care-paints" },
         { label: "Thinners & Solvents", page: "thinners-solvents" },
@@ -78,6 +80,7 @@ export const NAV = [
         { label: "Paint Estimator", page: "estimator" },
         { label: "News & Updates", page: "news" },
         { label: "Ask an expert", page: "contact" },
+        { label: "Complaints & feedback", page: "feedback" },
         { label: "Request a quote", action: "quote" },
       ] },
     ],
@@ -127,7 +130,7 @@ export function menuForPage(pg) {
   if (pg === "product" || pg.startsWith("decorative-paints") || pg.startsWith("industrial-coatings") || pg === "wood-care-paints" || pg === "thinners-solvents") return "products";
   if (pg === "all-colours" || pg === "colour-detail" || pg === "colour-picker" || pg === "colour-systems" || pg.endsWith("-colour")) return "colours";
   if (pg.endsWith("-inspiration") || pg.endsWith("-style")) return "inspiration";
-  if (pg === "estimator" || pg === "news") return "advice";
+  if (pg === "estimator" || pg === "news" || pg === "feedback") return "advice";
   if (pg === "professionals" || pg === "distributor" || pg === "projects") return "professionals";
   return null;
 }

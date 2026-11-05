@@ -1,3 +1,4 @@
+import AwardsSection from "../components/home/AwardsSection.jsx";
 import Hero from "../components/home/Hero.jsx";
 import DoorsSection from "../components/home/DoorsSection.jsx";
 import TrendingColours from "../components/home/TrendingColours.jsx";
@@ -12,6 +13,7 @@ export default function HomePage() {
       <DoorsSection />
       <TrendingColours />
       <ProductCatalogue />
+      <AwardsSection />
       <Newsletter />
       <InfoCards />
     </>
