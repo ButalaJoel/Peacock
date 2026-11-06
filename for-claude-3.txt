@@ -1,0 +1,202 @@
+
+
+===== src\pages\StoryPage.jsx =====
+import { B } from "../data/theme.js";
+import { storyPages } from "../data/storyPages.js";
+import { useApp } from "../context/useApp.js";
+
+export default function StoryPage({ pageKey }) {
+  const { nav, makeHref, aReset, iconFor } = useApp();
+  const renderStory = key => {
+    const p = storyPages[key]; if (!p) return null;
+    return (<div>
+      <section style={{ background: p.hg, padding: "80px 0 60px", color: "#fff" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+          <p style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: 3, marginBottom: 16, opacity: .8 }}>Our Story</p>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 48, fontWeight: 700, marginBottom: 16 }}>{p.title}</h1>
+          <p style={{ fontSize: 20, opacity: .9, fontWeight: 300 }}>{p.subtitle}</p>
+        </div>
+      </section>
+      <section style={{ background: "#1a1a1a", color: "#fff", padding: "32px 0" }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 24px", display: "grid", gridTemplateColumns: `repeat(${p.stats.length}, 1fr)`, gap: 24, textAlign: "center" }}>
+          {p.stats.map((s, i) => (<div key={i}><div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: B.coral }}>{s.n}</div><div style={{ fontSize: 13, opacity: .7, textTransform: "uppercase", letterSpacing: 1 }}>{s.l}</div></div>))}
+        </div>
+      </section>
+      <section style={{ maxWidth: 900, margin: "0 auto", padding: "60px 24px" }}>
+        {p.sections.map((s, i) => (<div key={i} style={{ marginBottom: 56, paddingBottom: i < p.sections.length - 1 ? 56 : 0, borderBottom: i < p.sections.length - 1 ? "1px solid #e8e4de" : "none" }}>
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 20 }}>
+            <div style={{ width: 48, height: 48, borderRadius: 12, background: `${B.coral}15`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: B.coral }}>{iconFor(s.i)}</div>
+            <div><h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 16 }}>{s.t}</h2>
+              {s.c.split("\n\n").map((para, pi) => (<p key={pi} style={{ fontSize: 15, lineHeight: 1.85, color: "#555", marginBottom: 16 }}>{para}</p>))}
+            </div></div></div>))}
+      </section>
+      <section style={{ background: B.warm, padding: "60px 0" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px" }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, textAlign: "center", marginBottom: 36 }}>Explore More</h2>
+          <div className="ge4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
+            {Object.entries(storyPages).filter(([k]) => k !== key).map(([k, s]) => (
+              <a key={k} href={makeHref(k)} onClick={e => { e.preventDefault(); nav(k); }} style={{ ...aReset, background: s.hg, borderRadius: 12, padding: 28, color: "#fff", cursor: "pointer", transition: "transform .3s", minHeight: 140, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}
+                onMouseEnter={e => e.currentTarget.style.transform = "translateY(-4px)"} onMouseLeave={e => e.currentTarget.style.transform = ""}>
+                <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 4 }}>{s.title}</h3><p style={{ fontSize: 12, opacity: .85 }}>{s.subtitle}</p>
+              </a>))}
+          </div>
+        </div>
+      </section>
+    </div>);
+  };
+
+  return renderStory(pageKey);
+}
+
+===== HARDENER LINES =====
+src\data\estimatorProducts.js:34: "epoxy-2k-enamel": { kit: { size: "Base 3L + Hardener 1L", coverage: [32, 40] }, note: "Catalogue: 4L covers 32-40 Sqm, depending on the surface." },
+src\data\products.catalogue.js:1041: "value": "3:1:0.5 (3 litres base: 1 litre hardener: 0.5 litre Thinner)"
+src\data\products.catalogue.js:1047: "Base 3L + Hardener 1L"
+src\data\products.catalogue.js:1059: "size": "Base 3L + Hardener 1L",
+src\data\products.catalogue.js:1130: "Base 2L + Hardener 1L"
+src\data\products.catalogue.js:1142: "size": "Base 2L + Hardener 1L",
+src\data\products.catalogue.js:1704: "desc": "A two-component, high-strength epoxy adhesive formulated from a resin base and hardener.",
+src\data\products.catalogue.js:1705: "longDesc": "A two-component, high-strength epoxy adhesive formulated from a resin base and hardener. Suitable for bonding and repair applications on properly prepared metal, wood, concrete, stone, glass and hard plastic surfaces.",
+src\data\products.catalogue.js:1708: "value": "4.5 Kg Base : 0.5 Kg Hardener"
+src\data\products.catalogue.js:1714: "Base 4.5kg + Hardener 0.5kg"
+src\data\products.catalogue.js:1726: "size": "Base 4.5kg + Hardener 0.5kg",
+src\data\products.catalogue.js:2011: "Base 4L + Hardener 2L"
+src\data\products.catalogue.js:2017: "size": "Base 4L + Hardener 2L",
+src\data\products.js:15: imgBySize: im ? im.bySize : {},
+src\data\products.js:16: gallery: im ? im.gallery : [],
+
+===== src\components\home\Hero.jsx =====
+import { useState, useEffect } from "react";
+import { INSPO_SCANDI_SAGE, INSPO_LR_PALE_BEIGE, INSPO_KT_CREAM } from "../../data/images.js";
+import { trendingColours } from "../../data/colours.js";
+import { Arr, ArrL } from "../icons/Icons.jsx";
+import { useApp } from "../../context/useApp.js";
+
+export default function Hero() {
+  const { handleColourClick, nav, openHeroProductGrid } = useApp();
+  const [heroSlide, setHeroSlide] = useState(0);
+
+  const [heroPaused, setHeroPaused] = useState(false);
+
+  useEffect(() => {
+    if (heroPaused) return undefined;
+    const t = setInterval(() => setHeroSlide(s => (s + 1) % 3), 6500);
+    return () => clearInterval(t);
+  }, [heroPaused]);
+
+  const heroSlides = [
+    {
+      eyebrow: "New colour studio",
+      title: "Paint your next room before the first brush stroke.",
+      copy: "Compare Peacock shades, finishes, and real products in one warm studio built for homes, schools, shops, and site teams.",
+      accent: "#ff4d8b",
+      roomImg: INSPO_SCANDI_SAGE,
+      swatches: [
+        { name: "Rose", color: "#CC7B8C" },
+        { name: "Balm", color: "#CADCCB" },
+        { name: "Medallion", color: "#C49820" },
+        { name: "Denim", color: "#1E3A68" },
+      ],
+      note: "Interior walls",
+      cta2: "Explore colours",
+      cta2Page: "colours",
+    },
+    {
+      eyebrow: "Colour at home",
+      title: "Give living rooms colour that holds its nerve.",
+      copy: "Warm neutrals, rich masonry tones, and practical coverage details help every interior feel deliberate.",
+      accent: "#1a3a3a",
+      roomImg: INSPO_LR_PALE_BEIGE,
+      swatches: [
+        { name: "Lake Green", color: "#BFCA9E" },
+        { name: "Tandoori", color: "#8E3020" },
+        { name: "Cool Blue", color: "#A8C6D6" },
+        { name: "Havana", color: "#3E5030" },
+      ],
+      note: "Living room",
+      cta2: "Explore colours",
+      cta2Page: "colours",
+    },
+    {
+      eyebrow: "Industrial coatings",
+      title: "From polished walls to tough workshop floors.",
+      copy: "Browse coatings for wood, vehicles, decorative walls, and industrial surfaces with the same colour-first energy.",
+      accent: "#b8a4ed",
+      roomImg: INSPO_KT_CREAM,
+      swatches: [
+        { name: "Violet Bouquet", color: "#C0A0C8" },
+        { name: "Copper", color: "#AD6040" },
+        { name: "Pearl", color: "#EEE7C5" },
+        { name: "Signal Blue", color: "#2848A0" },
+      ],
+      note: "Specialist systems",
+      cta2: "Industrial coatings",
+      cta2Page: "industrial",
+    },
+  ];
+
+  const currentHero = heroSlides[heroSlide] || heroSlides[0];
+
+  const shopHeroProducts = () => openHeroProductGrid("all");
+
+  const exploreHero = () => {
+    if (currentHero.cta2Page === "colours") { nav("all-colours"); return; }
+    if (currentHero.cta2Page === "industrial") { nav("industrial-coatings"); return; }
+    nav(currentHero.cta2Page);
+  };
+
+  const showHeroSlide = (idx) => setHeroSlide((idx + heroSlides.length) % heroSlides.length);
+
+  const openHeroSwatch = (swatch) => {
+    const match = trendingColours.find(c => c.name === swatch.name);
+    if (match) handleColourClick(match);
+  };
+
+  return (
+    <>
+        {/* Hero */}
+        <section
+          className="paint-hero"
+          onMouseEnter={() => setHeroPaused(true)}
+          onMouseLeave={() => setHeroPaused(false)}
+          onFocus={() => setHeroPaused(true)}
+          onBlur={() => setHeroPaused(false)}
+          style={{ "--hero-accent": currentHero.accent }}
+        >
+          <div className="paint-hero-shell">
+            <div className="paint-hero-copy">
+              <div className="paint-hero-kicker"><span />{currentHero.eyebrow}</div>
+              <h1 className="paint-hero-title">{currentHero.title}</h1>
+              <p>{currentHero.copy}</p>
+              <div className="paint-hero-actions">
+                <button className="paint-hero-action" onClick={shopHeroProducts}>Shop paints <Arr /></button>
+                <button className="paint-hero-action secondary" onClick={exploreHero}>{currentHero.cta2} <Arr /></button>
+              </div>
+              <div className="paint-hero-proof" aria-label="Peacock Paints highlights">
+                <div><strong>1988</strong><span>Made in Uganda</span></div>
+                <div><strong>{trendingColours.length}</strong><span>colour shades</span></div>
+                <div><strong>5</strong><span>sample pots bundle</span></div>
+              </div>
+            </div>
+
+            <div className="paint-hero-visual" aria-label={`${currentHero.note} room inspiration`}>
+              <img className="paint-hero-room" src={currentHero.roomImg} alt={`${currentHero.note} painted with Peacock colours`} />
+              <div className="paint-hero-swatches">
+                {currentHero.swatches.map(s => (
+                  <button key={s.name} className="paint-hero-swatch" title={s.name} aria-label={`View ${s.name} colour`} onClick={() => openHeroSwatch(s)} style={{ background: s.color }} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="paint-hero-switcher">
+            <button className="paint-hero-nav" onClick={() => showHeroSlide(heroSlide - 1)} aria-label="Previous hero slide"><ArrL /></button>
+            {heroSlides.map((sl, i) => (
+              <button key={sl.eyebrow} className={`paint-hero-dot ${heroSlide === i ? "active" : ""}`} onClick={() => showHeroSlide(i)} aria-label={`Show ${sl.eyebrow}`} />
+            ))}
+            <button className="paint-hero-nav" onClick={() => showHeroSlide(heroSlide + 1)} aria-label="Next hero slide"><Arr /></button>
+          </div>
+        </section>
+    </>
+  );
+}

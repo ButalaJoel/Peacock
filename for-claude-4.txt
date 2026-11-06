@@ -1,0 +1,257 @@
+﻿===== MOCKUP FOLDER =====
+20L WEATHERSHIELD MOCKUP.png
+2K ACRYLIC POLYURETHANE BASE.png
+2K ACRYLIC POLYURETHANE HARDENER.png
+4L EMULSION BUCKET MOCKUP.png
+ACRYLIC ART PALLET 1L.png
+ACRYLIC ART PALLET 4L.png
+ACRYLIC ELASTOMERIC 4L BUCKET.png
+Acrylic Elastometric Coating 20L.png
+AQUAPHOB A.png
+AQUAPHOB JERRYCAN.png
+auto acrylic paint.png
+BITUMINOUS EMULSION 4L BUCKET.png
+BOND AID 5L.png
+BOND AID.jpeg
+Cellulose Enamel 20L.png
+CONCRETE SEALER BASE 4L.png
+CONCRETE SEALER HARDENER 1L.png
+EPISIVE.jpeg
+EPOXY 2K SOLVENT BASED.png
+EPOXY SELF LEVELLING 2L.png
+EPOXY SELF LEVELLING HARDENER.png
+EPOXY SOLVENT BASED  HARDENER.png
+EPOXY THINNER 5 LITRES.png
+FAST DRY 4L TIN.png
+FLAT EMULSION 20L.png
+Flat Emulsion Bucket (1).png
+Floxy High Temperature Resistant Coating 4L (2).png
+General packaging.png
+GLAZECOAT 20L.png
+GLAZECOAT 4L.png
+HAND SANITIZER.png
+INDUSTRIAL WRAPPPER.png
+Latex Primer 4L Bucket.png
+LATEX PRIMER SEALER 20L.png
+M BASECOAT 4L.png
+Mastic Paint 20l (2).png
+MASTICK 6KG.png
+METAL PRIMER.png
+multipurpose hardener-Photoroom.png
+multipurpose sealer tin.png
+MULTISURFACE INDUSTRIAL CLEANER.png
+NC Sanding sealer 4L Tin (2).png
+Peacock Gloss Emulsion (3).png
+Peacock Gloss Emulsion 20L (1).png
+Peacock Undercoat oil 20L.png
+Peacock Undercoat oil.png
+Pearl Coat 4L.png
+Plaster Primer 20L.png
+PLASTER PRIMER.png
+POLATEX.jpeg
+Premium Lacquer Tin.png
+Premium Matt Emulsion 20l (3).png
+Premium Matt Emulsion 4L.png
+Road Marking (1).png
+Road Marking 20L (1).png
+Roc Carpet Aggregate.png
+Roc Carpet Hardener.png
+Roc Carpet Resin Base.png
+Roc carpet set.png
+SHIFA EMULSION 4L BUCKET.png
+SKIMMEX SACK.png
+SKIMMEX.jpeg
+ST PRIMER 4L TIN.png
+ST PRIMER HARDENER.png
+STANDARD EMULSION 20L.png
+STANDARD EMULSION 4L.png
+Standard Hi Gloss (2).png
+Standard Hi Gloss 20L (2).png
+STUCCO 20L.png
+Stucco Ventian.png
+Super gloss 4L Tin (3).png
+SUPER MATT 20L.png
+SUPER MATT 4L.png
+SYNC THINNER 5 LITRES.png
+TARMUL 12L.png
+THERMOPLASTIC 4L TIN.png
+TILE COATING 20L.png
+TILE COATING.png
+undercoat 4l.png
+Undercoat Emulsion 20L.png
+UNDERCOAT PUTTY 20KG.png
+UNDERCOAT PUTTY.png
+URETHHANE THINER.png
+VINYL SILK MAKULA.png
+waterproof mockup.png
+WOOD GLUE 400G MOCKUP2.png
+WOOD JOINERY GLUE TIN.png
+Woodcare Mockup.png
+===== PRODUCTS ASSET FOLDER =====
+2K ACRYLIC POLYURETHANE BASE.png
+2K ACRYLIC POLYURETHANE HARDENER.png
+ACRYLIC ART PALLET 1L.png
+ACRYLIC ART PALLET 4L.png
+acrylic-elastometric.png
+cellulose-enamel.png
+epoxy.png
+gloss.png
+mastic-paint.png
+plaster.png
+premium.png
+road.png
+standard-higloss.png
+undercoat.png
+vinyl.png
+weather.png
+===== IMAGE MAPPING =====
+images.js:3: import IMG_PREMIUM from "../assets/products/premium.png";
+images.js:4: import IMG_VINYL from "../assets/products/vinyl.png";
+images.js:5: import IMG_GLOSS from "../assets/products/gloss.png";
+images.js:6: import IMG_UNDERCOAT from "../assets/products/undercoat.png";
+images.js:7: import IMG_WEATHER from "../assets/products/weather.png";
+images.js:8: import IMG_ROAD from "../assets/products/road.png";
+images.js:9: import IMG_PLASTER from "../assets/products/plaster.png";
+images.js:10: import IMG_EPOXY from "../assets/products/epoxy.png";
+images.js:11: import IMG_ACRYLIC from "../assets/products/acrylic-elastometric.png";
+images.js:12: import IMG_CELLULOSE from "../assets/products/cellulose-enamel.png";
+images.js:13: import IMG_MASTIC from "../assets/products/mastic-paint.png";
+images.js:14: import IMG_HIGLOSS from "../assets/products/standard-higloss.png";
+images.js:15: import IMG_2K_ACRYLIC_BASE from "../assets/products/2K ACRYLIC POLYURETHANE BASE.png";
+images.js:16: import IMG_2K_ACRYLIC_HARDENER from "../assets/products/2K ACRYLIC POLYURETHANE HARDENER.png";
+images.js:17: import IMG_ACRYLIC_ART_1L from "../assets/products/ACRYLIC ART PALLET 1L.png";
+images.js:18: import IMG_ACRYLIC_ART_4L from "../assets/products/ACRYLIC ART PALLET 4L.png";
+images.js:19: import IMG_SUPERMATT from "../assets/new uploaded wrappers/Super Matt 4L Bucket (2).png";
+images.js:20: import IMG_NC_SANDING_SEALER from "../assets/new uploaded wrappers/NC Sanding sealer 4L Tin (2).png";
+images.js:21: import IMG_PEARL_COAT from "../assets/new uploaded wrappers/Pearl Coat 4L.png";
+images.js:47: IMG_PREMIUM,
+images.js:48: IMG_VINYL,
+images.js:49: IMG_GLOSS,
+images.js:50: IMG_UNDERCOAT,
+images.js:51: IMG_WEATHER,
+images.js:52: IMG_ROAD,
+images.js:53: IMG_PLASTER,
+images.js:54: IMG_EPOXY,
+images.js:55: IMG_ACRYLIC,
+images.js:56: IMG_CELLULOSE,
+images.js:57: IMG_MASTIC,
+images.js:58: IMG_HIGLOSS,
+images.js:59: IMG_2K_ACRYLIC_BASE,
+images.js:60: IMG_2K_ACRYLIC_HARDENER,
+images.js:61: IMG_ACRYLIC_ART_1L,
+images.js:62: IMG_ACRYLIC_ART_4L,
+images.js:63: IMG_SUPERMATT,
+images.js:64: IMG_NC_SANDING_SEALER,
+images.js:65: IMG_PEARL_COAT,
+productImages.js:2: // main = default image, bySize = image to show for a pack size, gallery = extra images, generic = shared wrapper.
+productImages.js:6: "bySize": {
+productImages.js:9: "gallery": []
+productImages.js:13: "bySize": {},
+productImages.js:14: "gallery": []
+productImages.js:18: "bySize": {
+productImages.js:22: "gallery": []
+productImages.js:26: "bySize": {
+productImages.js:30: "gallery": []
+productImages.js:34: "bySize": {},
+productImages.js:35: "gallery": [
+productImages.js:41: "bySize": {},
+productImages.js:42: "gallery": []
+productImages.js:46: "bySize": {},
+productImages.js:47: "gallery": []
+productImages.js:51: "bySize": {
+productImages.js:54: "gallery": []
+productImages.js:58: "bySize": {},
+productImages.js:59: "gallery": []
+productImages.js:63: "bySize": {},
+productImages.js:64: "gallery": []
+productImages.js:68: "bySize": {},
+productImages.js:69: "gallery": []
+productImages.js:73: "bySize": {},
+productImages.js:74: "gallery": []
+productImages.js:78: "bySize": {},
+productImages.js:79: "gallery": []
+productImages.js:83: "bySize": {},
+productImages.js:84: "gallery": []
+productImages.js:88: "bySize": {},
+productImages.js:89: "gallery": []
+productImages.js:93: "bySize": {
+productImages.js:96: "gallery": []
+productImages.js:100: "bySize": {},
+productImages.js:101: "gallery": []
+productImages.js:105: "bySize": {
+productImages.js:109: "gallery": []
+productImages.js:113: "bySize": {},
+productImages.js:114: "gallery": []
+productImages.js:118: "bySize": {
+productImages.js:122: "gallery": []
+productImages.js:126: "bySize": {},
+productImages.js:127: "gallery": []
+productImages.js:131: "bySize": {},
+productImages.js:132: "gallery": [
+productImages.js:138: "bySize": {},
+productImages.js:139: "gallery": []
+productImages.js:143: "bySize": {},
+productImages.js:144: "gallery": []
+productImages.js:148: "bySize": {},
+productImages.js:149: "gallery": []
+productImages.js:153: "bySize": {},
+productImages.js:154: "gallery": []
+productImages.js:158: "bySize": {
+productImages.js:161: "gallery": []
+productImages.js:165: "bySize": {
+productImages.js:168: "gallery": []
+productImages.js:172: "bySize": {
+productImages.js:175: "gallery": []
+productImages.js:179: "bySize": {
+productImages.js:182: "gallery": []
+productImages.js:186: "bySize": {},
+productImages.js:187: "gallery": []
+productImages.js:191: "bySize": {},
+productImages.js:192: "gallery": []
+productImages.js:196: "bySize": {
+productImages.js:200: "gallery": []
+productImages.js:204: "bySize": {
+productImages.js:207: "gallery": []
+productImages.js:211: "bySize": {},
+productImages.js:212: "gallery": [
+productImages.js:218: "bySize": {},
+productImages.js:219: "gallery": []
+productImages.js:223: "bySize": {
+productImages.js:227: "gallery": []
+productImages.js:231: "bySize": {
+productImages.js:234: "gallery": []
+productImages.js:238: "bySize": {
+productImages.js:241: "gallery": []
+productImages.js:245: "bySize": {},
+productImages.js:246: "gallery": []
+productImages.js:250: "bySize": {
+productImages.js:254: "gallery": []
+productImages.js:258: "bySize": {},
+productImages.js:259: "gallery": []
+productImages.js:263: "bySize": {},
+productImages.js:264: "gallery": []
+productImages.js:268: "bySize": {
+productImages.js:271: "gallery": []
+productImages.js:275: "bySize": {
+productImages.js:279: "gallery": []
+productImages.js:283: "bySize": {},
+productImages.js:284: "gallery": [
+productImages.js:290: "bySize": {},
+productImages.js:291: "gallery": []
+productImages.js:295: "bySize": {},
+productImages.js:296: "gallery": []
+productImages.js:300: "bySize": {},
+productImages.js:301: "gallery": []
+productImages.js:305: "bySize": {},
+productImages.js:306: "gallery": [
+productImages.js:312: "bySize": {},
+productImages.js:313: "gallery": [],
+productImages.js:318: "bySize": {},
+productImages.js:319: "gallery": [],
+productImages.js:324: "bySize": {},
+productImages.js:325: "gallery": [],
+products.js:15: imgBySize: im ? im.bySize : {},
+products.js:16: gallery: im ? im.gallery : [],
+projects.js:4: // Optional fields: image, imageAlt, gallery: [{ src, alt }], products: ["product-id", ...] (ids from the catalogue), client.
+projects.js:26: body: ["Add the details of the work here, with photos in the gallery."],
+updates.js:5: //   image: "/news/cover.jpg"   imageAlt: "..."   pdf: "/news/newsletter.pdf"   gallery: [{ src: "/news/a.jpg", alt: "..." }]

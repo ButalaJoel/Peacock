@@ -1,9 +1,12 @@
+import PaintBlob from "../components/common/PaintBlob.jsx";
 import { useState, useRef } from "react";
 import { CartIcon, Arr, ArrL, PaletteIcon, MinusIcon, PlusIcon, CheckIcon } from "../components/icons/Icons.jsx";
 import { B } from "../data/theme.js";
 import { PRODUCTS, CATEGORIES } from "../data/products.js";
 import { trendingColours, COLOUR_CATEGORIES } from "../data/colours.js";
 import { checklistFor } from "../data/checklists.js";
+import { KIT_IMAGES } from "../data/kitImages.js";
+import KitStrip from "../components/products/KitStrip.jsx";
 
 
 const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
@@ -96,6 +99,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                 ))}
               </div>
             )}
+            {KIT_IMAGES[product.id] && <KitStrip items={KIT_IMAGES[product.id]} />}
           </div>
 
           {/* Right: details and buy box */}
@@ -133,7 +137,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
 
             {colourChip && (
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 12px 5px 6px", border: "1px solid #e5e5e5", borderRadius: 20, fontSize: 13, marginBottom: 14 }}>
-                <span style={{ width: 20, height: 20, borderRadius: "50%", background: colourChip.color, border: "1px solid rgba(0,0,0,.12)" }} />
+                <PaintBlob size={24} color={colourChip.color} v={1} />
                 {selectedColourName}
                 <button onClick={() => setSelectedColourName(null)} aria-label="Remove colour" style={{ background: "none", border: "none", cursor: "pointer", color: "#999", fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
               </div>

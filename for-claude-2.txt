@@ -1,0 +1,1002 @@
+
+
+===== src\pages\AllColoursPage.jsx =====
+import { useEffect, useRef, useState } from "react";
+import { useApp } from "../context/useApp.js";
+import { B } from "../data/theme.js";
+import { trendingColours, COLOUR_CATEGORIES, CAT_SWATCH_COLORS } from "../data/colours.js";
+import { paginate, pageList } from "../utils/paginate.js";
+import PaintBlob from "../components/common/PaintBlob.jsx";
+
+const ROWS = 4;
+
+// 4 columns on wide screens, 2 on smaller ones, so a page is never more than 4 rows of cards.
+function usePerPage() {
+  const query = "(min-width: 1025px)";
+  const wide = () => { try { return window.matchMedia(query).matches; } catch { return true; } };
+  const [isWide, setIsWide] = useState(wide);
+  useEffect(() => {
+    let mq;
+    try { mq = window.matchMedia(query); } catch { return undefined; }
+    const on = () => setIsWide(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return (isWide ? 4 : 2) * ROWS;
+}
+
+export default function AllColoursPage() {
+  const { nav, makeHref, handleColourClick, addSamplePot } = useApp();
+  const perPage = usePerPage();
+  const gridTop = useRef(null);
+  const [family, setFamily] = useState("All");
+  const [query, setQuery] = useState("");
+  const [pageNo, setPageNo] = useState(1);
+
+  const q = query.trim().toLowerCase();
+  const inFamily = family === "All" ? trendingColours : trendingColours.filter(c => COLOUR_CATEGORIES[family].colors.includes(c.name));
+  const list = q ? inFamily.filter(c => c.name.toLowerCase().includes(q) || String(c.color).toLowerCase().includes(q.replace(/^#?/, "#"))) : inFamily;
+  const view = paginate(list, pageNo, perPage);
+
+  const goTo = n => {
+    setPageNo(n);
+    if (gridTop.current) gridTop.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+  const chooseFamily = f => { setFamily(f); setPageNo(1); };
+  const colourHref = c => "#/colour/" + encodeURIComponent(c.name);
+
+  const chip = on => ({ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 30, border: "1px solid " + (on ? B.coral : "#e2e2e2"), background: on ? B.coral : "#fff", color: on ? "#fff" : "#444", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inher ...[cut]
+  const pbtn = (on, disabled) => ({ minWidth: 40, height: 40, padding: "0 12px", borderRadius: 10, border: "1px solid " + (on ? B.coral : "#ddd"), background: on ? B.coral : "#fff", color: on ? "#fff" : disabled ? "#bbb" : "#333", fontWeight: 600, fontSize: 14, cursor: disabled ? "not-allowed" : "po ...[cut]
+
+  return (
+    <div>
+      <section style={{ background: "linear-gradient(135deg, #fffaf0, #f3e7d3)", padding: "64px 0 44px", borderBottom: "1px solid rgba(0,0,0,.06)" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+          <p style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: 3, color: B.coral, fontWeight: 600, marginBottom: 12 }}>Colour Collection</p>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 46, fontWeight: 700, marginBottom: 14, color: "#1a1a1a" }}>All colours</h1>
+          <p style={{ fontSize: 17, color: "#555", lineHeight: 1.7, maxWidth: 560, margin: "0 auto 22px" }}>Every Peacock shade in one place.</p>
+          <a href={makeHref("colour-picker")} onClick={e => { e.preventDefault(); nav("colour-picker"); }} style={{ color: B.coral, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>Or find a colour from a photo</a>
+        </div>
+      </section>
+
+      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 0" }}>
+        <input type="search" value={query} onChange={e => { setQuery(e.target.value); setPageNo(1); }} placeholder="Search colours by name"
+          aria-label="Search colours by name" style={{ width: "100%", maxWidth: 420, padding: "12px 20px", borderRadius: 30, border: "1px solid #ddd", fontSize: 14, fontFamily: "inherit", marginBottom: 18 }} />
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button onClick={() => chooseFamily("All")} style={chip(family === "All")} aria-pressed={family === "All"}>All ({trendingColours.length})</button>
+          {Object.keys(COLOUR_CATEGORIES).map(name => {
+            const count = trendingColours.filter(c => COLOUR_CATEGORIES[name].colors.includes(c.name)).length;
+            return (
+              <button key={name} onClick={() => chooseFamily(name)} style={chip(family === name)} aria-pressed={family === name}>
+                <span style={{ width: 14, height: 14, borderRadius: "50%", background: CAT_SWATCH_COLORS[name] || "#ddd", border: "1px solid rgba(0,0,0,.15)" }} />
+                {name} ({count})
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section ref={gridTop} style={{ maxWidth: 1200, margin: "0 auto", padding: "28px 24px 20px", scrollMarginTop: 90 }}>
+        <p aria-live="polite" style={{ fontSize: 14, color: "#777", marginBottom: 18 }}>
+          {view.total ? "Showing " + view.from + "-" + view.to + " of " + view.total + " colours" : "No colours found"}
+        </p>
+
+        {view.total === 0 && (
+          <div style={{ padding: "40px 0" }}>
+            <p style={{ fontSize: 15, color: "#555", marginBottom: 14 }}>No colour matches your search.</p>
+            <button className="btn bp" onClick={() => { setQuery(""); chooseFamily("All"); }}>Show all colours</button>
+          </div>
+        )}
+
+        <div className="colour-grid">
+          {view.items.map((c, i) => (
+            <a key={c.name} href={colourHref(c)} onClick={e => { e.preventDefault(); handleColourClick(c); }}
+              style={{ textDecoration: "none", color: "inherit", display: "block", background: "#fff", borderRadius: 14, border: "1px solid #eee", overflow: "hidden", cursor: "pointer", transition: "transform .3s, box-shadow .3s" }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-5px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,.1)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
+              <div style={{ background: c.color + "28", padding: "20px 16px", height: 160, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <div style={{ width: "78%", height: "90%" }}><PaintBlob color={c.color} v={i} /></div>
+                <div style={{ position: "absolute", bottom: 10, right: 12, width: 28, height: 28, borderRadius: "50%", background: c.color, border: "3px solid rgba(255,255,255,.8)", boxShadow: "0 2px 8px rgba(0,0,0,.12)" }} />
+              </div>
+              <div style={{ padding: "14px 16px 18px" }}>
+                <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4, color: "#1a1a1a" }}>{c.name}&reg;</h4>
+                <p style={{ fontSize: 12, color: "#888", lineHeight: 1.5, marginBottom: 12, minHeight: 34 }}>{c.desc}</p>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <code style={{ fontSize: 11, color: "#bbb", fontFamily: "monospace", letterSpacing: .5 }}>{c.color}</code>
+                  <button onClick={e => { e.stopPropagation(); e.preventDefault(); addSamplePot(c.name); }} style={{ fontSize: 11, fontWeight: 600, color: B.coral, background: B.coral + "12", border: "none", padding: "4px 10px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit" }}>Sample</b ...[cut]
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        {view.pages > 1 && (
+          <nav aria-label="Colour pages" style={{ display: "flex", gap: 8, justifyContent: "center", alignItems: "center", flexWrap: "wrap", margin: "36px 0 30px" }}>
+            <button onClick={() => goTo(view.page - 1)} disabled={view.page === 1} style={pbtn(false, view.page === 1)} aria-label="Previous page">&#8592; Prev</button>
+            {pageList(view.page, view.pages).map((n, k) => n === "..."
+              ? <span key={"gap" + k} style={{ padding: "0 4px", color: "#999" }}>&hellip;</span>
+              : <button key={n} onClick={() => goTo(n)} style={pbtn(n === view.page, false)} aria-label={"Page " + n} aria-current={n === view.page ? "page" : undefined}>{n}</button>)}
+            <button onClick={() => goTo(view.page + 1)} disabled={view.page === view.pages} style={pbtn(false, view.page === view.pages)} aria-label="Next page">Next &#8594;</button>
+          </nav>
+        )}
+      </section>
+
+      <section style={{ background: "linear-gradient(135deg, #1a1a1a, #2a2a2a)", padding: "52px 0", color: "#fff", textAlign: "center" }}>
+        <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 12 }}>Try before you commit</h2>
+          <p style={{ fontSize: 15, opacity: .75, marginBottom: 24, lineHeight: 1.6 }}>Order colour samples to see your shade at home. Screens change how colours look.</p>
+          <button className="btn bp" onClick={() => nav("contact")}>Ask about colour matching</button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+===== src\pages\ColourCategoryPage.jsx =====
+import { B } from "../data/theme.js";
+import { CAT_SWATCH_COLORS, COLOUR_CATEGORIES } from "../data/colours.js";
+import PaintBlob from "../components/common/PaintBlob.jsx";
+
+const ColourCategoryPage = ({ categoryName, categoryData, allColours, onBack, onNavCategory, onOpenColour, onAddSample, onAddSampleBundle, onViewAllColours, homeHref, colourHrefFn, catHrefFn }) => {
+  const categoryColors = allColours.filter(c => categoryData.colors.includes(c.name));
+  const otherCats = Object.entries(COLOUR_CATEGORIES).filter(([k]) => k !== categoryName);
+
+  return (
+    <div>
+      {/* Breadcrumb */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "16px 24px" }}>
+        <div style={{ display: "flex", gap: 8, fontSize: 13, color: "#999" }}>
+          <a href={homeHref} onClick={e => { e.preventDefault(); onBack(); }} style={{ textDecoration: "none", color: B.coral, cursor: "pointer", fontWeight: 500 }}>Home</a>
+          <span>/</span><span>Colours</span><span>/</span>
+          <span style={{ color: "#333" }}>{categoryName}</span>
+        </div>
+      </div>
+
+      {/* Hero */}
+      <section style={{ background: categoryData.gradient, padding: "64px 0 48px", borderBottom: "1px solid rgba(0,0,0,.06)" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+          <p style={{ fontSize: 13, textTransform: "uppercase", letterSpacing: 3, color: categoryData.accent || B.coral, fontWeight: 600, marginBottom: 12 }}>Colour Collection</p>
+          <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 48, fontWeight: 700, marginBottom: 16, color: categoryData.textColor || "#1a1a1a" }}>{categoryName}</h1>
+          <p style={{ fontSize: 17, color: categoryData.textColor || "#555", opacity: .75, lineHeight: 1.7, maxWidth: 560, margin: "0 auto 24px" }}>{categoryData.desc}</p>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,.65)", padding: "8px 22px", borderRadius: 28, backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,.9)" }}>
+            <span style={{ fontSize: 22, fontWeight: 700, color: categoryData.accent || B.coral }}>{categoryColors.length}</span>
+            <span style={{ fontSize: 13, color: "#666" }}>shades in this collection</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Colour pill row */}
+      <section style={{ background: "#fff", borderBottom: "1px solid #f0f0f0", padding: "18px 0" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px", display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
+          {categoryColors.map((c, i) => (
+            <a key={i} href={colourHrefFn ? colourHrefFn(c) : undefined} onClick={e => { e.preventDefault(); onOpenColour && onOpenColour(c); }}
+              style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center", gap: 7, background: "#f8f8f6", borderRadius: 24, padding: "5px 14px 5px 7px", border: "1px solid #ebebeb", cursor: "pointer", transition: "border-color .2s" }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = "#ccc"} onMouseLeave={e => e.currentTarget.style.borderColor = "#ebebeb"}>
+              <div style={{ width: 18, height: 18, borderRadius: "50%", background: c.color, border: "1px solid rgba(0,0,0,.1)", flexShrink: 0 }} />
+              <span style={{ fontSize: 12, fontWeight: 500, color: "#555" }}>{c.name}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* Colour Grid */}
+      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "60px 24px" }}>
+        <div style={{ marginBottom: 32 }}>
+          <h2 className="st" style={{ marginBottom: 8 }}>All {categoryName}</h2>
+          <p style={{ fontSize: 15, color: "#666" }}>Order a sample tester to see how it looks in your home</p>
+        </div>
+        <div className="g4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
+          {categoryColors.map((c, i) => (
+            <a key={i} href={colourHrefFn ? colourHrefFn(c) : undefined} onClick={e => { e.preventDefault(); onOpenColour && onOpenColour(c); }}
+              style={{ textDecoration: "none", color: "inherit", display: "block", background: "#fff", borderRadius: 14, border: "1px solid #eee", overflow: "hidden", cursor: "pointer", transition: "transform .3s, box-shadow .3s" }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-5px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(0,0,0,.1)"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
+              {/* Swatch area */}
+              <div style={{ background: `${c.color}28`, padding: "20px 16px", height: 160, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+                <div style={{ width: "78%", height: "90%" }}><PaintBlob color={c.color} v={i} /></div>
+                <div style={{ position: "absolute", bottom: 10, right: 12, width: 28, height: 28, borderRadius: "50%", background: c.color, border: "3px solid rgba(255,255,255,.8)", boxShadow: "0 2px 8px rgba(0,0,0,.12)" }} />
+              </div>
+              {/* Details */}
+              <div style={{ padding: "14px 16px 18px" }}>
+                <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4, color: "#1a1a1a" }}>{c.name}®</h4>
+                <p style={{ fontSize: 12, color: "#888", lineHeight: 1.5, marginBottom: 12, minHeight: 34 }}>{c.desc}</p>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <code style={{ fontSize: 11, color: "#bbb", fontFamily: "monospace", letterSpacing: .5 }}>{c.color}</code>
+                  <button onClick={e => { e.stopPropagation(); e.preventDefault(); onAddSample(c.name); }} style={{ fontSize: 11, fontWeight: 600, color: B.coral, background: `${B.coral}12`, border: "none", padding: "4px 10px", borderRadius: 12, cursor: "pointer", fontFamily: "'Outfit',sans-serif" } ...[cut]
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA Banner */}
+      <section style={{ background: "linear-gradient(135deg, #1a1a1a, #2a2a2a)", padding: "56px 0", color: "#fff", textAlign: "center" }}>
+        <div style={{ maxWidth: 600, margin: "0 auto", padding: "0 24px" }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 12 }}>Try before you buy</h2>
+          <p style={{ fontSize: 15, opacity: .7, marginBottom: 28, lineHeight: 1.6 }}>Order colour samples to see your shade at home before you commit.</p>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <button className="btn bp" onClick={onAddSampleBundle}>Order Samples</button>
+            <button className="btn bo" onClick={onViewAllColours}>View All Colours</button>
+          </div>
+        </div>
+      </section>
+
+      {/* Explore other categories */}
+      {otherCats.length > 0 && (
+        <section style={{ maxWidth: 1200, margin: "0 auto", padding: "56px 24px" }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 600, marginBottom: 24 }}>Explore more colour collections</h2>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            {otherCats.map(([name, data]) => (
+              <a key={name} href={catHrefFn ? catHrefFn(name, data) : undefined} onClick={e => { e.preventDefault(); onNavCategory(name); }}
+                style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center", gap: 10, background: "#f8f8f6", border: "1px solid #eee", borderRadius: 12, padding: "11px 20px", cursor: "pointer", transition: "all .2s" }}
+                onMouseEnter={e => { e.currentTarget.style.background = "#f0ede8"; e.currentTarget.style.borderColor = "#ddd"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "#f8f8f6"; e.currentTarget.style.borderColor = "#eee"; e.currentTarget.style.transform = ""; }}>
+                <div style={{ width: 24, height: 24, borderRadius: "50%", background: CAT_SWATCH_COLORS[name] || "#ddd", border: "2px solid rgba(0,0,0,.08)", flexShrink: 0 }} />
+                <span style={{ fontSize: 14, fontWeight: 600, color: "#333" }}>{name}</span>
+                <span style={{ fontSize: 12, color: "#aaa" }}>({allColours.filter(c => data.colors.includes(c.name)).length})</span>
+              </a>
+            ))}
+          </div>
+          <p style={{ marginTop: 16, fontSize: 13, color: "#bbb" }}>More colour collections coming soon</p>
+        </section>
+      )}
+    </div>
+  );
+};
+
+export default ColourCategoryPage;
+
+===== src\pages\ColourDetailPage.jsx =====
+import { CATEGORIES } from "../data/products.js";
+import { useState } from "react";
+import { B } from "../data/theme.js";
+import { PRODUCTS } from "../data/products.js";
+import { COLOUR_DETAILS } from "../data/colours.js";
+import { CloseIcon, Arr, ArrL, MinusIcon, PlusIcon, CheckIcon } from "../components/icons/Icons.jsx";
+
+const PAINT_RECOMMENDATIONS = PRODUCTS.filter(p => p.colourSystems.length > 0);
+
+const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCart, onAddSample, homeHref, backHref }) => {
+  const [imgIdx, setImgIdx] = useState(0);
+  const [buyOpen, setBuyOpen] = useState(false);
+  const [selectedProd, setSelectedProd] = useState(null);
+  const [selectedSz, setSelectedSz] = useState(null);
+  const [buyQty, setBuyQty] = useState(1);
+  const [buyAdded, setBuyAdded] = useState(false);
+  const details = COLOUR_DETAILS[colour.name] || {};
+  const slides = details.slides || [];
+  const hasSlides = slides.length > 0;
+  const borderColor = "rgba(0,0,0,.14)";
+
+  const handleAddToCart = () => {
+    if (!selectedProd || !selectedSz) return;
+    const sz = selectedProd.sizes.find(s => s.size === selectedSz);
+    if (onAddToCart) onAddToCart({ product: selectedProd, size: sz.size, qty: buyQty, colour: colour.name });
+    setBuyAdded(true);
+    setTimeout(() => { setBuyOpen(false); setBuyAdded(false); setSelectedProd(null); setSelectedSz(null); setBuyQty(1); }, 1800);
+  };
+
+  return (
+    <div>
+      {/* Breadcrumb bar */}
+      <div style={{ padding: "13px 28px", borderBottom: "1px solid #eee", background: "#fff" }}>
+        <div style={{ display: "flex", gap: 10, fontSize: 12, color: "#999", alignItems: "center" }}>
+          <a href={homeHref} onClick={e => { e.preventDefault(); onBackHome(); }} style={{ textDecoration: "none", color: "#333", cursor: "pointer", fontWeight: 700, textTransform: "uppercase", letterSpacing: .5 }}>Home</a>
+          <span style={{ fontSize: 16, color: "#ccc", lineHeight: 1 }}>›</span>
+          <a href={backHref} onClick={e => { e.preventDefault(); onBack(); }} style={{ textDecoration: "none", color: "#333", cursor: "pointer", fontWeight: 700, textTransform: "uppercase", letterSpacing: .5 }}>{categoryName}</a>
+          <span style={{ fontSize: 16, color: "#ccc", lineHeight: 1 }}>›</span>
+          <span style={{ color: "#555", textTransform: "uppercase", fontWeight: 700, letterSpacing: .5 }}>{colour.name}®</span>
+        </div>
+      </div>
+
+      {/* Two-panel split */}
+      <div style={{ display: "flex", height: "calc(100vh - 157px)", minHeight: 520 }}>
+
+        {/* ── LEFT: paint info ── */}
+        <div style={{
+          width: "42%", flexShrink: 0,
+          background: colour.color,
+          padding: "44px 52px",
+          display: "flex", flexDirection: "column", justifyContent: "center",
+        }}>
+          {/* Colour name */}
+          <h1 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 50, fontWeight: 300, letterSpacing: -1,
+            color: "#1a1a1a", lineHeight: 1.1, marginBottom: 22,
+          }}>
+            {colour.name}®
+          </h1>
+
+          {/* Swatch ┃ tagline row */}
+          <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 18 }}>
+            <div style={{
+              width: 68, height: 68, borderRadius: "50%",
+              background: colour.color,
+              border: "3px solid rgba(255,255,255,.85)",
+              boxShadow: "0 2px 18px rgba(0,0,0,.18)",
+              flexShrink: 0,
+            }} />
+            <div style={{ width: 1, height: 48, background: borderColor, flexShrink: 0 }} />
+            <p style={{ fontSize: 14.5, color: "#2a2a2a", fontWeight: 400, lineHeight: 1.45, maxWidth: 220 }}>
+              {details.tagline || colour.desc}
+            </p>
+          </div>
+
+          {/* Long description */}
+          <p style={{ fontSize: 13.5, lineHeight: 1.85, color: "#3a3a3a", marginBottom: 22, maxWidth: 400 }}>
+            {details.longDesc || colour.desc}
+          </p>
+
+          {/* Specs: TONES / HUES / COLOUR */}
+          <div style={{
+            display: "flex",
+            borderTop: `1px solid ${borderColor}`,
+            borderBottom: `1px solid ${borderColor}`,
+            padding: "14px 0", marginBottom: 26,
+          }}>
+            {[
+              { label: "TONES",  value: details.tones || "—" },
+              { label: "HUES",   value: details.hues  || "—" },
+              { label: "COLOUR", value: colour.color },
+            ].map((spec, i) => (
+              <div key={i} style={{
+                flex: 1,
+                paddingLeft: i > 0 ? 20 : 0,
+                paddingRight: i < 2 ? 20 : 0,
+                borderRight: i < 2 ? `1px solid ${borderColor}` : "none",
+              }}>
+                <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: "rgba(0,0,0,.42)", marginBottom: 5 }}>{spec.label}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a" }}>{spec.value}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Action buttons */}
+          <div style={{ display: "flex", gap: 12 }}>
+            <button onClick={() => { setBuyOpen(true); setSelectedProd(null); setSelectedSz(null); setBuyQty(1); setBuyAdded(false); }} style={{
+              flex: 1, padding: "14px 20px", border: "none", background: "#1a1a1a",
+              color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer",
+              fontFamily: "'Outfit',sans-serif", letterSpacing: .5, borderRadius: 2,
+            }}>Buy Paint</button>
+            <button onClick={() => onAddSample(colour.name)} style={{
+              flex: 1, padding: "14px 20px",
+              border: "2px solid rgba(0,0,0,.38)", background: "transparent",
+              color: "#1a1a1a", fontSize: 14, fontWeight: 600, cursor: "pointer",
+              fontFamily: "'Outfit',sans-serif", letterSpacing: .5, borderRadius: 2,
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+            }}>+ Add sample</button>
+          </div>
+        </div>
+
+        {/* ── Buy Paint Modal ── */}
+        {buyOpen && (
+          <div onClick={() => setBuyOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 2000, background: "rgba(0,0,0,0.58)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+            <div onClick={e => e.stopPropagation()} style={{ background: "#fff", borderRadius: 18, padding: "36px 36px 28px", maxWidth: 580, width: "100%", maxHeight: "88vh", overflowY: "auto", boxShadow: "0 24px 72px rgba(0,0,0,0.32)" }}>
+
+              {/* Header */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 26 }}>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: "50%", background: colour.color, border: "2px solid rgba(0,0,0,0.1)", flexShrink: 0 }} />
+                    <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.2, color: "#888" }}>{colour.name}</span>
+                  </div>
+                  <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: "#1a1a1a", fontFamily: "'Outfit', sans-serif" }}>Buy Paint</h2>
+                </div>
+                <button onClick={() => setBuyOpen(false)} style={{ background: "none", border: "1.5px solid #e0e0e0", borderRadius: 8, padding: "6px 8px", cursor: "pointer", display: "flex", alignItems: "center", color: "#555" }}>
+                  <CloseIcon />
+                </button>
+              </div>
+
+              {/* Step 1 */}
+              <div style={{ marginBottom: 26 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: "#bbb", marginBottom: 12 }}>Step 1 — Choose paint type</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {PAINT_RECOMMENDATIONS.map(prod => {
+                    const isSel = selectedProd?.id === prod.id;
+                    return (
+                      <div key={prod.id} onClick={() => { setSelectedProd(prod); setSelectedSz(null); }} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", borderRadius: 10, border: `2px solid ${isSel ? "#1a1a1a" : "#e8e4de"}`, cursor: "pointer", background: isSel ? "#faf ...[cut]
+                        {prod.img ? <img src={prod.img} alt={prod.name} style={{ width: 46, height: 46, objectFit: "contain", borderRadius: 6, flexShrink: 0 }} /> : <div style={{ width: 46, height: 46, borderRadius: 6, background: "#f3f1ee", flexShrink: 0 }} />}
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a", marginBottom: 2 }}>{prod.name}</div>
+                          <div style={{ fontSize: 11.5, color: "#999" }}>{CATEGORIES[prod.category]?.label}</div>
+                        </div>
+                        {isSel && <div style={{ width: 22, height: 22, borderRadius: "50%", background: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><CheckIcon /></div>}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              {selectedProd && (
+                <div style={{ marginBottom: 26 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: "#bbb", marginBottom: 12 }}>Step 2 — Choose size</div>
+                  <div style={{ display: "flex", gap: 10 }}>
+                    {selectedProd.sizes.map(sz => {
+                      const isSel = selectedSz === sz.size;
+                      return (
+                        <div key={sz.size} onClick={() => setSelectedSz(sz.size)} style={{ flex: 1, padding: "15px 10px", borderRadius: 10, border: `2px solid ${isSel ? "#1a1a1a" : "#e8e4de"}`, cursor: "pointer", textAlign: "center", background: isSel ? "#faf8f5" : "#fff", transition: "all 0.15s" }} ...[cut]
+                          <div style={{ fontSize: 20, fontWeight: 800, color: "#1a1a1a", marginBottom: 4 }}>{sz.size}</div>
+                          
+                          <div style={{ fontSize: 10.5, color: "#aaa" }}>{sz.coverage || ""}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3 — Quantity */}
+              {selectedProd && selectedSz && (
+                <div style={{ marginBottom: 26 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: "#bbb", marginBottom: 12 }}>Step 3 — How many tins?</div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 0, border: "2px solid #e8e4de", borderRadius: 10, overflow: "hidden", width: "fit-content" }}>
+                    <button onClick={() => setBuyQty(q => Math.max(1, q - 1))} style={{ width: 48, height: 48, background: "#faf8f5", border: "none", cursor: "pointer", fontSize: 20, color: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Outfit', sans-serif" ...[cut]
+                      <MinusIcon />
+                    </button>
+                    <div style={{ minWidth: 60, height: 48, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, color: "#1a1a1a", borderLeft: "2px solid #e8e4de", borderRight: "2px solid #e8e4de", background: "#fff" }}>
+                      {buyQty}
+                    </div>
+                    <button onClick={() => setBuyQty(q => q + 1)} style={{ width: 48, height: 48, background: "#faf8f5", border: "none", cursor: "pointer", fontSize: 20, color: "#1a1a1a", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Outfit', sans-serif" }}>
+                      <PlusIcon />
+                    </button>
+                  </div>
+                  {selectedProd && selectedSz && (() => {
+                    const sz = selectedProd.sizes.find(s => s.size === selectedSz);
+                    return sz ? (
+                      <div style={{ marginTop: 10, fontSize: 13, color: "#888" }}>
+                        Selected: <strong style={{ color: "#1a1a1a", fontSize: 15 }}>{buyQty} × {sz.size}</strong>
+                        
+                      </div>
+                    ) : null;
+                  })()}
+                </div>
+              )}
+
+              {/* Add to Cart */}
+              <button disabled={!selectedProd || !selectedSz} onClick={handleAddToCart} style={{ width: "100%", padding: "15px 24px", background: buyAdded ? B.teal : (selectedProd && selectedSz ? "#1a1a1a" : "#d0d0d0"), color: "#fff", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700,  ...[cut]
+                {buyAdded ? <><CheckIcon /> Added to Cart!</> : `Add ${buyQty > 1 ? buyQty + " tins" : "to Cart"}`}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ── RIGHT: lifestyle image ── */}
+        <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+          {hasSlides ? (
+            <>
+              {slides.map((src, i) => (
+                <img key={i} src={src} alt=""
+                  style={{
+                    position: "absolute", inset: 0, width: "100%", height: "100%",
+                    objectFit: "cover", transition: "opacity .55s ease",
+                    opacity: i === imgIdx ? 1 : 0,
+                  }} />
+              ))}
+              {/* Carousel nav bar */}
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0,
+                background: "rgba(0,0,0,.72)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                padding: "13px 0", gap: 28,
+              }}>
+                <button onClick={() => setImgIdx(i => (i - 1 + slides.length) % slides.length)}
+                  style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", padding: 4 }}>
+                  <ArrL />
+                </button>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {slides.map((_, i) => (
+                    <button key={i} onClick={() => setImgIdx(i)} style={{
+                      width: i === imgIdx ? 24 : 8, height: 8, borderRadius: 4,
+                      background: i === imgIdx ? "#fff" : "rgba(255,255,255,.42)",
+                      border: "none", cursor: "pointer", transition: "all .3s", padding: 0,
+                    }} />
+                  ))}
+                </div>
+                <button onClick={() => setImgIdx(i => (i + 1) % slides.length)}
+                  style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", padding: 4 }}>
+                  <Arr />
+                </button>
+              </div>
+            </>
+          ) : (
+            <div style={{
+              width: "100%", height: "100%",
+              background: `linear-gradient(145deg, ${colour.color}55 0%, ${colour.color}22 100%)`,
+            }} />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ColourDetailPage;
+
+===== src\pages\ProductDetailPage.jsx =====
+import { useState, useRef } from "react";
+import { CartIcon, Arr, ArrL, PaletteIcon, MinusIcon, PlusIcon, CheckIcon } from "../components/icons/Icons.jsx";
+import { B } from "../data/theme.js";
+import { PRODUCTS, CATEGORIES } from "../data/products.js";
+import { trendingColours, COLOUR_CATEGORIES } from "../data/colours.js";
+import { checklistFor } from "../data/checklists.js";
+
+
+const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
+  const [selectedSize, setSelectedSize] = useState(0);
+  const [qty, setQty] = useState(1);
+  const checklist = checklistFor(product);
+  const [tab, setTab] = useState(product.category === "industrial" && checklist ? "checklist" : "description");
+  const [checked, setChecked] = useState({});
+  const [activeImg, setActiveImg] = useState(null);
+  const [addedAnim, setAddedAnim] = useState(false);
+  const sz = product.sizes[selectedSize];
+  
+  
+  const colourSectionRef = useRef(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedColourName, setSelectedColourName] = useState(null);
+  const [colourSizeIdx, setColourSizeIdx] = useState(0);
+  const [colourQty, setColourQty] = useState(1);
+  const [colourAddedAnim, setColourAddedAnim] = useState(false);
+  const carouselRef = useRef(null);
+  const scrollCarousel = (dir) => { if (carouselRef.current) carouselRef.current.scrollBy({ left: dir * 280, behavior: "smooth" }); };
+  const hexRgba = (hex, a) => { const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16); return `rgba(${r},${g},${b},${a})`; };
+
+  const handleAdd = () => {
+    const item = { product, size: sz.size, qty };
+    if (selectedColourName) item.colour = selectedColourName;
+    onAddToCart(item);
+    setAddedAnim(true);
+    setTimeout(() => setAddedAnim(false), 2000);
+  };
+
+  const related = PRODUCTS.filter(p => p.id !== product.id && p.category === product.category).slice(0, 3);
+  if (related.length < 3) {
+    const others = PRODUCTS.filter(p => p.id !== product.id && !related.find(r => r.id === p.id));
+    while (related.length < 3 && others.length) related.push(others.shift());
+  }
+
+  const mainImg = activeImg || (product.imgBySize && product.imgBySize[sz.size]) || product.img;
+  const thumbs = Array.from(new Set([product.img].concat(Object.values(product.imgBySize || {}), product.gallery || []).filter(Boolean)));
+  const cat = CATEGORIES[product.category];
+  const subLabel = cat && product.subcategories.length ? (cat.subcategories.find(s => s.id === product.subcategories[0]) || {}).label : null;
+  const facts = [
+    { label: (product.mixing && product.mixing.label) || "Mix", value: product.mixing && product.mixing.value },
+    { label: "Application", value: product.application },
+    { label: "Coverage", value: product.coverage },
+    { label: "Drying time", value: product.dryTime },
+    { label: "Pack sizes", value: product.packSizes.join(", ") },
+    { label: "Colour systems", value: product.colourSystems.join(", ") },
+  ].filter(f => f.value);
+  const tabs = [{ id: "description", label: "Description" }]
+    .concat(checklist ? [{ id: "checklist", label: "Before you start" }] : [])
+    .concat([{ id: "sheet", label: "Product sheet" }]);
+  const ticked = checklist ? checklist.tickItems.filter(it => checked[it.label]).length : 0;
+  const colourChip = selectedColourName ? trendingColours.find(c => c.name === selectedColourName) : null;
+  const pillStyle = active => ({
+    padding: "7px 18px", borderRadius: 20, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit",
+    border: "1.5px solid " + (active ? B.coral : "#ddd"), background: active ? B.coral + "12" : "#fff", color: active ? B.coral : "#333",
+  });
+
+  return (
+    <div>
+      {/* Breadcrumb */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "14px 24px 6px" }}>
+        <div style={{ display: "flex", gap: 8, fontSize: 13, color: "#999", flexWrap: "wrap" }}>
+          <span onClick={onBack} style={{ color: B.coral, cursor: "pointer" }}>Home</span>
+          <span>/</span><span>Products</span><span>/</span>
+          <span>{cat ? cat.label : product.category}</span><span>/</span>
+          <span style={{ color: "#333" }}>{product.name}</span>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "10px 24px 60px" }}>
+        <div className="g2" style={{ display: "grid", gridTemplateColumns: "5fr 6fr", gap: 40, alignItems: "start" }}>
+
+          {/* Left: mockup and thumbnails */}
+          <div>
+            <div style={{ background: "#fff", border: "1px solid #eee", borderRadius: 14, height: 380, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+              {mainImg
+                ? <img src={mainImg} alt={product.name} style={{ maxHeight: 340, maxWidth: "88%", objectFit: "contain" }} />
+                : <span style={{ fontSize: 13, color: "#bbb" }}>Image coming soon</span>}
+              {product.tag && <span style={{ position: "absolute", top: 14, left: 14, background: B.coral, color: "#fff", fontSize: 11, fontWeight: 700, padding: "4px 12px", borderRadius: 20 }}>{product.tag}</span>}
+            </div>
+            {thumbs.length > 1 && (
+              <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+                {thumbs.map(src => (
+                  <button key={src} onClick={() => setActiveImg(src)} aria-label="Show this picture"
+                    style={{ width: 64, height: 64, padding: 4, borderRadius: 10, background: "#fff", cursor: "pointer", border: "1.5px solid " + (mainImg === src ? B.coral : "#e5e5e5") }}>
+                    <img src={src} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Right: details and buy box */}
+          <div>
+            <p style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: 2, color: B.coral, fontWeight: 600, marginBottom: 6 }}>
+              {cat ? cat.label : product.category}{subLabel ? " · " + subLabel : ""}
+            </p>
+            <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, fontWeight: 700, lineHeight: 1.2, marginBottom: 6 }}>{product.name}</h1>
+            {product.subtitle && <p style={{ fontSize: 13, color: "#888", marginBottom: 8 }}>{product.subtitle}</p>}
+            <p style={{ fontSize: 14.5, lineHeight: 1.6, color: "#555", marginBottom: 18 }}>{product.desc}</p>
+
+            <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "#333", marginBottom: 8 }}>Size</p>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+              {product.sizes.map((s, i) => (
+                <button key={s.size} className="pp-pill" style={pillStyle(selectedSize === i)} onClick={() => { setSelectedSize(i); setQty(1); setActiveImg(null); }}>{s.size}</button>
+              ))}
+            </div>
+
+            <div className="pp-actions" style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", marginBottom: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", border: "1.5px solid #ddd", borderRadius: 22, height: 42, flexShrink: 0 }}>
+                <button onClick={() => setQty(Math.max(1, qty - 1))} aria-label="Fewer" style={{ width: 36, height: 40, border: "none", background: "none", cursor: qty <= 1 ? "default" : "pointer", color: qty <= 1 ? "#ccc" : "#333", display: "flex", alignItems: "center", justifyContent: "center" }}> ...[cut]
+                <span style={{ minWidth: 26, textAlign: "center", fontSize: 15, fontWeight: 600 }}>{qty}</span>
+                <button onClick={() => setQty(Math.min(50, qty + 1))} aria-label="More" style={{ width: 36, height: 40, border: "none", background: "none", cursor: "pointer", color: "#333", display: "flex", alignItems: "center", justifyContent: "center" }}><PlusIcon /></button>
+              </div>
+              <button onClick={handleAdd} style={{ flex: "1 1 150px", height: 42, borderRadius: 22, border: "none", background: addedAnim ? B.teal : B.coral, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: ...[cut]
+                {addedAnim ? <><CheckIcon /> Added</> : <><CartIcon /> Add to cart</>}
+              </button>
+              {product.colourSystems.length > 0 && (
+                <button onClick={() => colourSectionRef.current && colourSectionRef.current.scrollIntoView({ behavior: "smooth" })} className="pp-pill"
+                  style={{ height: 42, borderRadius: 22, border: "1.5px solid " + B.coral, background: "#fff", color: B.coral, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 18px", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" }}>
+                  <PaletteIcon /> {selectedColourName ? "Change colour" : "Select colour"}
+                </button>
+              )}
+            </div>
+
+            {colourChip && (
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 12px 5px 6px", border: "1px solid #e5e5e5", borderRadius: 20, fontSize: 13, marginBottom: 14 }}>
+                <span style={{ width: 20, height: 20, borderRadius: "50%", background: colourChip.color, border: "1px solid rgba(0,0,0,.12)" }} />
+                {selectedColourName}
+                <button onClick={() => setSelectedColourName(null)} aria-label="Remove colour" style={{ background: "none", border: "none", cursor: "pointer", color: "#999", fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
+              </div>
+            )}
+
+            {facts.length > 0 && (
+              <div className="pp-facts" style={{ marginTop: 8 }}>
+                {facts.map(f => (
+                  <div key={f.label} style={{ background: "#faf8f5", borderRadius: 10, padding: "10px 12px" }}>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: "#222", marginBottom: 3 }}>{f.label}</div>
+                    <div style={{ fontSize: 13, color: "#555", lineHeight: 1.45 }}>{f.value}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div style={{ marginTop: 28, background: "#fff", border: "1px solid #eee", borderRadius: 14 }}>
+          <div style={{ display: "flex", gap: 22, padding: "0 22px", borderBottom: "1px solid #eee", overflowX: "auto" }}>
+            {tabs.map(t => (
+              <button key={t.id} onClick={() => setTab(t.id)}
+                style={{ background: "none", border: "none", borderBottom: "3px solid " + (tab === t.id ? B.coral : "transparent"), padding: "14px 0 11px", fontSize: 14, fontWeight: tab === t.id ? 700 : 500, color: tab === t.id ? "#111" : "#777", cursor: "pointer", fontFamily: "inherit", whiteSpace: ...[cut]
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <div style={{ padding: "20px 22px 24px" }}>
+            {tab === "description" && (
+              <div>{product.longDesc.split("\n\n").map((p, i) => (<p key={i} style={{ fontSize: 14.5, lineHeight: 1.8, color: "#555", marginBottom: 12, maxWidth: 820 }}>{p}</p>))}</div>
+            )}
+
+            {tab === "checklist" && checklist && (
+              <div>
+                <p style={{ fontSize: 14, color: "#555", marginBottom: 14, lineHeight: 1.6 }}>{checklist.intro}</p>
+                {checklist.damp && (
+                  <p style={{ fontSize: 13.5, color: "#7a4a10", background: "#fff6e5", borderRadius: 8, padding: "10px 14px", marginBottom: 16, lineHeight: 1.6 }}>
+                    Coatings such as epoxy are sensitive to dampness and to the condition of the surface. Check both before you start.
+                  </p>
+                )}
+                {checklist.steps && (
+                  <ol style={{ margin: "0 0 18px 18px", fontSize: 14, color: "#555", lineHeight: 1.7 }}>
+                    {checklist.steps.map(s => <li key={s.label}><strong>{s.label}</strong> - {s.text}</li>)}
+                  </ol>
+                )}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "12px 32px" }}>
+                  {checklist.tickItems.map(it => (
+                    <label key={it.label} style={{ display: "flex", gap: 10, alignItems: "flex-start", cursor: "pointer", fontSize: 14, lineHeight: 1.55, color: "#444" }}>
+                      <input type="checkbox" checked={!!checked[it.label]} onChange={() => setChecked(c => ({ ...c, [it.label]: !c[it.label] }))} style={{ marginTop: 4, accentColor: B.coral }} />
+                      <span><strong>{it.label}</strong>{it.text ? " - " + it.text : ""}</span>
+                    </label>
+                  ))}
+                </div>
+                <p style={{ fontSize: 13, color: ticked === checklist.tickItems.length ? B.tealDk : "#888", marginTop: 14, fontWeight: 600 }}>
+                  {ticked} of {checklist.tickItems.length} done
+                </p>
+
+                {checklist.tips && (
+                  <div style={{ marginTop: 18 }}>
+                    {checklist.tips.map(t => <p key={t.label} style={{ fontSize: 14, color: "#555", lineHeight: 1.7 }}><strong>{t.label}:</strong> {t.text}</p>)}
+                  </div>
+                )}
+
+                {checklist.primers && (
+                  <div style={{ marginTop: 22 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", color: "#333", marginBottom: 10 }}>Choose the right primer</p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "8px 32px" }}>
+                      {checklist.primers.map(p => (
+                        <div key={p.surface} style={{ fontSize: 13.5, color: "#555", lineHeight: 1.55 }}><strong style={{ color: "#222" }}>{p.surface}:</strong> {p.primer}</div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <p style={{ fontSize: 12, color: "#999", marginTop: 20, lineHeight: 1.6 }}>Source: {checklist.source}. If your surface is not covered here, ask our team before you buy.</p>
+              </div>
+            )}
+
+            {tab === "sheet" && (
+              <div>
+                {product.sheet ? (
+                  <>
+                    <p style={{ fontSize: 14, color: "#555", marginBottom: 16, lineHeight: 1.7 }}>The product sheet is the page for this product from the Peacock Paints catalogue.</p>
+                    <a href={product.sheet} download style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 24px", border: "2px solid " + B.coral, borderRadius: 24, color: B.coral, fontWeight: 600, fontSize: 14, textDecoration: "none" }}>Download product sheet (PDF)</a>
+                  </>
+                ) : (
+                  <p style={{ fontSize: 14, color: "#555", lineHeight: 1.7 }}>There is no product sheet for this product yet. Ask our sales team and we will send it to you.</p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Colour & Size Selection — immediately visible */}
+        {product.colourSystems.length > 0 && (
+        <div ref={colourSectionRef} style={{ marginTop: 48, paddingTop: 36, borderTop: "1px solid #e8e4de" }}>
+          <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 8 }}>Select Colour & Size</h2>
+          <p style={{ fontSize: 15, color: "#777", marginBottom: 32 }}>Choose from our full range of colours available for this paint.</p>
+
+          {/* Category Carousel */}
+          <div style={{ position: "relative", paddingLeft: 28, paddingRight: 28 }}>
+            <button onClick={() => scrollCarousel(-1)} style={{ position: "absolute", left: 0, top: 55, zIndex: 2, width: 40, height: 40, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow:  ...[cut]
+            <div ref={carouselRef} style={{ display: "flex", gap: 20, overflowX: "auto", scrollbarWidth: "none", msOverflowStyle: "none", paddingBottom: 4 }}>
+              {Object.keys(COLOUR_CATEGORIES).map(catName => {
+                const cat = COLOUR_CATEGORIES[catName];
+                const isSelected = selectedCategory === catName;
+                return (
+                  <div key={catName} style={{ minWidth: 180, flexShrink: 0 }}>
+                    <div
+                      onClick={() => setSelectedCategory(isSelected ? null : catName)}
+                      style={{ height: 100, background: cat.repColor, borderRadius: 12, border: isSelected ? "2px solid #1a1a1a" : "2px solid transparent", cursor: "pointer", transition: "all 0.2s", marginBottom: 10 }}
+                    />
+                    <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>{catName}</div>
+                    <button
+                      onClick={() => setSelectedCategory(isSelected ? null : catName)}
+                      style={{ display: "flex", alignItems: "center", gap: 6, background: isSelected ? "#1a1a1a" : "#fff", color: isSelected ? "#fff" : "#333", border: "1px solid #ddd", borderRadius: 6, padding: "6px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.2s", fo ...[cut]
+                    >
+                      {isSelected ? `Hide ${cat.colors.length} shades` : `See ${cat.colors.length} shades`}
+                      &nbsp;{isSelected ? "↓" : "→"}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            <button onClick={() => scrollCarousel(1)} style={{ position: "absolute", right: 0, top: 55, zIndex: 2, width: 40, height: 40, borderRadius: "50%", border: "1px solid #ddd", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow:  ...[cut]
+          </div>
+
+          {/* Expanded Colour Grid */}
+          {selectedCategory && (() => {
+            const cat = COLOUR_CATEGORIES[selectedCategory];
+            const colours = cat.colors.map(n => trendingColours.find(c => c.name === n)).filter(Boolean);
+            const isColourSelected = (name) => selectedColourName === name;
+            const colourSz = product.sizes[colourSizeIdx];
+            
+            const handleColourSelect = (name) => {
+              if (selectedColourName === name) { setSelectedColourName(null); }
+              else { setSelectedColourName(name); setColourSizeIdx(0); setColourQty(1); setColourAddedAnim(false); }
+            };
+            const handleColourAdd = () => {
+              onAddToCart({ product, size: colourSz.size, qty: colourQty, colour: selectedColourName });
+              setColourAddedAnim(true);
+              setTimeout(() => setColourAddedAnim(false), 2000);
+            };
+            return (
+              <div style={{ marginTop: 48 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 }}>
+                  {colours.map(col => {
+                    const active = isColourSelected(col.name);
+                    return (
+                    <div key={col.name} style={{ border: active ? `2px solid ${B.coral}` : "2px solid transparent", borderRadius: 16, padding: active ? 14 : 0, transition: "all 0.2s" }}>
+                      <div onClick={() => handleColourSelect(col.name)} style={{ cursor: "pointer" }}>
+                        <div style={{ background: hexRgba(col.color, 0.12), borderRadius: 12, padding: "28px 16px", display: "flex", alignItems: "center", justifyContent: "center", height: 200, marginBottom: 14, position: "relative" }}>
+                          <div style={{ width: 130, height: 130, background: col.color, borderRadius: "52% 48% 56% 44% / 48% 52% 48% 52%", boxShadow: `0 10px 28px ${hexRgba(col.color, 0.5)}, inset 0 -6px 16px rgba(0,0,0,0.18), inset 0 6px 14px rgba(255,255,255,0.22)` }} />
+                          {active && <div style={{ position: "absolute", top: 10, right: 10, width: 26, height: 26, borderRadius: "50%", background: B.coral, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}><CheckIcon /></div>}
+                        </div>
+                        <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 3, color: active ? B.coral : "#333" }}>{col.name}</div>
+                        <div style={{ fontSize: 13, color: "#999", marginBottom: 8 }}>{col.desc}</div>
+                      </div>
+
+                      {!active ? (
+                        <>
+                          
+                          <div style={{ fontSize: 12, color: "#bbb", marginBottom: 12 }}>{product.sizes.map(s => s.size).join(" · ")}</div>
+                          <button onClick={() => handleColourSelect(col.name)} style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #ddd", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", background: "#fff", color: "#333", fontFamily: "'Ou ...[cut]
+                            Select sizes&nbsp;<Arr />
+                          </button>
+                        </>
+                      ) : (
+                        <div style={{ marginTop: 8 }}>
+                          {/* Size pills */}
+                          <label style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#999", display: "block", marginBottom: 8 }}>Size</label>
+                          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+                            {product.sizes.map((s, i) => (
+                              <button key={i} onClick={() => { setColourSizeIdx(i); setColourQty(1); }} style={{
+                                padding: "8px 14px", borderRadius: 8, border: `2px solid ${colourSizeIdx === i ? B.coral : "#e0e0e0"}`,
+                                background: colourSizeIdx === i ? `${B.coral}10` : "#fff", cursor: "pointer", fontSize: 13, fontWeight: 600,
+                                color: colourSizeIdx === i ? B.coral : "#333", fontFamily: "'Outfit', sans-serif", transition: "all 0.2s"
+                              }}>
+                                {s.size}
+                              </button>
+                            ))}
+                          </div>
+                          <div style={{ fontSize: 13, color: "#777", marginBottom: 12 }}>Coverage: {colourSz.coverage}</div>
+
+                          {/* Quantity */}
+                          <label style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, color: "#999", display: "block", marginBottom: 8 }}>Qty</label>
+                          <div style={{ display: "flex", alignItems: "center", border: "1.5px solid #e0e0e0", borderRadius: 8, overflow: "hidden", width: "fit-content", marginBottom: 14 }}>
+                            <button onClick={() => setColourQty(Math.max(1, colourQty - 1))} style={{ width: 36, height: 36, border: "none", background: colourQty <= 1 ? "#f5f5f5" : "#fff", cursor: colourQty <= 1 ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center ...[cut]
+                            <div style={{ width: 40, height: 36, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 600, borderLeft: "1px solid #e0e0e0", borderRight: "1px solid #e0e0e0" }}>{colourQty}</div>
+                            <button onClick={() => setColourQty(Math.min(50, colourQty + 1))} style={{ width: 36, height: 36, border: "none", background: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><PlusIcon /></button>
+                          </div>
+
+                          {/* Total + Add to Cart */}
+                          <div style={{ fontSize: 13, color: "#777", marginBottom: 10 }}>{colourQty} × {colourSz.size}</div>
+                          <button onClick={handleColourAdd} style={{
+                            width: "100%", padding: "12px", borderRadius: 8, border: "none",
+                            background: colourAddedAnim ? B.teal : B.coral, color: "#fff",
+                            fontSize: 14, fontWeight: 600, cursor: "pointer", transition: "all 0.3s",
+                            fontFamily: "'Outfit', sans-serif", display: "flex", alignItems: "center", justifyContent: "center", gap: 8
+                          }}>
+                            {colourAddedAnim ? <><CheckIcon /> Added!</> : <><CartIcon /> Add to Cart</>}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );})}
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+
+        )}
+
+        {/* Related Products */}
+        {related.length > 0 && (
+          <div style={{ marginTop: 60, paddingTop: 40, borderTop: "1px solid #e8e4de" }}>
+            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 24 }}>You may also like</h2>
+            <div className="g3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+              {related.map(r => (
+                <div key={r.id} onClick={() => onOpenProduct(r)}
+                  style={{ background: "#fff", borderRadius: 12, border: "1px solid #eee", overflow: "hidden", cursor: "pointer", transition: "transform 0.3s" }}
+                  onMouseEnter={e => e.currentTarget.style.transform = "translateY(-4px)"} onMouseLeave={e => e.currentTarget.style.transform = ""}>
+                  <div style={{ background: B.off, padding: 20, display: "flex", alignItems: "center", justifyContent: "center", height: 180 }}>
+                    {r.img && <img src={r.img} alt={r.name} style={{ maxHeight: 160, maxWidth: "75%", objectFit: "contain", filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))" }} />}
+                  </div>
+                  <div style={{ padding: 16 }}>
+                    <h4 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{r.name}</h4>
+                    <p style={{ fontSize: 13, color: "#777", marginBottom: 8 }}>{r.desc}</p>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: B.coral }}>View details</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProductDetailPage;
+
+===== src\components\home\TrendingColours.jsx =====
+import { B } from "../../data/theme.js";
+import { trendingColours } from "../../data/colours.js";
+import { Arr, ArrL } from "../icons/Icons.jsx";
+import PaintBlob from "../common/PaintBlob.jsx";
+import { useApp } from "../../context/useApp.js";
+
+export default function TrendingColours() {
+  const { colourCarouselIdx, setColourCarouselIdx, CARDS_VISIBLE, handleColourClick, nav, colourHref, aReset, addSamplePot } = useApp();
+  return (
+    <>
+        {/* Trending Colours */}
+        <section style={{ background: B.off, padding: "60px 0" }}>
+          <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
+            {/* Header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
+              <h2 className="st">Our trending colours</h2>
+              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                <button className="btn bd dsk" onClick={() => nav("all-colours")}>Shop all colours</button>
+                {/* Prev arrow */}
+                <button
+                  onClick={() => setColourCarouselIdx(i => Math.max(0, i - 1))}
+                  disabled={colourCarouselIdx === 0}
+                  style={{ width: 42, height: 42, borderRadius: "50%", border: "1.5px solid #ddd", background: colourCarouselIdx === 0 ? "#f5f5f5" : "#fff", cursor: colourCarouselIdx === 0 ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: colourCaro ...[cut]
+                  <ArrL />
+                </button>
+                {/* Next arrow */}
+                <button
+                  onClick={() => setColourCarouselIdx(i => Math.min(trendingColours.length - CARDS_VISIBLE, i + 1))}
+                  disabled={colourCarouselIdx >= trendingColours.length - CARDS_VISIBLE}
+                  style={{ width: 42, height: 42, borderRadius: "50%", border: "1.5px solid #1a1a1a", background: colourCarouselIdx >= trendingColours.length - CARDS_VISIBLE ? "#f5f5f5" : "#1a1a1a", cursor: colourCarouselIdx >= trendingColours.length - CARDS_VISIBLE ? "not-allowed" : "pointer", disp ...[cut]
+                  <Arr />
+                </button>
+              </div>
+            </div>
+            {/* Cards grid — 5 visible */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 16 }}>
+              {trendingColours.slice(colourCarouselIdx, colourCarouselIdx + CARDS_VISIBLE).map((c, i) => (
+                <a key={colourCarouselIdx + i} href={colourHref(c)}
+                  onClick={e => { e.preventDefault(); handleColourClick(c); }}
+                  style={{ ...aReset, borderRadius: 14, overflow: "hidden", cursor: "pointer", transition: "transform .3s, box-shadow .3s", display: "flex", flexDirection: "column", background: c.color }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-7px)"; e.currentTarget.style.boxShadow = "0 24px 52px rgba(0,0,0,.2)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
+                  {/* Swatch area */}
+                  <div style={{ padding: "28px 20px 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <div style={{ width: "80%", aspectRatio: "1 / 1", filter: "drop-shadow(0 8px 20px rgba(0,0,0,.22))" }}>
+                      <PaintBlob color={c.color} v={i} />
+                    </div>
+                  </div>
+                  {/* Info bar */}
+                  <div style={{ padding: "14px 16px 16px", background: "rgba(0,0,0,.18)" }}>
+                    <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 2, textShadow: "0 1px 4px rgba(0,0,0,.3)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.name}®</h4>
+                    <p style={{ fontSize: 11, color: "rgba(255,255,255,.75)", marginBottom: 12, lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.desc}</p>
+                    <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
+                      <button onClick={e => { e.stopPropagation(); e.preventDefault(); handleColourClick(c); }} style={{ flex: 1, padding: "7px 0", background: "#1a1a1a", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'Outfit',sans-seri ...[cut]
+                      <button onClick={e => { e.stopPropagation(); e.preventDefault(); addSamplePot(c.name); }} style={{ flex: 1, padding: "7px 0", background: "transparent", color: "#fff", border: "1.5px solid rgba(255,255,255,.65)", borderRadius: 4, fontSize: 12, fontWeight: 600, cursor: "pointer" ...[cut]
+                      <button onClick={e => { e.stopPropagation(); e.preventDefault(); handleColourClick(c); }} style={{ width: 30, height: 30, background: "rgba(255,255,255,.2)", border: "none", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", ...[cut]
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+            {/* Progress indicator */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 6, marginTop: 24 }}>
+              {Array.from({ length: Math.ceil(trendingColours.length / CARDS_VISIBLE) }).map((_, i) => {
+                const isActive = Math.floor(colourCarouselIdx / CARDS_VISIBLE) === i;
+                return <button key={i} onClick={() => setColourCarouselIdx(i * CARDS_VISIBLE)} style={{ width: isActive ? 24 : 8, height: 8, borderRadius: 4, background: isActive ? "#1a1a1a" : "#ccc", border: "none", cursor: "pointer", transition: "all .3s", padding: 0 }} />;
+              })}
+            </div>
+          </div>
+        </section>
+    </>
+  );
+}
+
+===== LINES =====
+src\components\advisor\PaintAdvisor.jsx:120: <div style={{ maxWidth: "88%", background: m.role === "user" ? B.coral : "#fff", color: m.role === "user" ? "#fff" : "#222", border: m.role === "user" ? "none" : "1px solid #eee", borderRadius: 14, pa
+src\components\home\TrendingColours.jsx:51: <h4 style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 2, textShadow: "0 1px 4px rgba(0,0,0,.3)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.name}�</h4>
+src\components\home\TrendingColours.jsx:52: <p style={{ fontSize: 11, color: "rgba(255,255,255,.75)", marginBottom: 12, lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.desc}</p>
+src\components\layout\QuoteModal.jsx:98: <span style={{ color: "#777", whiteSpace: "nowrap" }}>{item.size} x {item.qty}</span>
+src\config\business.js:8: delivery: "We deliver around Kampala for orders above UGX 3,000,000.",
+src\dashboard\AlertsAdmin.jsx:107: {a.summary && <p style={{ fontSize: 14, color: "#444", margin: "8px 0 0", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{a.summary}</p>}
+src\dashboard\EnquiriesAdmin.jsx:78: {r.message && <p style={{ marginTop: 8, whiteSpace: "pre-wrap" }}><strong>{dist ? "Business experience:" : "Message:"}</strong> {r.message}</p>}
+src\dashboard\FeedbackAdmin.jsx:75: <p style={{ fontSize: 14, color: "#333", margin: "8px 0 0", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{isOpen ? r.message : r.message.length > 160 ? r.message.slice(0, 160) + "..." : r.message}</p>
+src\dashboard\MediaAdmin.jsx:85: <div title={f.name} style={{ fontSize: 12, color: "#555", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{f.name}</div>
+src\dashboard\ProfessionalsAdmin.jsx:70: <p style={{ fontSize: 14, color: "#333", margin: "8px 0 0", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{isOpen || r.problem.length <= 160 ? r.problem : r.problem.slice(0, 160) + "..."}</p>
+src\data\colours.js:173: "Whites":    "#F0EEE8",
+src\data\colours.js:185: "Whites": {
+src\data\colours.js:186: slug: "whites-colour",
+src\data\colours.js:191: desc: "Crisp, clean whites and near-whites that bring light, space and calm to any room",
+src\data\inspirations.js:29: tips: ["Keep all furnishings in a tonal palette � creams, tans, and warm whites � to let the beige walls anchor the room without competing.", "Layer natural textures like linen throws, jute rugs, and 
+src\data\inspirations.js:37: tips: ["White furniture and sheer curtains amplify the light, airy quality of blue walls � lean into bright, clean pieces.", "Introduce warmth through natural wood tones in the coffee table and side t
+src\data\navData.js:4: // Colour family links ("Whites", "Blues"...) and style links ("Modern"...) find their page from the colour data.
+src\data\storyPages.js:6: export const storyPages = {
+src\pages\PageSwitch.jsx:15: import { storyPages } from "../data/storyPages.js";
+src\pages\PageSwitch.jsx:138: ) : pg !== "home" && storyPages[pg] ? (
+src\pages\ProductDetailPage.jsx:128: style={{ height: 42, borderRadius: 22, border: "1.5px solid " + B.coral, background: "#fff", color: B.coral, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 18px", fontFamily: "inherit",
+src\pages\ProductDetailPage.jsx:160: style={{ background: "none", border: "none", borderBottom: "3px solid " + (tab === t.id ? B.coral : "transparent"), padding: "14px 0 11px", fontSize: 14, fontWeight: tab === t.id ? 700 : 500, color: t
+src\pages\StoryPage.jsx:2: import { storyPages } from "../data/storyPages.js";
+src\pages\StoryPage.jsx:8: const p = storyPages[key]; if (!p) return null;
+src\pages\StoryPage.jsx:18: <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 24px", display: "grid", gridTemplateColumns: `repeat(${p.stats.length}, 1fr)`, gap: 24, textAlign: "center" }}>
+src\pages\StoryPage.jsx:19: {p.stats.map((s, i) => (<div key={i}><div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: B.coral }}>{s.n}</div><div style={{ fontSize: 13, opacity: .7, textTra
+src\pages\StoryPage.jsx:34: {Object.entries(storyPages).filter(([k]) => k !== key).map(([k, s]) => (

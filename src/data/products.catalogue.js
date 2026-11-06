@@ -1612,7 +1612,7 @@ export const PRODUCTS = [
     "longDesc": "A fine-grade cementitious-based powder modified with a variety of fine extenders & other additives. It is mixed with water to create a smooth, thin layer over walls to cover imperfections, dents, cracks, and old textured paint. It is your solution for achieving a smooth finish before painting.",
     "mixing": {
       "label": "Mix",
-      "value": "6-8 kgs of water, then slowly empty the contents of the bag into the water and mix with a hand mixer for 5 mins."
+      "value": "1 litre of water for every 0.5kg of powder (40 litres of water per 20kg sack). Pour the water into a clean container first, then slowly empty the sack into the water and mix with a hand mixer for 5 minutes."
     },
     "application": "Trowel",
     "coverage": "1kg/0.5 Sqm",

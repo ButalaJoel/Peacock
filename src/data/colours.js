@@ -170,7 +170,6 @@ export const trendingColours = [
 ];
 
 export const CAT_SWATCH_COLORS = {
-  "Whites":    "#F0EEE8",
   "Creams":    "#F3EBD5",
   "Neutrals":  "#A09888",
   "Pinks":     "#DFA0A0",
@@ -182,15 +181,6 @@ export const CAT_SWATCH_COLORS = {
 };
 
 export const COLOUR_CATEGORIES = {
-  "Whites": {
-    slug: "whites-colour",
-    repColor: "#F0EEE8",
-    gradient: "linear-gradient(135deg, #f7f5f2 0%, #ebe7df 100%)",
-    textColor: "#2a2a2a",
-    accent: "#6b8e8a",
-    desc: "Crisp, clean whites and near-whites that bring light, space and calm to any room",
-    colors: ["Ice","Water Lily","White Clad","Apple White","Egg Shell","Soft White","Whisper Pink","Pale Beta","Pale Lilac"],
-  },
   "Creams": {
     slug: "creams-colour",
     repColor: "#F3EBD5",
@@ -206,8 +196,8 @@ export const COLOUR_CATEGORIES = {
     gradient: "linear-gradient(135deg, #f4f0eb 0%, #e5ddd4 100%)",
     textColor: "#2a2a2a",
     accent: "#8a7060",
-    desc: "Timeless taupes, tans and warm greiges — effortlessly versatile backdrops that complement any style",
-    colors: ["Pebble","Greybrown","Mushroom","San Jose","Cashew","Dadde Van","Pale Umber","Garbanzo Bean","Light Tan","Simba","Sahara Sand","Mocassin"],
+    desc: "Whites, off-whites, taupes, tans and warm greiges: effortlessly versatile backdrops that complement any style",
+    colors: ["Ice","Water Lily","White Clad","Apple White","Egg Shell","Soft White","Whisper Pink","Pale Beta","Pale Lilac","Pebble","Greybrown","Mushroom","San Jose","Cashew","Dadde Van","Pale Umber","Garbanzo Bean","Light Tan","Simba","Sahara Sand","Mocassin"],
   },
   "Pinks": {
     slug: "pinks-colour",

@@ -110,9 +110,9 @@
 .ann-link { color: inherit; text-decoration: none; opacity: .88; transition: opacity .2s; }
 .ann-link:hover { opacity: 1; text-decoration: underline; }
 .pill-header { position: sticky; top: 12px; z-index: 200; padding: 0 16px; margin-top: 12px; }
-.pill-bar { max-width: 1240px; margin: 0 auto; height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 12px 0 20px; border-radius: 40px; background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(16px) saturate(170%); backdrop-filter: blur(16px) saturate(170%); border: 1px solid rgba(255,255,255,.7); box-shadow: 0 8px 30px rgba(20,20,20,.10); transition: background .25s, box-shadow .25s; }
+.pill-bar { max-width: 1240px; margin: 0 auto; height: 80px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 12px 0 20px; border-radius: 40px; background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(16px) saturate(170%); backdrop-filter: blur(16px) saturate(170%); border: 1px solid rgba(255,255,255,.7); box-shadow: 0 8px 30px rgba(20,20,20,.10); transition: background .25s, box-shadow .25s; }
 .pill-bar.pill-scrolled { background: rgba(255,255,255,.88); box-shadow: 0 10px 34px rgba(20,20,20,.16); }
-.pill-logo img { height: 44px; display: block; }
+.pill-logo img { height: 60px; width: auto; display: block; }
 .pill-nav { display: flex; gap: 2px; align-items: center; }
 .pill-item { display: inline-flex; align-items: center; gap: 5px; padding: 9px 15px; border: none; background: transparent; border-radius: 24px; font: 500 13.5px 'Outfit', sans-serif; letter-spacing: .4px; text-transform: uppercase; color: #1a1a1a; cursor: pointer; transition: background .2s, color .2s; }
 .pill-item:hover, .pill-item.is-open { background: rgba(232,96,60,.13); color: #C84A2A; }
@@ -135,7 +135,7 @@
 .pill-cards { display: flex; flex-direction: column; gap: 12px; }
 .pill-card { display: block; border-radius: 16px; padding: 18px 20px; text-decoration: none; cursor: pointer; transition: transform .25s; }
 .pill-card:hover { transform: translateY(-2px); }
-@media (max-width: 768px) { .pill-header { top: 8px; margin-top: 8px; padding: 0 10px; } .pill-bar { height: 56px; padding: 0 8px 0 16px; } .pill-logo img { height: 38px; } }
+@media (max-width: 768px) { .pill-header { top: 8px; margin-top: 8px; padding: 0 10px; } .pill-bar { height: 66px; padding: 0 8px 0 16px; } .pill-logo img { height: 48px; } }
 
 /* Colour grid: 4 columns on wide screens, 2 on smaller ones (the page is never more than 4 rows) */
 .colour-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }

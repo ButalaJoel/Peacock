@@ -46,7 +46,7 @@ export async function submitFeedback(v) {
     const reference = newReference("PP-FB");
     const { error } = await supabase.from("feedback").insert({
       reference, type: v.type, name: cut(v.name, 120), phone: cut(v.phone, 40), email: cut(v.email, 254),
-      product: cut(v.product, 160), place: cut(v.place, 160), message: cut(v.message, 4000), rating: v.rating ? Number(v.rating) : null,
+      product: cut(v.product, 160), place: cut(v.place, 160), message: cut(v.message, 4000), rating: v.rating ? Number(v.rating) : null, publish_ok: !!v.publishOk,
     });
     if (!error) return { ok: true, reference };
     if (error.code !== "23505") return { ok: false, error: "Your message could not be saved (" + error.message + "). Please try again, or contact us on WhatsApp." };

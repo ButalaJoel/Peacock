@@ -1,3 +1,4 @@
+import PaintBlob from "../common/PaintBlob.jsx";
 import { useEffect, useState } from "react";
 import { useApp } from "../../context/useApp.js";
 import { NAV, menuForPage, resolvePage, familyLinks } from "../../data/navData.js";
@@ -43,7 +44,7 @@ export default function Header() {
               className={"pill-item" + (activeMenu === i ? " is-open" : "") + (currentMenu === m.id ? " is-current" : "")}
               aria-expanded={activeMenu === i}
               onMouseEnter={() => { if (pinned !== null && pinned !== i) setPinned(null); mE(i); }}
-              onClick={() => { setPinned(pinned === i ? null : i); mE(i); }}>
+              onClick={() => { if (m.direct) { setActiveMenu(null); setPinned(null); nav(m.direct); return; } setPinned(pinned === i ? null : i); mE(i); }}>
               {m.label} <ChevDown />
             </button>
           ))}
@@ -70,7 +71,7 @@ export default function Header() {
                   <div className="pill-fam">
                     {familyLinks().map(f => (
                       <a key={f.label} className="pill-link" href={makeHref(f.page)} onClick={e => go(e, f)}>
-                        <span className="pill-dot" style={{ background: f.color }} />
+                        <PaintBlob size={28} color={f.color} v={f.label.length} />
                         <span>{f.label}<small style={{ display: "block", fontSize: 10.5, color: "#aaa" }}>{f.count} shades</small></span>
                       </a>
                     ))}

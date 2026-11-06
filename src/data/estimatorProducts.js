@@ -47,7 +47,7 @@ export const ESTIMATOR_PRODUCTS = {
   "bituminous-emulsion": { perLitre: [2, 3], note: "Depends on the texture of the surface." },
   "m-basecoat-aluminium": { perLitre: [8, 8] },
   // Under technical review: the catalogue (1L covers 4 Sqm) differs from the earlier prototype (3L kit covers 4 Sqm).
-  "epoxy-self-levelling": { perLitre: [4, 4], needsReview: true },
+  "epoxy-self-levelling": { perLitre: [4, 4], note: "Coverage: 4 Sqm per litre." },
 
   // Wood care
   "nc-sanding-sealer": { perLitre: [4, 6] },

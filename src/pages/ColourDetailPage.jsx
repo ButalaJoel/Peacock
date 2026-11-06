@@ -1,9 +1,11 @@
+import PaintBlob from "../components/common/PaintBlob.jsx";
 import { CATEGORIES } from "../data/products.js";
 import { useState } from "react";
 import { B } from "../data/theme.js";
 import { PRODUCTS } from "../data/products.js";
 import { COLOUR_DETAILS } from "../data/colours.js";
 import { CloseIcon, Arr, ArrL, MinusIcon, PlusIcon, CheckIcon } from "../components/icons/Icons.jsx";
+import ComplementBand from "../components/colours/ComplementBand.jsx";
 
 const PAINT_RECOMMENDATIONS = PRODUCTS.filter(p => p.colourSystems.length > 0);
 
@@ -61,13 +63,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
 
           {/* Swatch ┃ tagline row */}
           <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 18 }}>
-            <div style={{
-              width: 68, height: 68, borderRadius: "50%",
-              background: colour.color,
-              border: "3px solid rgba(255,255,255,.85)",
-              boxShadow: "0 2px 18px rgba(0,0,0,.18)",
-              flexShrink: 0,
-            }} />
+            <div style={{ width: 88, height: 88, flexShrink: 0, filter: "drop-shadow(0 8px 16px rgba(0,0,0,.22))" }}><PaintBlob color={colour.color} v={1} /></div>
             <div style={{ width: 1, height: 48, background: borderColor, flexShrink: 0 }} />
             <p style={{ fontSize: 14.5, color: "#2a2a2a", fontWeight: 400, lineHeight: 1.45, maxWidth: 220 }}>
               {details.tagline || colour.desc}
@@ -129,7 +125,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 26 }}>
                 <div>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                    <div style={{ width: 32, height: 32, borderRadius: "50%", background: colour.color, border: "2px solid rgba(0,0,0,0.1)", flexShrink: 0 }} />
+                    <PaintBlob size={36} color={colour.color} v={1} />
                     <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1.2, color: "#888" }}>{colour.name}</span>
                   </div>
                   <h2 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: "#1a1a1a", fontFamily: "'Outfit', sans-serif" }}>Buy Paint</h2>
@@ -259,6 +255,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
           )}
         </div>
       </div>
+      <ComplementBand colour={colour} />
     </div>
   );
 };

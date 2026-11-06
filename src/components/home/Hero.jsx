@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { INSPO_SCANDI_SAGE, INSPO_LR_PALE_BEIGE, INSPO_KT_CREAM } from "../../data/images.js";
 import { trendingColours } from "../../data/colours.js";
+import { heroPhoto } from "../../data/heroPhotos.js";
 import { Arr, ArrL } from "../icons/Icons.jsx";
 import { useApp } from "../../context/useApp.js";
 
@@ -22,7 +23,7 @@ export default function Hero() {
       title: "Paint your next room before the first brush stroke.",
       copy: "Compare Peacock shades, finishes, and real products in one warm studio built for homes, schools, shops, and site teams.",
       accent: "#ff4d8b",
-      roomImg: INSPO_SCANDI_SAGE,
+      roomImg: heroPhoto(0, INSPO_SCANDI_SAGE),
       swatches: [
         { name: "Rose", color: "#CC7B8C" },
         { name: "Balm", color: "#CADCCB" },
@@ -38,7 +39,7 @@ export default function Hero() {
       title: "Give living rooms colour that holds its nerve.",
       copy: "Warm neutrals, rich masonry tones, and practical coverage details help every interior feel deliberate.",
       accent: "#1a3a3a",
-      roomImg: INSPO_LR_PALE_BEIGE,
+      roomImg: heroPhoto(1, INSPO_LR_PALE_BEIGE),
       swatches: [
         { name: "Lake Green", color: "#BFCA9E" },
         { name: "Tandoori", color: "#8E3020" },
@@ -54,7 +55,7 @@ export default function Hero() {
       title: "From polished walls to tough workshop floors.",
       copy: "Browse coatings for wood, vehicles, decorative walls, and industrial surfaces with the same colour-first energy.",
       accent: "#b8a4ed",
-      roomImg: INSPO_KT_CREAM,
+      roomImg: heroPhoto(2, INSPO_KT_CREAM),
       swatches: [
         { name: "Violet Bouquet", color: "#C0A0C8" },
         { name: "Copper", color: "#AD6040" },

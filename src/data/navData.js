@@ -6,7 +6,7 @@ import { COLOUR_CATEGORIES, STYLE_CATEGORIES, CAT_SWATCH_COLORS } from "./colour
 
 export const NAV = [
   {
-    id: "story", label: "Our Story",
+    id: "story", label: "Our Story", direct: "vision",
     groups: [
       { title: "Company", links: [
         { label: "About Us", page: "about" },
@@ -27,7 +27,6 @@ export const NAV = [
         { label: "Interior Paints", page: "decorative-paints-interior" },
         { label: "Exterior Paints", page: "decorative-paints-exterior" },
         { label: "Primers", page: "decorative-paints-primers" },
-        { label: "Thinners & Solvents", page: "thinners-solvents" },
       ], footer: { label: "All decorative paints", page: "decorative-paints" } },
       { title: "Industrial / Protective", links: [
         { label: "General Coatings", page: "industrial-coatings-general" },
@@ -80,7 +79,8 @@ export const NAV = [
         { label: "Paint Estimator", page: "estimator" },
         { label: "News & Updates", page: "news" },
         { label: "Ask an expert", page: "contact" },
-        { label: "Complaints & feedback", page: "feedback" },
+        { label: "Feedback", page: "feedback" },
+        { label: "Customer reviews", page: "reviews" },
         { label: "Request a quote", action: "quote" },
       ] },
     ],
@@ -130,7 +130,7 @@ export function menuForPage(pg) {
   if (pg === "product" || pg.startsWith("decorative-paints") || pg.startsWith("industrial-coatings") || pg === "wood-care-paints" || pg === "thinners-solvents") return "products";
   if (pg === "all-colours" || pg === "colour-detail" || pg === "colour-picker" || pg === "colour-systems" || pg.endsWith("-colour")) return "colours";
   if (pg.endsWith("-inspiration") || pg.endsWith("-style")) return "inspiration";
-  if (pg === "estimator" || pg === "news" || pg === "feedback") return "advice";
+  if (pg === "estimator" || pg === "news" || pg === "feedback" || pg === "reviews") return "advice";
   if (pg === "professionals" || pg === "distributor" || pg === "projects") return "professionals";
   return null;
 }

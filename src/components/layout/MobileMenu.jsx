@@ -1,3 +1,4 @@
+import PaintBlob from "../common/PaintBlob.jsx";
 import { useApp } from "../../context/useApp.js";
 import { NAV, resolvePage, familyLinks } from "../../data/navData.js";
 import { LOGO_HEADER } from "../../data/images.js";
@@ -55,7 +56,7 @@ export default function MobileMenu() {
                 {group.type === "families"
                   ? familyLinks().map(f => (
                       <a key={f.label} href={makeHref(f.page)} onClick={e => go(e, f)} style={row}>
-                        <span style={{ display: "flex", alignItems: "center", gap: 10 }}><span className="pill-dot" style={{ background: f.color }} />{f.label}</span>
+                        <span style={{ display: "flex", alignItems: "center", gap: 10 }}><PaintBlob size={26} color={f.color} v={f.label.length} />{f.label}</span>
                         <span style={{ fontSize: 12, color: "#aaa" }}>{f.count}</span>
                       </a>
                     ))

@@ -10,6 +10,7 @@ import AlertsAdmin from "./AlertsAdmin.jsx";
 import ApplicationsAdmin from "./ApplicationsAdmin.jsx";
 import FeedbackAdmin from "./FeedbackAdmin.jsx";
 import AwardsAdmin from "./AwardsAdmin.jsx";
+import ReviewsAdmin from "./ReviewsAdmin.jsx";
 import ProfessionalsAdmin from "./ProfessionalsAdmin.jsx";
 import MediaAdmin from "./MediaAdmin.jsx";
 import { S } from "./ui.js";
@@ -62,7 +63,7 @@ export default function DashboardPage() {
   }
 
   const badge = n => (n ? " (" + n + " new)" : "");
-  const TABS = [["projects", "Projects"], ["news", "News & updates"], ["quotes", "Quote requests" + badge(fresh.quotes)], ["enquiries", "Enquiries" + badge(fresh.enquiries)], ["applications", "Applications" + badge(fresh.applications)], ["feedback", "Feedback" + badge(fresh.feedback)], ["professionals", "Professionals" + badge(fresh.professionals)], ["awards", "Awards"], ["media", "Media library"], ["alerts", "Alerts" + (fresh.alerts ? " (" + fresh.alerts + " waiting)" : "")], ["subscribers", "Newsletter subscribers"]];
+  const TABS = [["projects", "Projects"], ["news", "News & updates"], ["quotes", "Quote requests" + badge(fresh.quotes)], ["enquiries", "Enquiries" + badge(fresh.enquiries)], ["applications", "Applications" + badge(fresh.applications)], ["feedback", "Feedback" + badge(fresh.feedback)], ["reviews", "Reviews"], ["professionals", "Professionals" + badge(fresh.professionals)], ["awards", "Awards"], ["media", "Media library"], ["alerts", "Alerts" + (fresh.alerts ? " (" + fresh.alerts + " waiting)" : "")], ["subscribers", "Newsletter subscribers"]];
   return (
     <div style={S.wrap}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12, marginBottom: 26 }}>
@@ -88,6 +89,7 @@ export default function DashboardPage() {
       {tab === "applications" && <ApplicationsAdmin isAdmin={role === "admin"} onChange={countNew} />}
       {tab === "professionals" && <ProfessionalsAdmin isAdmin={role === "admin"} onChange={countNew} />}
       {tab === "media" && <MediaAdmin />}
+      {tab === "reviews" && <ReviewsAdmin />}
       {tab === "awards" && <AwardsAdmin />}
       {tab === "feedback" && <FeedbackAdmin isAdmin={role === "admin"} onChange={countNew} />}
       {tab === "alerts" && <AlertsAdmin isAdmin={role === "admin"} onChange={countNew} />}

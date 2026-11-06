@@ -14,11 +14,13 @@ export default function StoryPage({ pageKey }) {
           <p style={{ fontSize: 20, opacity: .9, fontWeight: 300 }}>{p.subtitle}</p>
         </div>
       </section>
-      <section style={{ background: "#1a1a1a", color: "#fff", padding: "32px 0" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 24px", display: "grid", gridTemplateColumns: `repeat(${p.stats.length}, 1fr)`, gap: 24, textAlign: "center" }}>
-          {p.stats.map((s, i) => (<div key={i}><div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: B.coral }}>{s.n}</div><div style={{ fontSize: 13, opacity: .7, textTransform: "uppercase", letterSpacing: 1 }}>{s.l}</div></div>))}
-        </div>
-      </section>
+      {p.stats && p.stats.length > 0 && (
+        <section style={{ background: "#1a1a1a", color: "#fff", padding: "32px 0" }}>
+          <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 24px", display: "grid", gridTemplateColumns: `repeat(${p.stats.length}, 1fr)`, gap: 24, textAlign: "center" }}>
+            {p.stats.map((s, i) => (<div key={i}><div style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, fontWeight: 700, color: B.coral }}>{s.n}</div><div style={{ fontSize: 13, opacity: .7, textTransform: "uppercase", letterSpacing: 1 }}>{s.l}</div></div>))}
+          </div>
+        </section>
+      )}
       <section style={{ maxWidth: 900, margin: "0 auto", padding: "60px 24px" }}>
         {p.sections.map((s, i) => (<div key={i} style={{ marginBottom: 56, paddingBottom: i < p.sections.length - 1 ? 56 : 0, borderBottom: i < p.sections.length - 1 ? "1px solid #e8e4de" : "none" }}>
           <div style={{ display: "flex", alignItems: "flex-start", gap: 20 }}>

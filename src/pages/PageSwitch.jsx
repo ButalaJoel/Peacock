@@ -1,3 +1,4 @@
+import ReviewsPage from "./ReviewsPage.jsx";
 import PrivacyPage from "./PrivacyPage.jsx";
 import FeedbackPage from "./FeedbackPage.jsx";
 import DashboardEntry from "../dashboard/DashboardEntry.jsx";
@@ -40,6 +41,8 @@ export default function PageSwitch() {
         <ProfessionalsPage />
       ) : pg === "dashboard" ? (
         <DashboardEntry />
+      ) : pg === "reviews" ? (
+        <ReviewsPage />
       ) : pg === "feedback" ? (
         <FeedbackPage />
       ) : pg === "privacy" ? (

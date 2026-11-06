@@ -65,7 +65,7 @@ export default function AllColoursPage() {
             const count = trendingColours.filter(c => COLOUR_CATEGORIES[name].colors.includes(c.name)).length;
             return (
               <button key={name} onClick={() => chooseFamily(name)} style={chip(family === name)} aria-pressed={family === name}>
-                <span style={{ width: 14, height: 14, borderRadius: "50%", background: CAT_SWATCH_COLORS[name] || "#ddd", border: "1px solid rgba(0,0,0,.15)" }} />
+                <PaintBlob size={18} color={CAT_SWATCH_COLORS[name] || "#ddd"} v={name.length} />
                 {name} ({count})
               </button>
             );
@@ -93,7 +93,6 @@ export default function AllColoursPage() {
               onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
               <div style={{ background: c.color + "28", padding: "20px 16px", height: 160, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                 <div style={{ width: "78%", height: "90%" }}><PaintBlob color={c.color} v={i} /></div>
-                <div style={{ position: "absolute", bottom: 10, right: 12, width: 28, height: 28, borderRadius: "50%", background: c.color, border: "3px solid rgba(255,255,255,.8)", boxShadow: "0 2px 8px rgba(0,0,0,.12)" }} />
               </div>
               <div style={{ padding: "14px 16px 18px" }}>
                 <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 4, color: "#1a1a1a" }}>{c.name}&reg;</h4>

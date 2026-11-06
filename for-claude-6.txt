@@ -1,0 +1,91 @@
+﻿checklists.js:27: { label: "Clean", text: "Use soap and water indoors, or wood cleaner or a bleach solution outdoors. Let it dry." },
+colours.js:43: { name: "Water Lily",      desc: "Delicate off-white",          color: "#EEEADE" },
+colours.js:200: colors: ["Ice","Water Lily","White Clad","Apple White","Egg Shell","Soft White","Whisper Pink","Pale Beta","Pale Lilac","Pebble","Greybrown","Mushroom","San Jose","Cashew","Dadde Van","Pale Umber","Garbanzo Bean","Light Tan","Simba","Sahara Sand","Mocassin"],
+colours.js:302: colors: ["Ice", "Water Lily", "Pale Beta", "Soft White", "Apple White", "Egg Shell", "Ash", "Squirrel Grey", "Philips Grey", "Pale Lilac", "Rose Petal", "Ripple Green", "Soft Celery", "Memory", "Duck Egg", "Balm", "Pale Fern", "Whisper Pink"],
+colours.js:322: "Water Lily": {
+colours.js:324: longDesc: "Water Lily is a gentle, barely-there off-white carrying the faintest whisper of green. Inspired by the serene palette of a still garden pond, it brings natural tranquillity to any interior.",
+colours.js:360: longDesc: "Pale Beta is the colour of clear shallow water on a white sand beach — a serene aqua-touched white that brings an immediate sense of calm. Cool, fresh, and versatile, it pairs beautifully with natural timbers and coastal-inspired interiors.",
+colours.js:434: "Pebble": { tagline: "A Smooth Warm Grey-Beige for Modern Interiors", longDesc: "Pebble is the colour of a smooth, water-worn stone — a perfectly balanced warm grey-beige that bridges the gap between neutral and warm. Endlessly versatile, it works with almost any colour palette and brings a quiet, sophisticated calm to living rooms, hallways, and bedrooms.", tones: "Neutral", hues: "Grey, Beige", slides: [] },
+colours.js:486: "Lake Green": { tagline: "A Tranquil Muted Green Inspired by Still Waters", longDesc: "Lake Green is the colour of still, deep water seen through reeds — a tranquil, muted green-grey with a calming, meditative quality. Neither too blue nor too yellow, its perfectly balanced tone creates a sense of peace and natural stillness in any interior it graces.", tones: "Cool", hues: "Green, Grey", slides: [] },
+colours.js:494: "Mint": { tagline: "A Fresh Cool Mint for Light, Airy Interiors", longDesc: "Mint is clean, cool, and immediately refreshing — the colour of fresh mint leaves in a glass of cold water. Its light, uplifting character makes rooms feel instantly brighter and more alive, bringing a clean, spa-like freshness to bathrooms, kitchens, and contemporary living spaces.", tones: "Cool", hues: "Mint, Green", slides: [] },
+colours.js:510: "Nile Blue": { tagline: "A Soft Nile River Blue for Serene Interiors", longDesc: "Nile Blue is the colour of the great river at its most tranquil — a soft, hazy blue with warm grey undertones that evoke the ancient, timeless beauty of East Africa's greatest waterway. Serene and deeply calming, it brings a sense of history, peace, and natural grandeur to any interior.", tones: "Cool", hues: "Blue, Grey", slides: [] },
+colours.js:514: "Turquoise": { tagline: "A Vivid Tropical Turquoise Full of Energy", longDesc: "Turquoise is the colour of tropical waters at their most brilliant — vivid, saturated, and bursting with the energy of the ocean. Bold and joyful, it brings an unmistakable sense of tropical vitality to any interior, working beautifully as a feature wall colour or in bright, creative spaces.", tones: "Cool", hues: "Turquoise, Blue, Green", slides: [] },
+colours.js:515: "Mermaid": { tagline: "A Mystical Deep Teal for Enchanting, Dramatic Rooms", longDesc: "Mermaid is a deep, mysterious teal with the dark, enchanting quality of deep ocean water. Rich and jewel-like, it creates rooms of extraordinary atmosphere — spaces that feel like they hold secrets, where every surface seems to glow with a deep, luminous depth that is utterly captivating.", tones: "Cool", hues: "Teal, Blue, Green", slides: [] },
+colours.js:516: "Memory": { tagline: "A Pale Sea-Foam Teal for Nostalgic, Gentle Rooms", longDesc: "Memory is a soft, pale sea-foam teal — the colour of shallow tropical waters over white sand. Delicate and nostalgic, it carries an air of gentle reminiscence and faraway places, creating rooms that feel simultaneously calm and quietly adventurous. A beautiful choice for bedrooms and bathrooms.", tones: "Cool", hues: "Teal, Green, Blue", slides: [] },
+estimatorProducts.js:50: "epoxy-self-levelling": { perLitre: [4, 4], needsReview: true },
+estimatorProducts.js:63: "skimmex": { perKg: [0.5, 0.5], packs: [{ size: "20kg", kg: 20 }], note: "Catalogue: 1 kg covers 0.5 Sqm." },
+kitImages.js:6: import KIT_5 from "../assets/kits/epoxy-self-levelling-base.png";
+kitImages.js:7: import KIT_6 from "../assets/kits/epoxy-self-levelling-hardener.png";
+kitImages.js:18: "epoxy-self-levelling": [{ label: "Base", src: KIT_5 }, { label: "Hardener", src: KIT_6 }],
+navData.js:33: { label: "Waterproofing & Construction", page: "industrial-coatings-waterproofing" },
+productImages.js:76: "epoxy-self-levelling": {
+productImages.js:77: "main": "/products/epoxy-self-levelling.png",
+productImages.js:209: "skimmex": {
+productImages.js:210: "main": "/products/skimmex.png",
+productImages.js:213: "/products/skimmex--g1.jpeg"
+productImages.js:298: "waterproof-plaster": {
+productImages.js:299: "main": "/products/waterproof-plaster.png",
+products.catalogue.js:36: "id": "waterproofing",
+products.catalogue.js:37: "label": "Waterproofing & Construction"
+products.catalogue.js:67: "desc": "A premium water based paint with a mid sheen, washable and abrasion resistant finish ideal for interiors.",
+products.catalogue.js:68: "longDesc": "A premium water based paint with a mid sheen, washable and abrasion resistant finish ideal for interiors.",
+products.catalogue.js:71: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:119: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:165: "longDesc": "A high-performance, durable, washable matt emulsion for interior and exterior walls. Ideal for high-traffic areas and moisture-prone areas. It resists stains, repels water and allows easy cleaning.",
+products.catalogue.js:168: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:216: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:259: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:303: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:347: "desc": "A latex-based exterior emulsion with excellent coverage, water repellence, strong adhesion, and high scrub resistance.",
+products.catalogue.js:348: "longDesc": "A latex-based exterior emulsion with excellent coverage, water repellence, strong adhesion, and high scrub resistance. Formulated for clay/concrete tiles, asbestos, and iron sheets, it contains unique ingredients that resist algae and fungi growth, ensuring long-lasting weather protection.",
+products.catalogue.js:351: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:436: "desc": "Water-based polychromatic finish with selected pearl material, delivering a unique sheen.",
+products.catalogue.js:437: "longDesc": "Water-based polychromatic finish with selected pearl material, delivering a unique sheen. Eco-friendly, non-toxic, odorless, washable, and safe for all interior and exterior environments.",
+products.catalogue.js:440: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:484: "desc": "A premium water-based wall primer that seals concrete and wood surfaces.",
+products.catalogue.js:485: "longDesc": "A premium water-based wall primer that seals concrete and wood surfaces. Ideal for both interior and exterior use.",
+products.catalogue.js:488: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:532: "desc": "A water-based primer formulated for lime and cement plaster surfaces, suitable for both interior and exterior use.",
+products.catalogue.js:533: "longDesc": "A water-based primer formulated for lime and cement plaster surfaces, suitable for both interior and exterior use. It provides a reliable base for applying topcoats - Standard Emulsion, Super Matt Vinyl Silk, and WeatherShield.",
+products.catalogue.js:536: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:609: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:649: "desc": "A durable emulsion top coat with a waterborne acrylic co-polymer, offering high sheen, excellent scrub resistance, and good coverage.",
+products.catalogue.js:650: "longDesc": "A durable emulsion top coat with a waterborne acrylic co-polymer, offering high sheen, excellent scrub resistance, and good coverage. Suitable for both interior and exterior surfaces.",
+products.catalogue.js:653: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:693: "desc": "A water-based grit material designed to create a durable, textured finish on both interior and exterior walls.",
+products.catalogue.js:694: "longDesc": "A water-based grit material designed to create a durable, textured finish on both interior and exterior walls. Commonly used to conceal surface imperfections such as on columns or boards.",
+products.catalogue.js:774: "desc": "Acrylic emulsion paint is a water-based coating formulated with acrylic polymers as binders, providing excellent adhesion, durability, and weather resistance on masonry, plaster, and concrete substrates.",
+products.catalogue.js:775: "longDesc": "Acrylic emulsion paint is a water-based coating formulated with acrylic polymers as binders, providing excellent adhesion, durability, and weather resistance on masonry, plaster, and concrete substrates. It offers a smooth, washable finish with low VOC emissions, fast drying (touch-dry in 30-60 minutes), and compatibility with interior/exterior applications.",
+products.catalogue.js:824: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:868: "value": "4 Litres of Paint: 1 Litre of water"
+products.catalogue.js:908: "longDesc": "A dual component product formulated to give protection to steel, wood, plastic and concrete substrates. Highly recommended for use in industrial settings exposed to chemicals, water and abrasive agents.",
+products.catalogue.js:1117: "id": "epoxy-self-levelling",
+products.catalogue.js:1118: "name": "Epoxy Self Levelling",
+products.catalogue.js:1502: "waterproofing"
+products.catalogue.js:1505: "longDesc": "A high-performance two-component sealer specially formulated for damp concrete surfaces and freshly plastered walls. It provides excellent water repellency, penetrates porous surfaces, and forms a durable protective coating with a high-gloss finish when used as a glaze coat.",
+products.catalogue.js:1534: "waterproofing"
+products.catalogue.js:1536: "desc": "A single component solvent free high build coating for both interior and exterior waterproofing of below ground structures such as vertical basement walls, floor slabs and foundations.",
+products.catalogue.js:1537: "longDesc": "A single component solvent free high build coating for both interior and exterior waterproofing of below ground structures such as vertical basement walls, floor slabs and foundations. It forms a seamless and durable waterproof layer with strong adhesion and also acts as an effective primer for asphalt based surfaces.",
+products.catalogue.js:1540: "value": "12 Litres of paint: 3 Litres of water"
+products.catalogue.js:1605: "id": "skimmex",
+products.catalogue.js:1606: "name": "Skimmex",
+products.catalogue.js:1609: "waterproofing"
+products.catalogue.js:1612: "longDesc": "A fine-grade cementitious-based powder modified with a variety of fine extenders & other additives. It is mixed with water to create a smooth, thin layer over walls to cover imperfections, dents, cracks, and old textured paint. It is your solution for achieving a smooth finish before painting.",
+products.catalogue.js:1615: "value": "6-8 kgs of water, then slowly empty the contents of the bag into the water and mix with a hand mixer for 5 mins."
+products.catalogue.js:1637: "id": "waterproof-plaster",
+products.catalogue.js:1638: "name": "Waterproof Plaster",
+products.catalogue.js:1641: "waterproofing"
+products.catalogue.js:1643: "desc": "A water-based material formulated with an assortment of versatile polymers and additives that enhance its performance as a barrier to water in walls affected by dampness.",
+products.catalogue.js:1644: "longDesc": "A water-based material formulated with an assortment of versatile polymers and additives that enhance its performance as a barrier to water in walls affected by dampness.",
+products.catalogue.js:1673: "waterproofing"
+products.catalogue.js:1675: "desc": "A two-component, cementitious waterproofing system designed for both interior and exterior applications on vertical and horizontal surfaces.",
+products.catalogue.js:1676: "longDesc": "A two-component, cementitious waterproofing system designed for both interior and exterior applications on vertical and horizontal surfaces.",
+products.catalogue.js:1702: "waterproofing"
+products.catalogue.js:1772: "waterproofing"
+products.catalogue.js:1775: "longDesc": "A single-component, ready-to-use liquid polymer additive engineered to enhance the performance of cementitious mortars and slurries. It significantly improves bond strength between old and new concrete substrates and is essential for durable concrete repairs, flooring toppings, screeds, and waterproof renders.",
+products.catalogue.js:1778: "value": "4 parts Water : 1 part Polatex for renders/plasters"
+products.catalogue.js:2179: "desc": "A water based, ready to use, highly effective biodegradable multi surface cleaner.",
+products.catalogue.js:2180: "longDesc": "A water based, ready to use, highly effective biodegradable multi surface cleaner. It is formulated to lift and remove soils, stains and grime on hard floors, and leaves your space and home clean, safe with a calming freshness.",
+productSheets.js:16: "epoxy-self-levelling",
+productSheets.js:40: "skimmex",
+productSheets.js:53: "waterproof-plaster",

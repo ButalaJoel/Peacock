@@ -37,7 +37,7 @@ const ColourCategoryPage = ({ categoryName, categoryData, allColours, onBack, on
             <a key={i} href={colourHrefFn ? colourHrefFn(c) : undefined} onClick={e => { e.preventDefault(); onOpenColour && onOpenColour(c); }}
               style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center", gap: 7, background: "#f8f8f6", borderRadius: 24, padding: "5px 14px 5px 7px", border: "1px solid #ebebeb", cursor: "pointer", transition: "border-color .2s" }}
               onMouseEnter={e => e.currentTarget.style.borderColor = "#ccc"} onMouseLeave={e => e.currentTarget.style.borderColor = "#ebebeb"}>
-              <div style={{ width: 18, height: 18, borderRadius: "50%", background: c.color, border: "1px solid rgba(0,0,0,.1)", flexShrink: 0 }} />
+              <PaintBlob size={22} color={c.color} v={i} />
               <span style={{ fontSize: 12, fontWeight: 500, color: "#555" }}>{c.name}</span>
             </a>
           ))}
@@ -59,7 +59,6 @@ const ColourCategoryPage = ({ categoryName, categoryData, allColours, onBack, on
               {/* Swatch area */}
               <div style={{ background: `${c.color}28`, padding: "20px 16px", height: 160, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
                 <div style={{ width: "78%", height: "90%" }}><PaintBlob color={c.color} v={i} /></div>
-                <div style={{ position: "absolute", bottom: 10, right: 12, width: 28, height: 28, borderRadius: "50%", background: c.color, border: "3px solid rgba(255,255,255,.8)", boxShadow: "0 2px 8px rgba(0,0,0,.12)" }} />
               </div>
               {/* Details */}
               <div style={{ padding: "14px 16px 18px" }}>
@@ -97,7 +96,7 @@ const ColourCategoryPage = ({ categoryName, categoryData, allColours, onBack, on
                 style={{ textDecoration: "none", color: "inherit", display: "flex", alignItems: "center", gap: 10, background: "#f8f8f6", border: "1px solid #eee", borderRadius: 12, padding: "11px 20px", cursor: "pointer", transition: "all .2s" }}
                 onMouseEnter={e => { e.currentTarget.style.background = "#f0ede8"; e.currentTarget.style.borderColor = "#ddd"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                 onMouseLeave={e => { e.currentTarget.style.background = "#f8f8f6"; e.currentTarget.style.borderColor = "#eee"; e.currentTarget.style.transform = ""; }}>
-                <div style={{ width: 24, height: 24, borderRadius: "50%", background: CAT_SWATCH_COLORS[name] || "#ddd", border: "2px solid rgba(0,0,0,.08)", flexShrink: 0 }} />
+                <PaintBlob size={28} color={CAT_SWATCH_COLORS[name] || "#ddd"} v={name.length} />
                 <span style={{ fontSize: 14, fontWeight: 600, color: "#333" }}>{name}</span>
                 <span style={{ fontSize: 12, color: "#aaa" }}>({allColours.filter(c => data.colors.includes(c.name)).length})</span>
               </a>
