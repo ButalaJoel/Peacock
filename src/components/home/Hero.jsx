@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { INSPO_SCANDI_SAGE, INSPO_LR_PALE_BEIGE, INSPO_KT_CREAM } from "../../data/images.js";
 import { trendingColours } from "../../data/colours.js";
 import { heroPhoto } from "../../data/heroPhotos.js";
@@ -8,12 +8,13 @@ import { useApp } from "../../context/useApp.js";
 export default function Hero() {
   const { handleColourClick, nav, openHeroProductGrid } = useApp();
   const [heroSlide, setHeroSlide] = useState(0);
+  const touchX = useRef(null);
 
   const [heroPaused, setHeroPaused] = useState(false);
 
   useEffect(() => {
     if (heroPaused) return undefined;
-    const t = setInterval(() => setHeroSlide(s => (s + 1) % 3), 6500);
+    const t = setInterval(() => setHeroSlide(s => (s + 1) % 3), 4500);
     return () => clearInterval(t);
   }, [heroPaused]);
 
@@ -94,6 +95,8 @@ export default function Hero() {
           onMouseLeave={() => setHeroPaused(false)}
           onFocus={() => setHeroPaused(true)}
           onBlur={() => setHeroPaused(false)}
+          onTouchStart={e => { touchX.current = e.touches[0].clientX; }}
+          onTouchEnd={e => { if (touchX.current === null) return; const dx = e.changedTouches[0].clientX - touchX.current; touchX.current = null; if (Math.abs(dx) > 40) showHeroSlide(heroSlide + (dx < 0 ? 1 : -1)); }}
           style={{ "--hero-accent": currentHero.accent }}
         >
           <div className="paint-hero-shell">
@@ -113,7 +116,8 @@ export default function Hero() {
             </div>
 
             <div className="paint-hero-visual" aria-label={`${currentHero.note} room inspiration`}>
-              <img className="paint-hero-room" src={currentHero.roomImg} alt={`${currentHero.note} painted with Peacock colours`} />
+              <img key={heroSlide} className="paint-hero-room" src={currentHero.roomImg} alt={`${currentHero.note} painted with Peacock colours`} />
+              <div style={{ display: "none" }} aria-hidden="true">{heroSlides.map(sl => <img key={sl.eyebrow} src={sl.roomImg} alt="" />)}</div>
               <div className="paint-hero-swatches">
                 {currentHero.swatches.map(s => (
                   <button key={s.name} className="paint-hero-swatch" title={s.name} aria-label={`View ${s.name} colour`} onClick={() => openHeroSwatch(s)} style={{ background: s.color }} />

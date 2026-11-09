@@ -43,7 +43,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
       </div>
 
       {/* Two-panel split */}
-      <div style={{ display: "flex", height: "calc(100vh - 157px)", minHeight: 520 }}>
+      <div className="cd-split" style={{ display: "flex", height: "calc(100vh - 157px)", minHeight: 520 }}>
 
         {/* ── LEFT: paint info ── */}
         <div style={{
