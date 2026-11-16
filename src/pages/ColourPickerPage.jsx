@@ -1,3 +1,4 @@
+import { askForSample } from "../utils/sampleDialog.js";
 import { useRef, useState } from "react";
 import { useApp } from "../context/useApp.js";
 import { B } from "../data/theme.js";
@@ -10,7 +11,7 @@ const LOUPE = 120;
 const ZOOM = 8;
 
 export default function ColourPickerPage() {
-  const { handleColourClick, addSamplePot } = useApp();
+  const { handleColourClick } = useApp();
   const canvasRef = useRef(null);
   const loupeRef = useRef(null);
   const boxRef = useRef(null);
@@ -168,7 +169,7 @@ export default function ColourPickerPage() {
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-end" }}>
                     <button onClick={() => handleColourClick(m.colour)} style={{ background: "none", border: "none", color: B.coral, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", fontSize: 13, padding: 0 }}>View</button>
-                    <button onClick={() => addSamplePot(m.colour.name)} style={{ background: "none", border: "none", color: "#555", fontWeight: 600, cursor: "pointer", fontFamily: "inherit", fontSize: 12, padding: 0 }}>Order sample</button>
+                    <button onClick={() => askForSample(m.colour.name)} style={{ background: "none", border: "none", color: "#555", fontWeight: 600, cursor: "pointer", fontFamily: "inherit", fontSize: 12, padding: 0 }}>Order sample</button>
                   </div>
                 </div>
               ))}

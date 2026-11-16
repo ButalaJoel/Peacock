@@ -1,3 +1,4 @@
+import { askForSample } from "../../utils/sampleDialog.js";
 import { B } from "../../data/theme.js";
 import { trendingColours } from "../../data/colours.js";
 import { Arr, ArrL } from "../icons/Icons.jsx";
@@ -5,7 +6,7 @@ import PaintBlob from "../common/PaintBlob.jsx";
 import { useApp } from "../../context/useApp.js";
 
 export default function TrendingColours() {
-  const { colourCarouselIdx, setColourCarouselIdx, CARDS_VISIBLE, handleColourClick, nav, colourHref, aReset, addSamplePot } = useApp();
+  const { colourCarouselIdx, setColourCarouselIdx, CARDS_VISIBLE, handleColourClick, nav, colourHref, aReset } = useApp();
   return (
     <>
         {/* Trending Colours */}
@@ -52,7 +53,7 @@ export default function TrendingColours() {
                     <p style={{ fontSize: 11, color: "rgba(255,255,255,.75)", marginBottom: 12, lineHeight: 1.4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.desc}</p>
                     <div style={{ display: "flex", gap: 7, alignItems: "center" }}>
                       <button onClick={e => { e.stopPropagation(); e.preventDefault(); handleColourClick(c); }} style={{ flex: 1, padding: "7px 0", background: "#1a1a1a", color: "#fff", border: "none", borderRadius: 4, fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "'Outfit',sans-serif", letterSpacing: .3 }}>Shop</button>
-                      <button onClick={e => { e.stopPropagation(); e.preventDefault(); addSamplePot(c.name); }} style={{ flex: 1, padding: "7px 0", background: "transparent", color: "#fff", border: "1.5px solid rgba(255,255,255,.65)", borderRadius: 4, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Outfit',sans-serif" }}>+ Sample</button>
+                      <button onClick={e => { e.stopPropagation(); e.preventDefault(); askForSample(c.name); }} style={{ flex: 1, padding: "7px 0", background: "transparent", color: "#fff", border: "1.5px solid rgba(255,255,255,.65)", borderRadius: 4, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Outfit',sans-serif" }}>+ Sample</button>
                       <button onClick={e => { e.stopPropagation(); e.preventDefault(); handleColourClick(c); }} style={{ width: 30, height: 30, background: "rgba(255,255,255,.2)", border: "none", borderRadius: "50%", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", flexShrink: 0 }}><Arr /></button>
                     </div>
                   </div>

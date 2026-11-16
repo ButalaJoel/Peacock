@@ -87,6 +87,7 @@ export default function QuoteModal() {
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
               <button className="btn bp" onClick={() => { setQuoteOpen(false); nav("decorative-paints"); }}>Browse products</button>
               <button className="btn bd" onClick={() => { setQuoteOpen(false); nav("estimator"); }}>Paint estimator</button>
+              <button className="btn bd" onClick={() => { setQuoteOpen(false); nav("start-here"); }} style={{ flexBasis: "100%", background: "#fff", color: "#E8603C", border: "2px solid #E8603C" }}>I don't know anything about Peacock Paints</button>
             </div>
           </div>
         ) : (

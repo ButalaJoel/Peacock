@@ -5,5 +5,5 @@ export const BUSINESS = {
     { days: "Saturday", time: "8:00am to 2:30pm" },
     { days: "Sunday", time: "Closed" },
   ],
-  delivery: "Delivery available.",
+  delivery: "We deliver.",
 };

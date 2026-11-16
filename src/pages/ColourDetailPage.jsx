@@ -1,3 +1,4 @@
+import ScreenColourNote from "../components/colours/ScreenColourNote.jsx";
 import PaintBlob from "../components/common/PaintBlob.jsx";
 import { CATEGORIES } from "../data/products.js";
 import { useState } from "react";
@@ -256,6 +257,7 @@ const ColourDetailPage = ({ colour, categoryName, onBack, onBackHome, onAddToCar
         </div>
       </div>
       <ComplementBand colour={colour} />
+      <ScreenColourNote />
     </div>
   );
 };

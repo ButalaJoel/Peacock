@@ -1,3 +1,4 @@
+import SampleDialog from "../samples/SampleDialog.jsx";
 import PaintBlob from "../common/PaintBlob.jsx";
 import { useEffect, useState } from "react";
 import { useApp } from "../../context/useApp.js";
@@ -98,6 +99,7 @@ export default function Header() {
           </div>
         </div>
       )}
+      <SampleDialog />
     </header>
   );
 }

@@ -1,9 +1,10 @@
+import { askForSample } from "../../utils/sampleDialog.js";
 import { useApp } from "../../context/useApp.js";
 import { B } from "../../data/theme.js";
 import { PaletteIcon } from "../icons/Icons.jsx";
 
 export default function AnnouncementBar() {
-  const { nav, makeHref, addSampleBundle } = useApp();
+  const { nav, makeHref } = useApp();
   const link = (page, label) => (
     <a href={makeHref(page)} onClick={e => { e.preventDefault(); nav(page); }} className="ann-link">{label}</a>
   );
@@ -12,7 +13,7 @@ export default function AnnouncementBar() {
       <div style={{ maxWidth: 1240, margin: "0 auto", padding: "0 24px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
         <div style={{ display: "flex", gap: 20, alignItems: "center", flexWrap: "wrap" }}>
           <span>Request a quote for any product</span>
-          <button onClick={addSampleBundle} className="ann-link" style={{ background: "none", border: "none", color: "inherit", font: "inherit", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, padding: 0 }}>
+          <button onClick={() => askForSample()} className="ann-link" style={{ background: "none", border: "none", color: "inherit", font: "inherit", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, padding: 0 }}>
             <PaletteIcon /> Order colour samples
           </button>
         </div>

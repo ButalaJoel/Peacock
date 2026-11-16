@@ -1,3 +1,5 @@
+import VisualiserPage from "./VisualiserPage.jsx";
+import StartHerePage from "./StartHerePage.jsx";
 import ReviewsPage from "./ReviewsPage.jsx";
 import PrivacyPage from "./PrivacyPage.jsx";
 import FeedbackPage from "./FeedbackPage.jsx";
@@ -43,6 +45,10 @@ export default function PageSwitch() {
         <DashboardEntry />
       ) : pg === "reviews" ? (
         <ReviewsPage />
+      ) : pg === "start-here" ? (
+        <StartHerePage />
+      ) : pg === "visualiser" ? (
+        <VisualiserPage />
       ) : pg === "feedback" ? (
         <FeedbackPage />
       ) : pg === "privacy" ? (

@@ -81,6 +81,8 @@ export const NAV = [
         { label: "Ask an expert", page: "contact" },
         { label: "Feedback", page: "feedback" },
         { label: "Customer reviews", page: "reviews" },
+        { label: "Colour visualiser", page: "visualiser" },
+        { label: "Where do I start?", page: "start-here" },
         { label: "Request a quote", action: "quote" },
       ] },
     ],
@@ -130,7 +132,7 @@ export function menuForPage(pg) {
   if (pg === "product" || pg.startsWith("decorative-paints") || pg.startsWith("industrial-coatings") || pg === "wood-care-paints" || pg === "thinners-solvents") return "products";
   if (pg === "all-colours" || pg === "colour-detail" || pg === "colour-picker" || pg === "colour-systems" || pg.endsWith("-colour")) return "colours";
   if (pg.endsWith("-inspiration") || pg.endsWith("-style")) return "inspiration";
-  if (pg === "estimator" || pg === "news" || pg === "feedback" || pg === "reviews") return "advice";
+  if (pg === "estimator" || pg === "news" || pg === "feedback" || pg === "reviews" || pg === "visualiser" || pg === "start-here") return "advice";
   if (pg === "professionals" || pg === "distributor" || pg === "projects") return "professionals";
   return null;
 }

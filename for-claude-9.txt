@@ -1,0 +1,105 @@
+PEACOCK CODE CHECK  2026-11-16
+
+Git
+  branch: split-components
+  last commits:
+    65bc4ae Mobile fixes and faster slider
+    92ae062 UI round: logo, colours, reviews, kits, complements, hero photos, compressed images
+    8fb4ebb Add forms, alerts, awards, community, professionals form, media library
+    98b4894 Add Supabase backend, staff dashboard (projects, news, quotes, subscribers), and database-driven pages
+  not yet committed: ?? add-visualiser.mjs
+?? check-state.mjs
+?? fix-final.mjs
+  not yet pushed to origin: nothing
+
+Earlier changes
+  [DONE]    Phone fixes (stacked colour page, slider swipe)
+  [DONE]    Complementary colours
+  [DONE]    Hardener photos with the base
+  [DONE]    Reviews page and single Feedback form
+  [DONE]    Skimmex 40 L per 20 kg wording
+  [DONE]    Epoxy Self Levelling 4 Sqm per litre
+  [MISSING] Security headers (vercel.json)   -> node add-security-headers.mjs
+
+Latest changes from the boss
+  [MISSING] Bigger logo outside the pill   -> node fix-final.mjs
+  [MISSING] Home slider uses ONE model photo   -> node fix-final.mjs
+  [MISSING] 'Where do I start?' page for new customers   -> node fix-final.mjs
+  [MISSING] 'I don't know anything about Peacock Paints' button in the quote box   -> node fix-final.mjs
+  [MISSING] Order colour samples prompt   -> node fix-final.mjs
+  [MISSING] Colour visualiser   -> node add-visualiser.mjs (after fix-final.mjs)
+  [MISSING] 'Colours on screen are a guide' note   -> node add-visualiser.mjs
+  photos in src/assets/hero: hero-1.jpg, hero-2.jpg, hero-3.jpg
+
+===== FOR CLAUDE (blobs on the product page) =====
+lines in src/pages/ProductDetailPage.jsx that mention colours, shades or blobs:
+   1  import PaintBlob from "../components/common/PaintBlob.jsx";
+   2  import { useState, useRef } from "react";
+   3  import { CartIcon, Arr, ArrL, PaletteIcon, MinusIcon, PlusIcon, CheckIcon } from "../components/icons/Icons.jsx";
+   4  import { B } from "../data/theme.js";
+ 131                  <button onClick={() => colourSectionRef.current && colourSectionRef.current.scrollIntoView({ behavior: "smooth" })} className="pp-pill"
+ 132                    style={{ height: 42, borderRadius: 22, border: "1.5px solid " + B.coral, background: "#fff", color: B.coral, fontSize: 14, fontWeight: 600, cursor: "pointer", padding: "0 18px", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 8, whiteSpace: "nowrap" }}>
+ 133                    <PaletteIcon /> {selectedColourName ? "Change colour" : "Select colour"}
+ 134                  </button>
+ 135                )}
+ 136              </div>
+ 138              {colourChip && (
+ 139                <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "5px 12px 5px 6px", border: "1px solid #e5e5e5", borderRadius: 20, fontSize: 13, marginBottom: 14 }}>
+ 140                  <PaintBlob size={24} color={colourChip.color} v={1} />
+ 141                  {selectedColourName}
+ 142                  <button onClick={() => setSelectedColourName(null)} aria-label="Remove colour" style={{ background: "none", border: "none", cursor: "pointer", color: "#999", fontSize: 16, lineHeight: 1, padding: 0 }}>×</button>
+ 143                </div>
+ 237          {product.colourSystems.length > 0 && (
+ 238          <div ref={colourSectionRef} style={{ marginTop: 48, paddingTop: 36, borderTop: "1px solid #e8e4de" }}>
+ 239            <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 8 }}>Select Colour & Size</h2>
+ 240            <p style={{ fontSize: 15, color: "#777", marginBottom: 32 }}>Choose from our full range of colours available for this paint.</p>
+ 241  
+ 242            {/* Category Carousel */}
+ 258                        style={{ display: "flex", alignItems: "center", gap: 6, background: isSelected ? "#1a1a1a" : "#fff", color: isSelected ? "#fff" : "#333", border: "1px solid #ddd", borderRadius: 6, padding: "6px 14px", fontSize: 13, fontWeight: 600, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Outfit', sans-serif" }}
+ 259                      >
+ 260                        {isSelected ? `Hide ${cat.colors.length} shades` : `See ${cat.colors.length} shades`}
+ 261                        &nbsp;{isSelected ? "↓" : "→"}
+ 262                      </button>
+ 263                    </div>
+ 305                            <div style={{ fontSize: 12, color: "#bbb", marginBottom: 12 }}>{product.sizes.map(s => s.size).join(" · ")}</div>
+ 306                            <button onClick={() => handleColourSelect(col.name)} style={{ display: "flex", alignItems: "center", gap: 6, border: "1px solid #ddd", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", background: "#fff", color: "#333", fontFamily: "'Outfit', sans-serif" }}>
+ 307                              Select sizes&nbsp;<Arr />
+ 308                            </button>
+ 309                          </>
+ 310                        ) : (
+
+files that import PaintBlob: src/components/colours/ComplementBand.jsx, src/components/home/TrendingColours.jsx, src/components/layout/Header.jsx, src/components/layout/MobileMenu.jsx, src/pages/AllColoursPage.jsx, src/pages/ColourCategoryPage.jsx, src/pages/ColourDetailPage.jsx, src/pages/ProductDetailPage.jsx, src/pages/StyleCategoryPage.jsx
+files that mention a blob but do NOT import PaintBlob:
+  src/dashboard/csv.js
+  src/dashboard/uploads.js
+
+===== FOR CLAUDE (delivery wording) =====
+src/components/layout/QuoteModal.jsx:106  <div style={field}><label style={label}>Location / delivery area (optional)</label><input className="si" value={form.location} onChange={set("location")} /></div>
+src/config/business.js:8  delivery: "Delivery available.",
+src/data/colours.js:479  "Deep Orange": { tagline: "An Intense Deep Orange for Dramatic Impact", longDesc: "Deep Orange is intense, bold, and completely unapologetic — a richly saturated orange that makes an immediate and dra
+src/data/colours.js:534  "Raven": { tagline: "A Dark Blue-Charcoal for Dramatic, Enveloping Rooms", longDesc: "Raven is the darkest, most dramatic grey in our collection — a deep blue-charcoal with the intense, enveloping qua
+src/data/colours.js:542  "Violet": { tagline: "A Rich Deep Purple for Regal, Expressive Rooms", longDesc: "Violet is a rich, deep purple with genuine intensity and regal character. Throughout history, purple has been the colo
+src/data/inspirations.js:97  desc: "A strikingly clean and modern bathroom where pale ice blue walls create a cool, sophisticated atmosphere. Black matte fixtures provide sharp contrast against the soft blue, while the freestandi
+src/data/inspirations.js:98  tips: ["Matte black taps, fixtures, and shower fittings create a dramatic, contemporary contrast against the soft ice blue walls.", "Keep the floor in large-format white or light grey tiles to maintai
+src/data/products.catalogue.js:436  "desc": "Water-based polychromatic finish with selected pearl material, delivering a unique sheen.",
+src/data/products.catalogue.js:437  "longDesc": "Water-based polychromatic finish with selected pearl material, delivering a unique sheen. Eco-friendly, non-toxic, odorless, washable, and safe for all interior and exterior environments.
+src/data/products.catalogue.js:946  "longDesc": "A high-performance, two component polyurethane coating engineered for professional automotive refinishing. This high-gloss formula provides exceptional durability, delivering a flawless f
+src/data/products.catalogue.js:1328  "longDesc": "An alkyd-based product that offers high opacity, a high gloss finish, and excellent resistance to algae and fungi. It is suitable for well-prepared exterior and interior surfaces includin
+src/data/storyPages.js:12  { t: "Who we are", i: "globe", c: "Peacock Paints Limited is a proudly East African paint manufacturing company committed to delivering innovative, affordable and high-quality coating solutions that b
+src/data/storyPages.js:25  { t: "Mission", i: "heart", c: "We focus on customer satisfaction by applying relevant product expertise to deliver high quality, standardized products at competitively affordable prices." },
+src/data/storyPages.js:38  { t: "Technology-driven formulas", i: "leaf", c: "We use advanced colour pigments, eco-conscious binders and durable resin technology to deliver rich colour, long-lasting performance and environmental
+src/pages/RoomInspirationPage.jsx:93  <p style={{ fontSize: 14, opacity: .7, marginBottom: 20 }}>Get colour samples delivered to your door</p>
+src/utils/advisor.js:3  // It never gives prices, health or safety advice, or promises about delivery. Those go to the team.
+src/utils/advisor.js:138  if (/\b(delivery|deliver|delivers|delivered|shipping|transport)\b/.test(text) && biz.delivery)
+src/utils/advisor.js:139  return out(biz.delivery + " For anything else about delivery, please ask our team.", { actions: [quote, talk, { type: "whatsapp", label: "Chat on WhatsApp" }] });
+src/utils/advisor.js:142  return out(where + "For opening hours or delivery, just ask me, or contact our team.", { actions: [talk, { type: "whatsapp", label: "Chat on WhatsApp" }] });
+src/utils/advisor.js:172  return out("Hello, I'm the Paint Advisor. I answer from the Peacock Paints catalogue. I can suggest products for a surface, give coverage, drying times and mixing details, tell you our opening hours a
+src/utils/advisor.js:179  "Do you deliver?",
+
+===== FOR CLAUDE (Hand Sanitiser / cleaning products) =====
+src/data/products.catalogue.js:1805  "id": "hand-sanitizer",
+src/data/products.catalogue.js:1806  "name": "Hand Sanitizer",
+src/data/products.catalogue.js:2175  "id": "multi-surface-industrial-cleaner",
+src/data/products.catalogue.js:2176  "name": "Multi Surface Industrial Cleaner",
+src/data/products.catalogue.js:2179  "desc": "A water based, ready to use, highly effective biodegradable multi surface cleaner.",
+src/data/products.catalogue.js:2180  "longDesc": "A water based, ready to use, highly effective biodegradable multi surface cleaner. It is formulated to lift and remove soils, stains and grime on h

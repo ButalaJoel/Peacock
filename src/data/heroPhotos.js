@@ -1,5 +1,7 @@
-// Photos for the home page slider. Put your photos in  src/assets/hero/  (JPG, PNG or WebP) and they appear in the slider
-// in file-name order (hero-1.jpg, hero-2.jpg, hero-3.jpg...). Until a photo exists for a slide, the built-in room picture is used.
+// One model photo for the home page: the one painting while standing (hero-1). Put it in src/assets/hero/.
+// Every slide uses this same photo. Until it exists, the built-in room pictures are used.
 const found = import.meta.glob("../assets/hero/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}", { eager: true, import: "default" });
-export const HERO_PHOTOS = Object.keys(found).sort().map(k => found[k]);
-export const heroPhoto = (i, fallback) => HERO_PHOTOS[i] || fallback;
+const keys = Object.keys(found).sort();
+const keep = keys.find(k => /hero-1\./i.test(k)) || keys[0];
+export const HERO_PHOTOS = keep ? [found[keep]] : [];
+export const heroPhoto = (i, fallback) => HERO_PHOTOS[0] || fallback;

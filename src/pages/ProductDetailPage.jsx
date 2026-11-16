@@ -237,7 +237,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
         {product.colourSystems.length > 0 && (
         <div ref={colourSectionRef} style={{ marginTop: 48, paddingTop: 36, borderTop: "1px solid #e8e4de" }}>
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 600, marginBottom: 8 }}>Select Colour & Size</h2>
-          <p style={{ fontSize: 15, color: "#777", marginBottom: 32 }}>Choose from our full range of colours available for this paint.</p>
+          <p style={{ fontSize: 15, color: "#777", marginBottom: 32 }}>Choose from our full range of colours available for this paint. Colours on screen can look different from real paint, so we recommend ordering a sample first.</p>
 
           {/* Category Carousel */}
           <div style={{ position: "relative", paddingLeft: 28, paddingRight: 28 }}>
@@ -250,8 +250,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                   <div key={catName} style={{ minWidth: 180, flexShrink: 0 }}>
                     <div
                       onClick={() => setSelectedCategory(isSelected ? null : catName)}
-                      style={{ height: 100, background: cat.repColor, borderRadius: 12, border: isSelected ? "2px solid #1a1a1a" : "2px solid transparent", cursor: "pointer", transition: "all 0.2s", marginBottom: 10 }}
-                    />
+                      style={{ height: 100, background: "color-mix(in srgb, " + cat.repColor + " 14%, #fff)", display: "grid", placeItems: "center", borderRadius: 12, border: isSelected ? "2px solid #1a1a1a" : "2px solid transparent", cursor: "pointer", transition: "all 0.2s", marginBottom: 10 }}><PaintBlob size={84} color={cat.repColor} v={catName.length} /></div>
                     <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>{catName}</div>
                     <button
                       onClick={() => setSelectedCategory(isSelected ? null : catName)}
@@ -292,7 +291,7 @@ const ProductDetailPage = ({ product, onBack, onAddToCart, onOpenProduct }) => {
                     <div key={col.name} style={{ border: active ? `2px solid ${B.coral}` : "2px solid transparent", borderRadius: 16, padding: active ? 14 : 0, transition: "all 0.2s" }}>
                       <div onClick={() => handleColourSelect(col.name)} style={{ cursor: "pointer" }}>
                         <div style={{ background: hexRgba(col.color, 0.12), borderRadius: 12, padding: "28px 16px", display: "flex", alignItems: "center", justifyContent: "center", height: 200, marginBottom: 14, position: "relative" }}>
-                          <div style={{ width: 130, height: 130, background: col.color, borderRadius: "52% 48% 56% 44% / 48% 52% 48% 52%", boxShadow: `0 10px 28px ${hexRgba(col.color, 0.5)}, inset 0 -6px 16px rgba(0,0,0,0.18), inset 0 6px 14px rgba(255,255,255,0.22)` }} />
+                          <PaintBlob size={130} color={col.color} v={col.name.length} />
                           {active && <div style={{ position: "absolute", top: 10, right: 10, width: 26, height: 26, borderRadius: "50%", background: B.coral, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff" }}><CheckIcon /></div>}
                         </div>
                         <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 3, color: active ? B.coral : "#333" }}>{col.name}</div>

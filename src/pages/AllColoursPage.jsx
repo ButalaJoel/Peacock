@@ -1,3 +1,4 @@
+import { askForSample } from "../utils/sampleDialog.js";
 import { useEffect, useRef, useState } from "react";
 import { useApp } from "../context/useApp.js";
 import { B } from "../data/theme.js";
@@ -23,7 +24,7 @@ function usePerPage() {
 }
 
 export default function AllColoursPage() {
-  const { nav, makeHref, handleColourClick, addSamplePot } = useApp();
+  const { nav, makeHref, handleColourClick } = useApp();
   const perPage = usePerPage();
   const gridTop = useRef(null);
   const [family, setFamily] = useState("All");
@@ -99,7 +100,7 @@ export default function AllColoursPage() {
                 <p style={{ fontSize: 12, color: "#888", lineHeight: 1.5, marginBottom: 12, minHeight: 34 }}>{c.desc}</p>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <code style={{ fontSize: 11, color: "#bbb", fontFamily: "monospace", letterSpacing: .5 }}>{c.color}</code>
-                  <button onClick={e => { e.stopPropagation(); e.preventDefault(); addSamplePot(c.name); }} style={{ fontSize: 11, fontWeight: 600, color: B.coral, background: B.coral + "12", border: "none", padding: "4px 10px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit" }}>Sample</button>
+                  <button onClick={e => { e.stopPropagation(); e.preventDefault(); askForSample(c.name); }} style={{ fontSize: 11, fontWeight: 600, color: B.coral, background: B.coral + "12", border: "none", padding: "4px 10px", borderRadius: 12, cursor: "pointer", fontFamily: "inherit" }}>Sample</button>
                 </div>
               </div>
             </a>
