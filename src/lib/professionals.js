@@ -1,11 +1,13 @@
 import { supabase } from "./supabase.js";
 import { newReference } from "./forms.js";
+import { looksLikeBot } from "./spam.js";
 
 const cut = (v, n) => { const s = String(v == null ? "" : v).trim().slice(0, n); return s || null; };
 
 // Saves a professional's technical support request. Returns { ok: true, reference } or { ok: false, error }.
 export async function submitProfessional(v) {
   if (!supabase) return { ok: false, error: "The form is not connected yet. Please contact us on WhatsApp instead." };
+  if (looksLikeBot()) return { ok: true, reference: newReference("PP-PRO") };
   for (let attempt = 0; attempt < 3; attempt++) {
     const reference = newReference("PP-PRO");
     const { error } = await supabase.from("professional_requests").insert({

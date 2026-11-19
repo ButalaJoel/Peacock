@@ -115,8 +115,8 @@ export default function NewsAdmin() {
         <input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={e => { if (e.target.files.length) addImages(e.target.files, true); e.target.value = ""; }} />
         {form.image_url && <input style={{ ...S.input, marginTop: 10 }} placeholder="Describe the photo in a few words (for screen readers)" value={form.image_alt} onChange={e => set("image_alt", e.target.value)} maxLength={200} />}
 
-        <label style={S.label}>More photos (gallery, for awards, exhibitions and events)</label>
-        <input type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={busy} onChange={e => { if (e.target.files.length) addImages(e.target.files, false); e.target.value = ""; }} />
+        <label htmlFor="f-newsadmin-1" style={S.label}>More photos (gallery, for awards, exhibitions and events)</label>
+        <input id="f-newsadmin-1" type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={busy} onChange={e => { if (e.target.files.length) addImages(e.target.files, false); e.target.value = ""; }} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: 12, marginTop: 12 }}>
           {form.gallery.map((g, i) => (
             <div key={g.src} style={{ border: "1px solid #eee", borderRadius: 10, padding: 8 }}>

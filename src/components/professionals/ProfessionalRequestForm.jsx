@@ -1,3 +1,5 @@
+import PrivacyLink from "../common/PrivacyLink.jsx";
+import Honeypot from "../common/Honeypot.jsx";
 import { useState } from "react";
 import { CONTACT } from "../../config/contact.js";
 import { B } from "../../data/theme.js";
@@ -52,20 +54,21 @@ export default function ProfessionalRequestForm() {
       ) : (
         <div style={card}>
           <div className="g2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
-            <div><label style={label}>Full name *</label><input className="si" value={form.name} onChange={set("name")} /></div>
-            <div><label style={label}>Phone *</label><input className="si" type="tel" value={form.phone} onChange={set("phone")} /></div>
-            <div><label style={label}>Email (optional)</label><input className="si" type="email" value={form.email} onChange={set("email")} /></div>
-            <div><label style={label}>Company or organisation (optional)</label><input className="si" value={form.organisation} onChange={set("organisation")} /></div>
-            <div><label style={label}>Profession *</label>
-              <select className="si" value={form.profession} onChange={set("profession")}><option value="">Choose...</option>{PROFESSIONS.map(p => <option key={p}>{p}</option>)}</select></div>
-            <div><label style={label}>Years of experience *</label><input className="si" type="number" min="0" max="80" value={form.years} onChange={set("years")} /></div>
+            <Honeypot />
+            <div><label htmlFor="f-professionalrequestform-1" style={label}>Full name *</label><input id="f-professionalrequestform-1" className="si" value={form.name} onChange={set("name")} /></div>
+            <div><label htmlFor="f-professionalrequestform-2" style={label}>Phone *</label><input id="f-professionalrequestform-2" className="si" type="tel" value={form.phone} onChange={set("phone")} /></div>
+            <div><label htmlFor="f-professionalrequestform-3" style={label}>Email (optional)</label><input id="f-professionalrequestform-3" className="si" type="email" value={form.email} onChange={set("email")} /></div>
+            <div><label htmlFor="f-professionalrequestform-4" style={label}>Company or organisation (optional)</label><input id="f-professionalrequestform-4" className="si" value={form.organisation} onChange={set("organisation")} /></div>
+            <div><label htmlFor="f-professionalrequestform-5" style={label}>Profession *</label>
+              <select id="f-professionalrequestform-5" className="si" value={form.profession} onChange={set("profession")}><option value="">Choose...</option>{PROFESSIONS.map(p => <option key={p}>{p}</option>)}</select></div>
+            <div><label htmlFor="f-professionalrequestform-6" style={label}>Years of experience *</label><input id="f-professionalrequestform-6" className="si" type="number" min="0" max="80" value={form.years} onChange={set("years")} /></div>
           </div>
-          {form.profession === "Other" && <div style={{ marginBottom: 14 }}><label style={label}>Your profession *</label><input className="si" value={form.professionOther} onChange={set("professionOther")} /></div>}
+          {form.profession === "Other" && <div style={{ marginBottom: 14 }}><label htmlFor="f-professionalrequestform-7" style={label}>Your profession *</label><input id="f-professionalrequestform-7" className="si" value={form.professionOther} onChange={set("professionOther")} /></div>}
           <div style={{ marginBottom: 14 }}>
             <label style={label}>What would you like help with? (tick any)</label>
             {WANTS.map(w => <label key={w} style={{ display: "flex", gap: 8, alignItems: "center", fontSize: 14, color: "#444", margin: "6px 0", cursor: "pointer" }}><input type="checkbox" checked={form.wanted.includes(w)} onChange={() => toggle(w)} style={{ accentColor: B.coral }} /> {w}</label>)}
           </div>
-          <div style={{ marginBottom: 14 }}><label style={label}>What do you need, or what problem are you solving? *</label><textarea className="si" rows={5} value={form.problem} onChange={set("problem")} style={{ resize: "vertical" }} placeholder="For example the surface, the project, and what is going wrong or what you need to specify." /></div>
+          <div style={{ marginBottom: 14 }}><label htmlFor="f-professionalrequestform-8" style={label}>What do you need, or what problem are you solving? *</label><textarea id="f-professionalrequestform-8" className="si" rows={5} value={form.problem} onChange={set("problem")} style={{ resize: "vertical" }} placeholder="For example the surface, the project, and what is going wrong or what you need to specify." /></div>
           <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true"><input tabIndex={-1} autoComplete="off" value={form.website} onChange={set("website")} /></div>
           <label style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13.5, color: "#444", lineHeight: 1.6, cursor: "pointer", marginBottom: 14 }}>
             <input type="checkbox" checked={form.consent} onChange={e => setForm(f => ({ ...f, consent: e.target.checked }))} style={{ marginTop: 4, accentColor: B.coral }} />
@@ -73,6 +76,7 @@ export default function ProfessionalRequestForm() {
           </label>
           {errors.length > 0 && <div role="alert" style={{ marginBottom: 14, padding: "11px 14px", borderRadius: 9, background: "#fdecea", color: "#a12b1f", fontSize: 14 }}>{errors.map(m => <div key={m}>{m}</div>)}</div>}
           <button type="button" className="btn bp" onClick={submit} disabled={busy} style={{ width: "100%", justifyContent: "center" }}>{busy ? "Sending..." : "Send request"}</button>
+          <PrivacyLink />
         </div>
       )}
     </section>

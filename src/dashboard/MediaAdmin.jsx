@@ -65,8 +65,8 @@ export default function MediaAdmin() {
       <p style={{ fontSize: 13, color: "#777", marginBottom: 16, lineHeight: 1.6 }}>Every photo and PDF uploaded to the website. Copy a link to use a file somewhere else, upload a new photo here, or delete files nothing uses any more. Photos added from the Projects, News and Awards tabs appear here too.</p>
       {msg && <div role="alert" style={msgStyle(msg.ok)}>{msg.text}</div>}
       <div style={{ ...S.card, marginBottom: 18, display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-        <label style={{ fontSize: 13, fontWeight: 600 }}>Upload photos to</label>
-        <select aria-label="Upload folder" style={{ ...S.input, width: "auto", padding: "8px 10px", fontSize: 14 }} value={target} onChange={e => setTarget(e.target.value)}>{FOLDERS.map(f => <option key={f}>{f}</option>)}</select>
+        <label htmlFor="f-mediaadmin-1" style={{ fontSize: 13, fontWeight: 600 }}>Upload photos to</label>
+        <select id="f-mediaadmin-1" aria-label="Upload folder" style={{ ...S.input, width: "auto", padding: "8px 10px", fontSize: 14 }} value={target} onChange={e => setTarget(e.target.value)}>{FOLDERS.map(f => <option key={f}>{f}</option>)}</select>
         <input aria-label="Choose photos" type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={busy} onChange={e => { upload(e.target.files); e.target.value = ""; }} />
         {busy && <span style={{ fontSize: 13, color: "#777" }}>Uploading...</span>}
       </div>

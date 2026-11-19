@@ -1,3 +1,5 @@
+import PrivacyLink from "../components/common/PrivacyLink.jsx";
+import Honeypot from "../components/common/Honeypot.jsx";
 import { useState } from "react";
 import { CONTACT } from "../config/contact.js";
 import { B } from "../data/theme.js";
@@ -54,20 +56,21 @@ export default function FeedbackPage() {
       <section style={{ maxWidth: 720, margin: "0 auto", padding: "40px 24px 70px" }}>
         <div style={card}>
           <div className="g2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
-            <div><label style={label}>Your name *</label><input className="si" value={form.name} onChange={set("name")} /></div>
-            <div><label style={label}>Phone</label><input className="si" type="tel" value={form.phone} onChange={set("phone")} /></div>
-            <div><label style={label}>Email</label><input className="si" type="email" value={form.email} onChange={set("email")} /></div>
-            <div><label style={label}>Product (if it is about one)</label><input className="si" value={form.product} onChange={set("product")} /></div>
+            <Honeypot />
+            <div><label htmlFor="f-feedbackpage-1" style={label}>Your name *</label><input id="f-feedbackpage-1" className="si" value={form.name} onChange={set("name")} /></div>
+            <div><label htmlFor="f-feedbackpage-2" style={label}>Phone</label><input id="f-feedbackpage-2" className="si" type="tel" value={form.phone} onChange={set("phone")} /></div>
+            <div><label htmlFor="f-feedbackpage-3" style={label}>Email</label><input id="f-feedbackpage-3" className="si" type="email" value={form.email} onChange={set("email")} /></div>
+            <div><label htmlFor="f-feedbackpage-4" style={label}>Product (if it is about one)</label><input id="f-feedbackpage-4" className="si" value={form.product} onChange={set("product")} /></div>
           </div>
           <p style={{ fontSize: 12, color: "#999", margin: "-6px 0 14px" }}>Give a phone number or an email (or both) so we can reply.</p>
-          <div style={{ marginBottom: 14 }}><label style={label}>Where did you buy it? (shop or town, optional)</label><input className="si" value={form.place} onChange={set("place")} /></div>
+          <div style={{ marginBottom: 14 }}><label htmlFor="f-feedbackpage-5" style={label}>Where did you buy it? (shop or town, optional)</label><input id="f-feedbackpage-5" className="si" value={form.place} onChange={set("place")} /></div>
           <div style={{ marginBottom: 14 }}>
             <label style={label}>How would you rate Peacock Paints? (optional)</label>
             <div style={{ display: "flex", gap: 4 }}>
               {[1, 2, 3, 4, 5].map(n => <button type="button" key={n} aria-label={n + " out of 5"} aria-pressed={form.rating === n} onClick={() => setForm(f => ({ ...f, rating: f.rating === n ? 0 : n }))} style={{ fontSize: 26, lineHeight: 1, border: "none", background: "none", cursor: "pointer", color: n <= form.rating ? B.coral : "#ccc" }}>★</button>)}
             </div>
           </div>
-          <div style={{ marginBottom: 16 }}><label style={label}>Your message *</label><textarea className="si" rows={5} value={form.message} onChange={set("message")} style={{ resize: "vertical" }} placeholder="Tell us what you think. If something went wrong, include the product, the colour and when you bought it." /></div>
+          <div style={{ marginBottom: 16 }}><label htmlFor="f-feedbackpage-6" style={label}>Your message *</label><textarea id="f-feedbackpage-6" className="si" rows={5} value={form.message} onChange={set("message")} style={{ resize: "vertical" }} placeholder="Tell us what you think. If something went wrong, include the product, the colour and when you bought it." /></div>
           {form.rating >= 4 && (
             <label style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 13.5, color: "#444", lineHeight: 1.6, cursor: "pointer", marginBottom: 14 }}>
               <input type="checkbox" checked={form.publishOk} onChange={e => setForm(f => ({ ...f, publishOk: e.target.checked }))} style={{ marginTop: 4, accentColor: B.coral }} />
@@ -77,7 +80,7 @@ export default function FeedbackPage() {
           <div style={{ position: "absolute", left: "-9999px" }} aria-hidden="true"><input tabIndex={-1} autoComplete="off" value={form.website} onChange={set("website")} /></div>
           {errors.length > 0 && <div role="alert" style={{ marginBottom: 14, padding: "11px 14px", borderRadius: 9, background: "#fdecea", color: "#a12b1f", fontSize: 14 }}>{errors.map(m => <div key={m}>{m}</div>)}</div>}
           <button type="button" className="btn bp" onClick={submit} disabled={busy} style={{ width: "100%", justifyContent: "center" }}>{busy ? "Sending..." : "Send"}</button>
-          <p style={{ fontSize: 12, color: "#999", marginTop: 12, lineHeight: 1.6 }}>We use your details only to respond to your message.</p>
+          <PrivacyLink />
         </div>
       </section>
     </div>

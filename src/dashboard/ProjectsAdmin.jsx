@@ -116,8 +116,8 @@ export default function ProjectsAdmin() {
         {form.cover_url && <input style={{ ...S.input, marginTop: 10 }} placeholder="Describe the photo in a few words (for screen readers)" value={form.cover_alt} onChange={e => set("cover_alt", e.target.value)} maxLength={200} />}
         <p style={S.hint}>Photos are shrunk to web size automatically, so large originals are fine.</p>
 
-        <label style={S.label}>More photos (gallery)</label>
-        <input type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={busy} onChange={e => { if (e.target.files.length) addImages(e.target.files, false); e.target.value = ""; }} />
+        <label htmlFor="f-projectsadmin-1" style={S.label}>More photos (gallery)</label>
+        <input id="f-projectsadmin-1" type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={busy} onChange={e => { if (e.target.files.length) addImages(e.target.files, false); e.target.value = ""; }} />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: 12, marginTop: 12 }}>
           {form.gallery.map((g, i) => (
             <div key={g.src} style={{ border: "1px solid #eee", borderRadius: 10, padding: 8 }}>
@@ -128,8 +128,8 @@ export default function ProjectsAdmin() {
           ))}
         </div>
 
-        <label style={S.label}>Peacock products used</label>
-        <input style={S.input} placeholder="Search products..." value={pick} onChange={e => setPick(e.target.value)} />
+        <label htmlFor="f-projectsadmin-2" style={S.label}>Peacock products used</label>
+        <input id="f-projectsadmin-2" style={S.input} placeholder="Search products..." value={pick} onChange={e => setPick(e.target.value)} />
         <div style={{ maxHeight: 180, overflow: "auto", border: "1px solid #eee", borderRadius: 9, padding: 10, marginTop: 8, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: 4 }}>
           {shown.map(p => (
             <label key={p.id} style={{ fontSize: 14, display: "flex", gap: 8, alignItems: "center", cursor: "pointer" }}>

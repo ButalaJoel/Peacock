@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { looksLikeBot } from "./spam.js";
 
 const saved = new Set();
 const cut = (v, n) => { const s = String(v == null ? "" : v).trim().slice(0, n); return s || null; };
@@ -7,6 +8,7 @@ const cut = (v, n) => { const s = String(v == null ? "" : v).trim().slice(0, n);
 // WhatsApp / email message: if the database is unreachable the copy is simply skipped.
 export async function saveEnquiry({ reference, kind, name, email, phone, message, details }) {
   if (!supabase || !reference || saved.has(reference)) return false;
+  if (looksLikeBot()) return true;
   saved.add(reference);
   try {
     const { error } = await supabase.from("enquiries").insert({

@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { looksLikeBot } from "./spam.js";
 import { compressImage } from "../dashboard/uploads.js";
 
 const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -10,6 +11,7 @@ const cut = (v, n) => { const s = String(v == null ? "" : v).trim().slice(0, n);
 // Returns { ok: true, reference } or { ok: false, error } with a message the visitor can read.
 export async function submitApplication(v, photos) {
   if (!supabase) return { ok: false, error: "The form is not connected yet. Please contact us on WhatsApp instead." };
+  if (looksLikeBot()) return { ok: true, reference: newReference("PP-DIST") };
   let compressed;
   try { compressed = await Promise.all(photos.map(f => compressImage(f, 1600, 0.8))); }
   catch (e) { return { ok: false, error: e.message || "One of the photos could not be processed. Please use JPG, PNG or WebP photos." }; }
@@ -42,6 +44,7 @@ export async function submitApplication(v, photos) {
 // Saves a complaint, feedback or compliment.
 export async function submitFeedback(v) {
   if (!supabase) return { ok: false, error: "The form is not connected yet. Please contact us on WhatsApp instead." };
+  if (looksLikeBot()) return { ok: true, reference: newReference("PP-FB") };
   for (let attempt = 0; attempt < 3; attempt++) {
     const reference = newReference("PP-FB");
     const { error } = await supabase.from("feedback").insert({

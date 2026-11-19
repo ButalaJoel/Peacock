@@ -1,3 +1,5 @@
+import PrivacyLink from "../components/common/PrivacyLink.jsx";
+import Honeypot from "../components/common/Honeypot.jsx";
 import { useState } from "react";
 import { CONTACT } from "../config/contact.js";
 import { B } from "../data/theme.js";
@@ -64,7 +66,7 @@ export default function DistributorPage() {
 
   const card = { background: "#fff", border: "1px solid #eee", borderRadius: 14, padding: 28 };
   const pill = active => ({ padding: "8px 20px", borderRadius: 22, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "inherit", border: "2px solid " + (active ? B.coral : "#ddd"), background: active ? B.coral : "#fff", color: active ? "#fff" : "#555" });
-  const field = (key, text, props = {}) => <div style={{ marginBottom: 14 }}><label style={label}>{text}</label><input className="si" value={form[key]} onChange={set(key)} {...props} /></div>;
+  const field = (key, text, props = {}) => <div style={{ marginBottom: 14 }}><label htmlFor={"f-dist-" + key} style={label}>{text}</label><input id={"f-dist-" + key} className="si" value={form[key]} onChange={set(key)} {...props} /></div>;
   const choose = (key, options, text) => (
     <div style={{ marginBottom: 14 }}>
       <label style={label}>{text}</label>
@@ -98,6 +100,7 @@ export default function DistributorPage() {
           {STEPS.map((s, i) => <div key={s} style={{ flex: 1 }}><div style={{ height: 5, borderRadius: 3, background: i <= step ? B.coral : "#e5e5e5" }} /><div style={{ fontSize: 11, color: i === step ? "#222" : "#999", fontWeight: i === step ? 700 : 500, marginTop: 6 }}>{i + 1}. {s}</div></div>)}
         </div>
         <div style={card}>
+          <Honeypot />
           <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, marginBottom: 18 }}>{STEPS[step]}</h2>
 
           {step === 0 && (
@@ -173,6 +176,7 @@ export default function DistributorPage() {
               ? <button type="button" className="btn bp" onClick={next} style={{ marginLeft: "auto" }}>Next</button>
               : <button type="button" className="btn bp" onClick={submit} disabled={busy} style={{ marginLeft: "auto" }}>{busy ? "Sending..." : "Send application"}</button>}
           </div>
+          <PrivacyLink />
         </div>
       </section>
     </div>

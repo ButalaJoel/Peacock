@@ -1,3 +1,5 @@
+import { useApp } from "../../context/useApp.js";
+import Honeypot from "../common/Honeypot.jsx";
 import { useState } from "react";
 import { CONTACT } from "../../config/contact.js";
 import { B } from "../../data/theme.js";
@@ -8,6 +10,7 @@ import { subscribe } from "../../lib/inbox.js";
 // Email signup. The address is saved to the website database (visible to staff in the dashboard).
 // If the database cannot be reached, it falls back to opening the visitor's email app with a message to us.
 export default function NewsletterSignup({ dark = false }) {
+  const { nav, makeHref } = useApp();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [status, setStatus] = useState("");
@@ -27,6 +30,7 @@ export default function NewsletterSignup({ dark = false }) {
     <form onSubmit={submit} noValidate>
       <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, marginBottom: 8 }}>Inspiration in your inbox</h3>
       <p style={{ fontSize: 14, color: muted, lineHeight: 1.7, marginBottom: 16 }}>One email a month with colour ideas, painting tips and news from Peacock Paints.</p>
+      <Honeypot />
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
         <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Your email address" aria-label="Your email address"
           style={{ flex: "1 1 220px", padding: "13px 18px", borderRadius: 30, border: "1px solid #ddd", fontSize: 14, fontFamily: "inherit" }} />
@@ -36,7 +40,7 @@ export default function NewsletterSignup({ dark = false }) {
       {status === "ok" && <p role="status" style={{ fontSize: 13, color: muted, marginTop: 8, lineHeight: 1.6 }}>Thank you, you are subscribed.</p>}
       {status === "duplicate" && <p role="status" style={{ fontSize: 13, color: muted, marginTop: 8, lineHeight: 1.6 }}>You are already subscribed. Thank you.</p>}
       {status === "mail" && <p style={{ fontSize: 13, color: muted, marginTop: 8, lineHeight: 1.6 }}>Your email app has opened with a message to us. Please press send to finish subscribing.</p>}
-      <p style={{ fontSize: 11.5, color: muted, marginTop: 10, lineHeight: 1.6 }}>By subscribing you agree that Peacock Paints may email you news and colour ideas. You can ask us to remove you at any time.</p>
+      <p style={{ fontSize: 11.5, color: muted, marginTop: 10, lineHeight: 1.6 }}>By subscribing you agree that Peacock Paints may email you news and colour ideas. You can <a href={makeHref("unsubscribe")} onClick={e => { e.preventDefault(); nav("unsubscribe"); }} style={{ color: "inherit", textDecoration: "underline" }}>unsubscribe</a> at any time. Read our <a href={makeHref("privacy")} onClick={e => { e.preventDefault(); nav("privacy"); }} style={{ color: "inherit", textDecoration: "underline" }}>privacy notice</a>.</p>
     </form>
   );
 }

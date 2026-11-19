@@ -1,3 +1,5 @@
+import PrivacyLink from "../components/common/PrivacyLink.jsx";
+import Honeypot from "../components/common/Honeypot.jsx";
 import { saveEnquiry } from "../lib/enquiries.js";
 import { useState } from "react";
 import { CONTACT } from "../config/contact.js";
@@ -62,18 +64,20 @@ export default function ContactPage() {
         <div style={card}>
           <h2 style={{ fontSize: 20, marginBottom: 4 }}>Send us a message</h2>
           <p style={{ fontSize: 13, color: "#888", marginBottom: 18 }}>Reference {reference}. This opens WhatsApp or your email app with your message ready to send.</p>
-          <div style={{ marginBottom: 14 }}><label style={label}>Your name *</label><input className="si" value={form.name} onChange={set("name")} style={bad("name")} /></div>
-          <div style={{ marginBottom: 14 }}><label style={label}>Phone number *</label><input className="si" type="tel" value={form.phone} onChange={set("phone")} style={bad("phone")} /></div>
-          <div style={{ marginBottom: 14 }}><label style={label}>Email (optional)</label><input className="si" type="email" value={form.email} onChange={set("email")} /></div>
-          <div style={{ marginBottom: 14 }}><label style={label}>Topic</label>
-            <select className="si" value={form.topic} onChange={set("topic")}>{TOPICS.map(t => <option key={t}>{t}</option>)}</select>
+          <Honeypot />
+          <div style={{ marginBottom: 14 }}><label htmlFor="f-contactpage-1" style={label}>Your name *</label><input id="f-contactpage-1" className="si" value={form.name} onChange={set("name")} style={bad("name")} /></div>
+          <div style={{ marginBottom: 14 }}><label htmlFor="f-contactpage-2" style={label}>Phone number *</label><input id="f-contactpage-2" className="si" type="tel" value={form.phone} onChange={set("phone")} style={bad("phone")} /></div>
+          <div style={{ marginBottom: 14 }}><label htmlFor="f-contactpage-3" style={label}>Email (optional)</label><input id="f-contactpage-3" className="si" type="email" value={form.email} onChange={set("email")} /></div>
+          <div style={{ marginBottom: 14 }}><label htmlFor="f-contactpage-4" style={label}>Topic</label>
+            <select id="f-contactpage-4" className="si" value={form.topic} onChange={set("topic")}>{TOPICS.map(t => <option key={t}>{t}</option>)}</select>
           </div>
-          <div style={{ marginBottom: 14 }}><label style={label}>Message *</label><textarea className="si" rows={4} value={form.message} onChange={set("message")} style={{ resize: "vertical", ...(bad("message") || {}) }} /></div>
+          <div style={{ marginBottom: 14 }}><label htmlFor="f-contactpage-5" style={label}>Message *</label><textarea id="f-contactpage-5" className="si" rows={4} value={form.message} onChange={set("message")} style={{ resize: "vertical", ...(bad("message") || {}) }} /></div>
           {touched && missing && <p style={{ fontSize: 13, color: "#c0392b", marginBottom: 12 }}>Please add your name, phone number and a message.</p>}
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <button className="btn bp" onClick={() => send("whatsapp")} disabled={!ready} style={{ flex: 1, justifyContent: "center", background: ready ? B.teal : "#ccc", cursor: ready ? "pointer" : "not-allowed" }}>Send on WhatsApp</button>
             <button className="btn bd" onClick={() => send("email")} style={{ flex: 1, justifyContent: "center" }}>Send by email</button>
           </div>
+          <PrivacyLink />
           {sentVia && <p style={{ fontSize: 13, marginTop: 16, padding: 14, background: "#eef7f4", borderRadius: 8, lineHeight: 1.6 }}>Your message is ready in {sentVia}. <strong>Press send there</strong> so it reaches our team. Nothing has been sent until you do.</p>}
         </div>
       </section>

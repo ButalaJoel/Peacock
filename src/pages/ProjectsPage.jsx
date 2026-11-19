@@ -30,7 +30,7 @@ export default function ProjectsPage() {
         </div>
 
         {loading && <p style={{ fontSize: 15, color: "#666", padding: "30px 0" }}>Loading projects...</p>}
-        {!loading && items.length === 0 && <p style={{ fontSize: 15, color: "#666", padding: "30px 0" }}>No projects in this group yet.</p>}
+        {!loading && items.length === 0 && <p style={{ fontSize: 15, color: "#666", padding: "30px 0" }}>Our project showcase is being prepared. Please check back soon, or contact us to talk about your own project.</p>}
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 22, alignItems: "start" }}>
           {items.map(p => {

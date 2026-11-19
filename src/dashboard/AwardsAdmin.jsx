@@ -76,14 +76,14 @@ export default function AwardsAdmin() {
       {form && (
         <div style={{ ...S.card, marginBottom: 20 }}>
           <h3 style={{ fontSize: 17, marginBottom: 6 }}>{form.id ? "Edit" : "New"}</h3>
-          <label style={S.label}>Type</label>
-          <select style={S.input} value={form.kind} onChange={e => set("kind", e.target.value)}>{KINDS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
-          <label style={S.label}>Title</label>
-          <input style={S.input} value={form.title} onChange={e => set("title", e.target.value)} />
-          <label style={S.label}>Year (optional)</label>
-          <input style={S.input} value={form.year} onChange={e => set("year", e.target.value)} placeholder="2026" />
-          <label style={S.label}>Short note (optional)</label>
-          <textarea style={{ ...S.input, minHeight: 70 }} value={form.description} onChange={e => set("description", e.target.value)} />
+          <label htmlFor="f-awardsadmin-1" style={S.label}>Type</label>
+          <select id="f-awardsadmin-1" style={S.input} value={form.kind} onChange={e => set("kind", e.target.value)}>{KINDS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
+          <label htmlFor="f-awardsadmin-2" style={S.label}>Title</label>
+          <input id="f-awardsadmin-2" style={S.input} value={form.title} onChange={e => set("title", e.target.value)} />
+          <label htmlFor="f-awardsadmin-3" style={S.label}>Year (optional)</label>
+          <input id="f-awardsadmin-3" style={S.input} value={form.year} onChange={e => set("year", e.target.value)} placeholder="2026" />
+          <label htmlFor="f-awardsadmin-4" style={S.label}>Short note (optional)</label>
+          <textarea id="f-awardsadmin-4" style={{ ...S.input, minHeight: 70 }} value={form.description} onChange={e => set("description", e.target.value)} />
           <label style={S.label}>Photo</label>
           {form.image_url && <img src={form.image_url} alt="" style={{ display: "block", maxWidth: 260, maxHeight: 200, objectFit: "contain", border: "1px solid #ddd", borderRadius: 8, marginBottom: 8 }} />}
           <input type="file" accept="image/jpeg,image/png,image/webp" disabled={busy} onChange={e => { addPhoto(e.target.files && e.target.files[0]); e.target.value = ""; }} />

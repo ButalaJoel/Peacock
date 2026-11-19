@@ -95,8 +95,8 @@ export default function EstimatorPage() {
       <div className="g2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28, alignItems: "start" }}>
         <div style={card}>
           <div style={{ marginBottom: 22 }}>
-            <label style={label}>1. Product</label>
-            <select className="si" value={productId} onChange={changeProduct}>
+            <label htmlFor="f-estimatorpage-1" style={label}>1. Product</label>
+            <select id="f-estimatorpage-1" className="si" value={productId} onChange={changeProduct}>
               {GROUPS.map(g => (
                 <optgroup key={g.id} label={g.label}>
                   {g.items.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -108,8 +108,8 @@ export default function EstimatorPage() {
             </p>
             {config.variants && (
               <div style={{ marginTop: 12 }}>
-                <label style={label}>Surface or film thickness</label>
-                <select className="si" value={variantIndex} onChange={e => setVariantIndex(Number(e.target.value))}>
+                <label htmlFor="f-estimatorpage-2" style={label}>Surface or film thickness</label>
+                <select id="f-estimatorpage-2" className="si" value={variantIndex} onChange={e => setVariantIndex(Number(e.target.value))}>
                   {config.variants.map((v, i) => <option key={v.label} value={i}>{v.label}</option>)}
                 </select>
               </div>

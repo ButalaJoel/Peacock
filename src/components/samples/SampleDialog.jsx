@@ -63,10 +63,10 @@ export default function SampleDialog() {
           ))}
         </div>
 
-        <label style={{ fontSize: 13, fontWeight: 600, display: "block", marginBottom: 6 }}>{opt.needsColour ? "Which colour?" : "Which colours? (optional)"}</label>
+        <label htmlFor="f-sampledialog-1" style={{ fontSize: 13, fontWeight: 600, display: "block", marginBottom: 6 }}>{opt.needsColour ? "Which colour?" : "Which colours? (optional)"}</label>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
           {known && <PaintBlob size={34} color={known.color} v={known.name.length} />}
-          <input list="sample-colour-names" value={colour} onChange={e => { setColour(e.target.value); setAdded(false); }} placeholder="Start typing a Peacock colour name" style={{ flex: 1, padding: "11px 12px", border: "1px solid #ddd", borderRadius: 8, fontFamily: "inherit", fontSize: 14 }} />
+          <input id="f-sampledialog-1" list="sample-colour-names" value={colour} onChange={e => { setColour(e.target.value); setAdded(false); }} placeholder="Start typing a Peacock colour name" style={{ flex: 1, padding: "11px 12px", border: "1px solid #ddd", borderRadius: 8, fontFamily: "inherit", fontSize: 14 }} />
           <datalist id="sample-colour-names">{trendingColours.map(c => <option key={c.name} value={c.name} />)}</datalist>
         </div>
         <p style={{ fontSize: 12, color: "#999", marginBottom: 18 }}>A colour from another system (NCS, BS 4800, NOVA, RAL)? Type its code and we will match it.</p>

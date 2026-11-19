@@ -1,3 +1,4 @@
+import UnsubscribePage from "./UnsubscribePage.jsx";
 import VisualiserPage from "./VisualiserPage.jsx";
 import StartHerePage from "./StartHerePage.jsx";
 import ReviewsPage from "./ReviewsPage.jsx";
@@ -51,6 +52,8 @@ export default function PageSwitch() {
         <VisualiserPage />
       ) : pg === "feedback" ? (
         <FeedbackPage />
+      ) : pg === "unsubscribe" ? (
+        <UnsubscribePage />
       ) : pg === "privacy" ? (
         <PrivacyPage />
       ) : pg === "projects" ? (

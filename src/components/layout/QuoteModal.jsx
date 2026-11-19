@@ -1,3 +1,5 @@
+import PrivacyLink from "../common/PrivacyLink.jsx";
+import Honeypot from "../common/Honeypot.jsx";
 import { saveQuote } from "../../lib/inbox.js";
 import { useState } from "react";
 import { useApp } from "../../context/useApp.js";
@@ -101,11 +103,12 @@ export default function QuoteModal() {
               ))}
             </div>
 
-            <div style={field}><label style={label}>Your name *</label><input className="si" value={form.name} onChange={set("name")} style={err("name")} /></div>
-            <div style={field}><label style={label}>Phone number *</label><input className="si" type="tel" value={form.phone} onChange={set("phone")} style={err("phone")} /></div>
-            <div style={field}><label style={label}>Email (optional)</label><input className="si" type="email" value={form.email} onChange={set("email")} /></div>
-            <div style={field}><label style={label}>Location / delivery area (optional)</label><input className="si" value={form.location} onChange={set("location")} /></div>
-            <div style={field}><label style={label}>Project notes (optional)</label><textarea className="si" rows={3} value={form.notes} onChange={set("notes")} placeholder="Surface, area to cover, timing..." style={{ resize: "vertical" }} /></div>
+            <Honeypot />
+            <div style={field}><label htmlFor="f-quotemodal-1" style={label}>Your name *</label><input id="f-quotemodal-1" className="si" value={form.name} onChange={set("name")} style={err("name")} /></div>
+            <div style={field}><label htmlFor="f-quotemodal-2" style={label}>Phone number *</label><input id="f-quotemodal-2" className="si" type="tel" value={form.phone} onChange={set("phone")} style={err("phone")} /></div>
+            <div style={field}><label htmlFor="f-quotemodal-3" style={label}>Email (optional)</label><input id="f-quotemodal-3" className="si" type="email" value={form.email} onChange={set("email")} /></div>
+            <div style={field}><label htmlFor="f-quotemodal-4" style={label}>Location / delivery area (optional)</label><input id="f-quotemodal-4" className="si" value={form.location} onChange={set("location")} /></div>
+            <div style={field}><label htmlFor="f-quotemodal-5" style={label}>Project notes (optional)</label><textarea id="f-quotemodal-5" className="si" rows={3} value={form.notes} onChange={set("notes")} placeholder="Surface, area to cover, timing..." style={{ resize: "vertical" }} /></div>
 
             {touched && missing && <p style={{ fontSize: 13, color: "#c0392b", marginBottom: 12 }}>Please add your name and phone number.</p>}
 
@@ -116,6 +119,7 @@ export default function QuoteModal() {
               </button>
               <button className="btn bd" onClick={sendEmail} style={{ flex: 1, justifyContent: "center" }}>Send by email</button>
             </div>
+            <PrivacyLink />
             {!whatsappReady && <p style={{ fontSize: 12, color: "#999", marginTop: 8 }}>WhatsApp sending is not available yet. You can send your request by email.</p>}
 
             {sentVia && (
