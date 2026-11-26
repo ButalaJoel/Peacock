@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase.js";
 import { UPDATES } from "../data/updates.js";
+import { seedFor } from "./seed.js";
 
 export const NEWS_TONES = { "Product news": "#c0512f", "Colour tips": "#2d4a3e", "Company": "#5C2D6D", "Newsletter": "#1a3a5c" };
 
@@ -37,7 +38,7 @@ function load() {
 // Published news from the database. If the database is not set up, is unreachable, or has nothing
 // published yet, the sample items from src/data/updates.js are shown (sample: true).
 export function useUpdates() {
-  const [state, setState] = useState(() => (cache ? { items: cache, loading: false, sample: false } : supabase ? { items: [], loading: true, sample: false } : { items: UPDATES, loading: false, sample: true }));
+  const [state, setState] = useState(() => (cache ? { items: cache, loading: false, sample: false } : seedFor("news") ? (seedFor("news").length ? { items: seedFor("news").map(mapUpdate), loading: false, sample: false } : { items: UPDATES, loading: false, sample: true }) : supabase ? { items: [], loading: true, sample: false } : { items: UPDATES, loading: false, sample: true }));
   useEffect(() => {
     if (!supabase || cache) return undefined;
     let off = false;

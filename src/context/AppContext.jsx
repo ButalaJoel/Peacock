@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { AppContext } from "./useApp.js";
 import { PRODUCTS, SAMPLE_POT, SAMPLE_BUNDLE } from "../data/products.js";
-import { trendingColours, COLOUR_CATEGORIES, STYLE_CATEGORIES } from "../data/colours.js";
+import { COLOUR_CATEGORIES, STYLE_CATEGORIES } from "../data/colours.js";
+import { resolveRoute, findColourCat as findCat, pathForPage, pathForProduct, pathForColour } from "../routing.js";
+import { getRouteMeta, applyHead } from "../seo/routes.js";
 import { TruckIcon, PaletteIcon, HeartIcon, GlobeIcon, UsersIcon, LeafIcon } from "../components/icons/Icons.jsx";
 
-export function AppProvider({ children }) {
+export function AppProvider({ children, initialPath }) {
+  // The first page comes from the URL, so the browser renders exactly what was prerendered.
+  const [start] = useState(() => resolveRoute(initialPath ?? (typeof window !== "undefined" ? window.location.pathname : "/")));
   const [activeMenu, setActiveMenu] = useState(null);
 
   const [mobMenu, setMobMenu] = useState(false);
@@ -15,22 +19,22 @@ export function AppProvider({ children }) {
 
   const [scrolled, setScrolled] = useState(false);
 
-  const [pg, setPg] = useState("home");
+  const [pg, setPg] = useState(start.pg);
 
   const [prodTab, setProdTab] = useState("all");
 
   const [finishFilter, setFinishFilter] = useState(null);
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(start.product || null);
 
   const [cart, setCart] = useState([]);
 
   const [cartOpen, setCartOpen] = useState(false);
   const [quoteOpen, setQuoteOpen] = useState(false);
 
-  const [selectedColour, setSelectedColour] = useState(null);
+  const [selectedColour, setSelectedColour] = useState(start.colour || null);
 
-  const [selectedColourCategory, setSelectedColourCategory] = useState(null);
+  const [selectedColourCategory, setSelectedColourCategory] = useState(start.colourCategory || null);
 
   const [selectedColourStyle, setSelectedColourStyle] = useState(null);
 
@@ -38,9 +42,11 @@ export function AppProvider({ children }) {
 
   const CARDS_VISIBLE = 5;
 
-  const findColourCat = (name) => { for (const [k, v] of Object.entries(COLOUR_CATEGORIES)) { if (v.colors.includes(name)) return k; } return null; };
+  const findColourCat = findCat;
 
-  const handleColourClick = (c) => { const cat = findColourCat(c.name); setSelectedColour(c); setSelectedColourCategory(cat); setPg("colour-detail"); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.location.hash = `/colour/${encodeURIComponent(c.name)}`; };
+  const go = path => { if (window.location.pathname !== path) window.history.pushState({}, "", path); };
+
+  const handleColourClick = (c) => { const cat = findColourCat(c.name); setSelectedColour(c); setSelectedColourCategory(cat); setPg("colour-detail"); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); go(pathForColour(c)); };
 
   const mRef = useRef(null);
 
@@ -50,27 +56,23 @@ export function AppProvider({ children }) {
 
   useEffect(() => { const h = () => setScrolled(window.scrollY > 50); window.addEventListener("scroll", h); return () => window.removeEventListener("scroll", h); }, []);
 
-  // ─── Hash-based routing: restore page from URL on mount / new tab ───
+  // ─── Real URL paths: back/forward buttons restore the page ───
   useEffect(() => {
-    const handleHash = () => {
-      const hash = window.location.hash.replace(/^#\/?/, "");
-      if (!hash || hash === "home") { setPg("home"); return; }
-      if (hash.startsWith("product/")) {
-        const id = hash.replace("product/", "");
-        const p = PRODUCTS.find(pr => pr.id === id);
-        if (p) { setSelectedProduct(p); setPg("product"); return; }
-      }
-      if (hash.startsWith("colour/")) {
-        const name = decodeURIComponent(hash.replace("colour/", ""));
-        const c = trendingColours.find(tc => tc.name === name);
-        if (c) { const cat = findColourCat(c.name); setSelectedColour(c); setSelectedColourCategory(cat); setPg("colour-detail"); return; }
-      }
-      setPg(hash);
+    const onPop = () => {
+      const r = resolveRoute(window.location.pathname);
+      setSelectedProduct(r.product || null);
+      setSelectedColour(r.colour || null);
+      setSelectedColourCategory(r.colourCategory || null);
+      setPg(r.pg);
+      setActiveMenu(null); setMobMenu(false); setMobSub(null);
+      window.scrollTo({ top: 0 });
     };
-    handleHash();
-    window.addEventListener("hashchange", handleHash);
-    return () => window.removeEventListener("hashchange", handleHash);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
   }, []);
+
+  // Keep the tab title, description and share tags in step with the page being shown.
+  useEffect(() => { applyHead(getRouteMeta(window.location.pathname)); }, [pg, selectedProduct, selectedColour]);
 
   useEffect(() => {
     if (scrollToProdPending.current && prodSectionRef.current) {
@@ -84,16 +86,16 @@ export function AppProvider({ children }) {
 
   const mL = () => { mRef.current = setTimeout(() => setActiveMenu(null), 200); };
 
-  const nav = p => { setPg(p); setSelectedProduct(null); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.location.hash = `/${p}`; };
+  const nav = p => { setPg(p); setSelectedProduct(null); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); go(pathForPage(p)); };
 
-  const openProduct = (p) => { setSelectedProduct(p); setPg("product"); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); window.location.hash = `/product/${p.id}`; };
+  const openProduct = (p) => { setSelectedProduct(p); setPg("product"); setActiveMenu(null); setMobMenu(false); setMobSub(null); window.scrollTo({ top: 0, behavior: "smooth" }); go(pathForProduct(p)); };
 
   // ─── Hash URL helpers ───
-  const makeHref = (slug) => `#/${slug}`;
+  const makeHref = (slug) => pathForPage(slug);
 
-  const productHref = (p) => `#/product/${p.id}`;
+  const productHref = (p) => pathForProduct(p);
 
-  const colourHref = (c) => `#/colour/${encodeURIComponent(c.name)}`;
+  const colourHref = (c) => pathForColour(c);
 
   const aReset = { textDecoration: "none", color: "inherit" };
 

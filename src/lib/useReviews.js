@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase.js";
+import { seedFor } from "./seed.js";
 
 // Published customer reviews (null while loading, [] when there are none or the database is not connected).
 export function useReviews() {
-  const [reviews, setReviews] = useState(null);
+  const [reviews, setReviews] = useState(() => seedFor("reviews"));
   useEffect(() => {
     if (!supabase) return undefined;
     let off = false;

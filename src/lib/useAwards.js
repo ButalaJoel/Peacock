@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase.js";
+import { seedFor } from "./seed.js";
 
 let cache = null;
 let inflight = null;
@@ -14,7 +15,7 @@ function load() {
 
 // Published awards and certificates. Empty (so the section stays hidden) if there are none or the database cannot be reached.
 export function useAwards() {
-  const [items, setItems] = useState(cache || []);
+  const [items, setItems] = useState(() => cache || (seedFor("awards") || []).filter(a => a.image_url));
   useEffect(() => {
     if (!supabase || cache) return undefined;
     let off = false;

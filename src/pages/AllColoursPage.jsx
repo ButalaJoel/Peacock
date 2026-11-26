@@ -1,3 +1,4 @@
+import { pathForColour } from "../routing.js";
 import { askForSample } from "../utils/sampleDialog.js";
 import { useEffect, useRef, useState } from "react";
 import { useApp } from "../context/useApp.js";
@@ -41,7 +42,7 @@ export default function AllColoursPage() {
     if (gridTop.current) gridTop.current.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   const chooseFamily = f => { setFamily(f); setPageNo(1); };
-  const colourHref = c => "#/colour/" + encodeURIComponent(c.name);
+  const colourHref = c => pathForColour(c);
 
   const chip = on => ({ display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: 30, border: "1px solid " + (on ? B.coral : "#e2e2e2"), background: on ? B.coral : "#fff", color: on ? "#fff" : "#444", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "inherit" });
   const pbtn = (on, disabled) => ({ minWidth: 40, height: 40, padding: "0 12px", borderRadius: 10, border: "1px solid " + (on ? B.coral : "#ddd"), background: on ? B.coral : "#fff", color: on ? "#fff" : disabled ? "#bbb" : "#333", fontWeight: 600, fontSize: 14, cursor: disabled ? "not-allowed" : "pointer", fontFamily: "inherit" });

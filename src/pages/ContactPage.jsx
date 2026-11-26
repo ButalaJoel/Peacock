@@ -1,7 +1,8 @@
 import PrivacyLink from "../components/common/PrivacyLink.jsx";
 import Honeypot from "../components/common/Honeypot.jsx";
 import { saveEnquiry } from "../lib/enquiries.js";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
+import { useApp } from "../context/useApp.js";
 import { CONTACT } from "../config/contact.js";
 import { B } from "../data/theme.js";
 import { makeReference, whatsappReady, whatsappUrl, mailtoUrl } from "../utils/messaging.js";
@@ -11,8 +12,11 @@ import { PhoneIcon, MailIcon, GlobeIcon } from "../components/icons/Icons.jsx";
 const TOPICS = ["Ask an expert", "Product enquiry", "Colour matching", "Something else"];
 
 export default function ContactPage() {
+  const { nav } = useApp();
   const [form, setForm] = useState({ name: "", phone: "", email: "", topic: TOPICS[0], message: "" });
   const [reference] = useState(() => makeReference("PP-MSG"));
+  // The reference is random, so it is shown only after the page loads (otherwise it would not match the prerendered HTML).
+  const mounted = useSyncExternalStore(() => () => {}, () => true, () => false);
   const [touched, setTouched] = useState(false);
   const [sentVia, setSentVia] = useState(null);
   const set = key => e => setForm(f => ({ ...f, [key]: e.target.value }));
@@ -57,13 +61,13 @@ export default function ContactPage() {
           <div style={detail}><GlobeIcon /><span>{CONTACT.address}</span></div>
           <div style={detail}><PhoneIcon /><span>{CONTACT.phones.map((p, i) => (<span key={p}>{i > 0 ? " / " : ""}<a href={"tel:" + p.replace(/[^+\d]/g, "")} style={{ color: "inherit" }}>{p}</a></span>))}</span></div>
           <div style={detail}><MailIcon /><a href={"mailto:" + CONTACT.salesEmail} style={{ color: "inherit" }}>{CONTACT.salesEmail}</a></div>
-          <div style={{ ...detail, marginTop: 6 }}><a href="#/feedback" style={{ color: "inherit", fontWeight: 600 }}>Complaint or feedback? Tell us here</a></div>
+          <div style={{ ...detail, marginTop: 6 }}><a href="/feedback" onClick={e => { e.preventDefault(); nav("feedback"); }} style={{ color: "inherit", fontWeight: 600 }}>Complaint or feedback? Tell us here</a></div>
           <div style={detail}><GlobeIcon /><span>{CONTACT.website}</span></div>
         </div>
 
         <div style={card}>
           <h2 style={{ fontSize: 20, marginBottom: 4 }}>Send us a message</h2>
-          <p style={{ fontSize: 13, color: "#888", marginBottom: 18 }}>Reference {reference}. This opens WhatsApp or your email app with your message ready to send.</p>
+          <p style={{ fontSize: 13, color: "#888", marginBottom: 18 }}>{mounted ? "Reference " + reference + ". " : ""}This opens WhatsApp or your email app with your message ready to send.</p>
           <Honeypot />
           <div style={{ marginBottom: 14 }}><label htmlFor="f-contactpage-1" style={label}>Your name *</label><input id="f-contactpage-1" className="si" value={form.name} onChange={set("name")} style={bad("name")} /></div>
           <div style={{ marginBottom: 14 }}><label htmlFor="f-contactpage-2" style={label}>Phone number *</label><input id="f-contactpage-2" className="si" type="tel" value={form.phone} onChange={set("phone")} style={bad("phone")} /></div>

@@ -72,7 +72,7 @@ export default function DashboardPage() {
           <p style={{ fontSize: 13, color: "#777", marginTop: 4 }}>Signed in as {session.user.email} ({role})</p>
         </div>
         <div style={{ display: "flex", gap: 10 }}>
-          <a href="#/" style={{ ...S.btnGhost, textDecoration: "none" }}>View website</a>
+          <a href="/" style={{ ...S.btnGhost, textDecoration: "none" }}>View website</a>
           <button style={S.btnGhost} onClick={() => supabase.auth.signOut()}>Sign out</button>
         </div>
       </div>

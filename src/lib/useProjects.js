@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase.js";
 import { PROJECTS } from "../data/projects.js";
+import { seedFor } from "./seed.js";
 
 // Turns a database row into the shape the Projects page already uses.
 export function mapProject(r) {
@@ -25,7 +26,7 @@ let cache = null;
 // Published projects from the database. If the database is not set up, is unreachable, or has no
 // published projects yet, the sample layouts from src/data/projects.js are shown instead.
 export function useProjects() {
-  const [state, setState] = useState(() => (cache ? { items: cache, loading: false } : supabase ? { items: [], loading: true } : { items: PROJECTS, loading: false }));
+  const [state, setState] = useState(() => (cache ? { items: cache, loading: false } : seedFor("projects") ? { items: seedFor("projects").map(mapProject), loading: false } : supabase ? { items: [], loading: true } : { items: PROJECTS, loading: false }));
   useEffect(() => {
     if (!supabase || cache) return undefined;
     let off = false;

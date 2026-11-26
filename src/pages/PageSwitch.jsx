@@ -1,3 +1,4 @@
+import { AdvicePage, QuotePage } from "./InfoPages.jsx";
 import UnsubscribePage from "./UnsubscribePage.jsx";
 import VisualiserPage from "./VisualiserPage.jsx";
 import StartHerePage from "./StartHerePage.jsx";
@@ -52,6 +53,10 @@ export default function PageSwitch() {
         <VisualiserPage />
       ) : pg === "feedback" ? (
         <FeedbackPage />
+      ) : pg === "advice" ? (
+        <AdvicePage />
+      ) : pg === "get-a-quote" ? (
+        <QuotePage />
       ) : pg === "unsubscribe" ? (
         <UnsubscribePage />
       ) : pg === "privacy" ? (
