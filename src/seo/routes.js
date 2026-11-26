@@ -92,6 +92,11 @@ export function publicPaths() {
   return [...new Set(list)];
 }
 
+// Pages that exist but are kept out of the sitemap (prerendered, noindex).
+export const hiddenPaths = () => [...NOINDEX].map(k => "/" + k);
+// Addresses served by the plain app shell (no prerendered content): the staff dashboard and pages that need a selection.
+export const shellPaths = () => ["/dashboard", "/colour-detail", "/product", "/colour"];
+
 function orgSchema() {
   const days = { "Monday to Friday": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], Saturday: ["Saturday"] };
   const to24 = t => { const m = /(\d+):(\d+)(am|pm)/i.exec(t); if (!m) return null; let h = +m[1] % 12; if (/pm/i.test(m[3])) h += 12; return String(h).padStart(2, "0") + ":" + m[2]; };

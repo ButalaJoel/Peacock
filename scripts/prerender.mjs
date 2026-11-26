@@ -36,7 +36,7 @@ const page = (meta, body, withData) => template
 
 const paths = ssr.publicPaths();
 let failed = 0;
-for (const p of paths) {
+for (const p of [...paths, ...ssr.hiddenPaths()]) {
   try {
     const html = page(ssr.getRouteMeta(p), ssr.render(p), true);
     const file = p === "/" ? path.join(DIST, "index.html") : path.join(DIST, p.slice(1), "index.html");
@@ -47,7 +47,10 @@ for (const p of paths) {
 if (failed) { console.error(failed + " page(s) failed to prerender."); process.exit(1); }
 
 // 3. Fallback shell for everything that is not prerendered (the staff dashboard, unknown addresses): empty root, noindex.
-fs.writeFileSync(path.join(DIST, "200.html"), page(ssr.getRouteMeta("/dashboard"), "", false));
+const shell = page(ssr.getRouteMeta("/dashboard"), "", false);
+fs.writeFileSync(path.join(DIST, "200.html"), shell);
+// Written as real files too, so these addresses work even if the host has no catch-all rule.
+for (const p of ssr.shellPaths()) { fs.mkdirSync(path.join(DIST, p.slice(1)), { recursive: true }); fs.writeFileSync(path.join(DIST, p.slice(1), "index.html"), shell); }
 
 // 4. Sitemap and robots.
 const today = new Date().toISOString().slice(0, 10);
