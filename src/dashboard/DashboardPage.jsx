@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase.js";
 import Login from "./Login.jsx";
+import SetPassword from "./SetPassword.jsx";
 import ProjectsAdmin from "./ProjectsAdmin.jsx";
 import NewsAdmin from "./NewsAdmin.jsx";
 import QuotesAdmin from "./QuotesAdmin.jsx";
@@ -21,13 +22,18 @@ export default function DashboardPage() {
   const [session, setSession] = useState(undefined);
   const [staff, setStaff] = useState({ uid: null, role: undefined });
   const [tab, setTab] = useState("projects");
+  // "recovery" = arrived from a password-reset email link; "change" = signed-in person chose Change password.
+  const [pwMode, setPwMode] = useState(null);
   const [fresh, setFresh] = useState({ quotes: 0, enquiries: 0, alerts: 0, applications: 0, feedback: 0, professionals: 0 });
   const uid = session ? session.user.id : null;
 
   useEffect(() => {
     if (!supabase) return undefined;
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data } = supabase.auth.onAuthStateChange((_e, s) => setSession(s));
+    const { data } = supabase.auth.onAuthStateChange((event, s) => {
+      setSession(s);
+      if (event === "PASSWORD_RECOVERY") setPwMode("recovery");
+    });
     return () => data.subscription.unsubscribe();
   }, []);
 
@@ -51,6 +57,9 @@ export default function DashboardPage() {
   if (!supabase) return <p style={{ padding: 60, textAlign: "center" }}>The database is not connected yet (src/config/supabase.js is blank).</p>;
   if (session === undefined) return <p style={{ padding: 60, textAlign: "center", color: "#777" }}>Loading...</p>;
   if (!session) return <Login />;
+  if (pwMode === "recovery") {
+    return <SetPassword title="Choose a new password" intro={"For " + session.user.email} onDone={() => setPwMode(null)} />;
+  }
   if (role === undefined) return <p style={{ padding: 60, textAlign: "center", color: "#777" }}>Checking your access...</p>;
   if (role === false) {
     return (
@@ -60,6 +69,10 @@ export default function DashboardPage() {
         <button style={S.btnGhost} onClick={() => supabase.auth.signOut()}>Sign out</button>
       </div>
     );
+  }
+
+  if (pwMode === "change") {
+    return <SetPassword title="Change your password" intro={"Signed in as " + session.user.email} onDone={() => setPwMode(null)} onCancel={() => setPwMode(null)} />;
   }
 
   const badge = n => (n ? " (" + n + " new)" : "");
@@ -73,7 +86,8 @@ export default function DashboardPage() {
         </div>
         <div style={{ display: "flex", gap: 10 }}>
           <a href="/" style={{ ...S.btnGhost, textDecoration: "none" }}>View website</a>
-          <button style={S.btnGhost} onClick={() => supabase.auth.signOut()}>Sign out</button>
+          <button style={S.btnGhost} onClick={() => setPwMode("change")}>Change password</button>
+          <button style={{ ...S.btnGhost, borderColor: "#222", color: "#222" }} onClick={() => supabase.auth.signOut()}>Log out</button>
         </div>
       </div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 26 }}>
