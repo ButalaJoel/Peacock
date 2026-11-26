@@ -52,7 +52,7 @@ export function getRouteMeta(pathname) {
   p = p.replace(/^\/+|\/+$/g, "");
   const out = { path: p ? "/" + p : "/", title: PAGES.home[0], description: PAGES.home[1], noindex: false, jsonld: [] };
   const set = (t, d) => { out.title = t; out.description = clip(d); };
-  if (!p || p === "home") { out.jsonld.push(orgSchema()); return out; }
+  if (!p || p === "home") { out.path = "/"; out.jsonld.push(orgSchema()); return out; }
   if (PAGES[p]) { set(PAGES[p][0], PAGES[p][1]); out.noindex = NOINDEX.has(p); }
   else if (storyPages[p]) set(storyPages[p].title + " | " + SITE_NAME, (storyPages[p].subtitle ? storyPages[p].subtitle + ". " : "") + String(storyPages[p].sections?.[0]?.c || ""));
   else if (CATEGORY_PAGES[p]) {
@@ -81,7 +81,7 @@ export function getRouteMeta(pathname) {
 // Every public page that should be prerendered and listed in the sitemap.
 export function publicPaths() {
   const list = ["/"];
-  for (const k of Object.keys(PAGES)) if (!NOINDEX.has(k)) list.push("/" + k);
+  for (const k of Object.keys(PAGES)) if (!NOINDEX.has(k) && k !== "home") list.push("/" + k);
   for (const k of Object.keys(storyPages)) list.push("/" + k);
   for (const k of Object.keys(CATEGORY_PAGES)) list.push("/" + k);
   for (const k of Object.keys(ROOMS)) list.push("/" + k);
